@@ -1,0 +1,391 @@
+{
+  "sha256": "334274639316fe98e7497c0de6ffeb0ce91720d9617fc0be7eed9c7ee96bbd3a",
+  "revision": 16,
+  "operations": [
+    {
+      "serial": 1,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r2c1"
+        ],
+        "bbox": [
+          56.65,
+          227.57,
+          373.96783026252405,
+          241.81263531350626
+        ]
+      }
+    },
+    {
+      "serial": 2,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r3c1"
+        ],
+        "bbox": [
+          56.65,
+          253.60842518405607,
+          337.2854149536054,
+          262.19
+        ]
+      }
+    },
+    {
+      "serial": 3,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r3c1"
+        ],
+        "bbox": [
+          104.15313843400645,
+          253.608,
+          337.285,
+          262.19
+        ]
+      }
+    },
+    {
+      "serial": 4,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r3c1"
+        ],
+        "bbox": [
+          104.153,
+          251.47077017275862,
+          375.2784064469433,
+          262.19
+        ]
+      }
+    },
+    {
+      "serial": 5,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r3c1"
+        ],
+        "bbox": [
+          104.153,
+          244.6670830655938,
+          375.278,
+          262.19
+        ]
+      }
+    },
+    {
+      "serial": 6,
+      "operation": {
+        "action": "update",
+        "ids": [
+          "p10.t1/r3c1"
+        ],
+        "page": 10,
+        "text": "Поступило средств Поступило средств Вступительные взносы",
+        "bbox": [
+          104.153,
+          244.667,
+          375.278,
+          262.19
+        ]
+      }
+    },
+    {
+      "serial": 7,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r3c1"
+        ],
+        "bbox": [
+          83.7774917147422,
+          244.55167342062927,
+          354.9024917147422,
+          262.07467342062927
+        ]
+      }
+    },
+    {
+      "serial": 8,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r3c1"
+        ],
+        "bbox": [
+          83.86392171443482,
+          244.552,
+          354.9889217144348,
+          262.075
+        ]
+      }
+    },
+    {
+      "serial": 9,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r3c1"
+        ],
+        "bbox": [
+          102.75298773683363,
+          243.87760294703023,
+          373.8779877368336,
+          261.4006029470302
+        ]
+      }
+    },
+    {
+      "serial": 10,
+      "operation": {
+        "action": "split",
+        "ids": [
+          "p10.t1/r3c1"
+        ],
+        "page": 10,
+        "parts": [
+          "Поступило средств",
+          "Поступило средств Вступительные взносы"
+        ]
+      }
+    },
+    {
+      "serial": 11,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10/text12"
+        ],
+        "bbox": [
+          98.65499877929688,
+          177.66714477539062,
+          348.92095947265625,
+          184.66714477539062
+        ]
+      }
+    },
+    {
+      "serial": 12,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10/text12"
+        ],
+        "bbox": [
+          53.75,
+          177.667,
+          348.921,
+          184.667
+        ]
+      }
+    },
+    {
+      "serial": 13,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r2c1"
+        ],
+        "bbox": [
+          73.6175542029036,
+          227.57,
+          373.968,
+          241.813
+        ]
+      }
+    },
+    {
+      "serial": 14,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r2c1"
+        ],
+        "bbox": [
+          56.65,
+          227.57,
+          373.968,
+          241.813
+        ]
+      }
+    },
+    {
+      "serial": 15,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r12c1"
+        ],
+        "bbox": [
+          71.27263020833337,
+          386.99067364993334,
+          390.62263020833336,
+          400.7906736499333
+        ]
+      }
+    },
+    {
+      "serial": 16,
+      "operation": {
+        "action": "update",
+        "page": 10,
+        "ids": [
+          "p10.t1/r12c1"
+        ],
+        "bbox": [
+          56.65,
+          381.21999999999997,
+          376,
+          395.02
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "revision": 1,
+      "time": "2026-11-14T12:17:00.043564+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r2c1"
+      ]
+    },
+    {
+      "revision": 2,
+      "time": "2026-11-14T12:17:05.965038+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r3c1"
+      ]
+    },
+    {
+      "revision": 3,
+      "time": "2026-11-14T12:17:10.322340+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r3c1"
+      ]
+    },
+    {
+      "revision": 4,
+      "time": "2026-11-14T12:17:16.134710+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r3c1"
+      ]
+    },
+    {
+      "revision": 5,
+      "time": "2026-11-14T12:17:28.118989+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r3c1"
+      ]
+    },
+    {
+      "revision": 6,
+      "time": "2026-11-14T12:18:00.447874+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r3c1"
+      ]
+    },
+    {
+      "revision": 7,
+      "time": "2026-11-14T12:18:11.525534+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r3c1"
+      ]
+    },
+    {
+      "revision": 8,
+      "time": "2026-11-14T12:18:33.821581+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r3c1"
+      ]
+    },
+    {
+      "revision": 9,
+      "time": "2026-11-14T12:18:35.543271+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r3c1"
+      ]
+    },
+    {
+      "revision": 10,
+      "time": "2026-11-14T12:18:47.882471+00:00",
+      "action": "split",
+      "affected_ids": [
+        "p10.t1/r3c1"
+      ]
+    },
+    {
+      "revision": 11,
+      "time": "2026-11-14T12:45:10.214764+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10/text12"
+      ]
+    },
+    {
+      "revision": 12,
+      "time": "2026-11-14T12:45:18.238755+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10/text12"
+      ]
+    },
+    {
+      "revision": 13,
+      "time": "2026-11-14T12:45:21.050464+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r2c1"
+      ]
+    },
+    {
+      "revision": 14,
+      "time": "2026-11-14T12:45:23.433195+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r2c1"
+      ]
+    },
+    {
+      "revision": 15,
+      "time": "2026-11-14T14:18:09.671173+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r12c1"
+      ]
+    },
+    {
+      "revision": 16,
+      "time": "2026-11-14T14:18:17.520356+00:00",
+      "action": "update",
+      "affected_ids": [
+        "p10.t1/r12c1"
+      ]
+    }
+  ]
+}

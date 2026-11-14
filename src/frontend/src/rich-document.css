@@ -1,0 +1,825 @@
+.rich-document-editor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #f8fafd;
+  color: #202124;
+  font:
+    13px Arial,
+    sans-serif;
+}
+.rich-document-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 72px;
+  padding: 10px 18px 5px;
+  flex-shrink: 0;
+  background: #f8fafd;
+}
+.rich-file-icon {
+  flex-shrink: 0;
+  color: #4285f4;
+  stroke-width: 1.7;
+}
+.rich-document-heading {
+  flex: 1;
+  min-width: 0;
+}
+.rich-document-heading > strong {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font:
+    400 19px/1.35 Arial,
+    sans-serif;
+}
+.rich-document-heading nav {
+  display: flex;
+  gap: 0;
+  margin-left: -7px;
+  margin-top: 2px;
+}
+.rich-menu {
+  position: relative;
+}
+.rich-menu > button {
+  padding: 4px 7px;
+  border-radius: 4px;
+  font:
+    13px Arial,
+    sans-serif;
+  white-space: nowrap;
+}
+.rich-menu > button:hover,
+.rich-menu > button[aria-expanded="true"] {
+  background: #e7ecf1;
+}
+.rich-menu [role="menu"] {
+  position: absolute;
+  left: 0;
+  top: 27px;
+  min-width: 280px;
+  max-height: 75vh;
+  overflow: auto;
+  z-index: 90;
+  background: white;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  padding: 6px 0;
+  box-shadow: 0 4px 14px #20212430;
+}
+.rich-menu [role="menuitem"] {
+  display: block;
+  width: 100%;
+  padding: 8px 20px;
+  text-align: left;
+  font:
+    13px Arial,
+    sans-serif;
+  white-space: nowrap;
+}
+.rich-menu [role="menuitem"]:hover:not(:disabled) {
+  background: #e8f0fe;
+}
+.rich-menu [role="menuitem"]:disabled {
+  color: #9aa0a6;
+}
+.rich-save-state {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: #657278;
+  white-space: nowrap;
+}
+.rich-lock {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 13px;
+  background: white;
+  border: 1px solid var(--mipt-rule);
+  border-radius: 0;
+  color: var(--mipt-blue);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.rich-document-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  min-height: 42px;
+  margin: 0 12px 8px;
+  padding: 3px 9px;
+  background: var(--mipt-gray);
+  border: 1px solid var(--mipt-rule);
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.rich-document-toolbar > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 29px;
+  height: 30px;
+  padding: 5px;
+  border: 1px solid var(--mipt-rule);
+  background: #fff;
+  color: var(--mipt-blue);
+}
+.rich-document-toolbar > button:hover:not(:disabled) {
+  background: var(--mipt-light-blue);
+  border-color: var(--mipt-blue);
+}
+.rich-document-toolbar > button.active {
+  background: var(--mipt-light-blue);
+  border-color: var(--mipt-blue);
+}
+.rich-document-toolbar > button:disabled {
+  opacity: 0.38;
+}
+.rich-toolbar-divider {
+  flex-shrink: 0;
+  height: 24px;
+  margin: 0 6px;
+  border-left: 1px solid #c4cbd4;
+}
+.rich-document-toolbar select {
+  height: 29px;
+  max-width: 128px;
+  padding: 3px 22px 3px 6px;
+  font:
+    12px Arial,
+    sans-serif;
+  border: 1px solid var(--mipt-rule);
+  border-radius: 0;
+  background: #fff;
+  cursor: pointer;
+}
+.rich-document-toolbar select[aria-label="Шрифт документа"] {
+  max-width: 115px;
+}
+.rich-document-toolbar .rich-font-size {
+  width: 43px;
+  height: 26px;
+  padding: 2px 3px;
+  font:
+    12px Arial,
+    sans-serif;
+  border-radius: 0;
+  background: #fff;
+  border: 1px solid var(--mipt-rule);
+  text-align: center;
+  flex-shrink: 0;
+}
+.rich-zoom-field {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.rich-zoom-field input {
+  width: 48px;
+  height: 28px;
+  padding: 3px 0 3px 5px;
+  font:
+    12px Arial,
+    sans-serif;
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+}
+.rich-color-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 29px;
+  height: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.rich-color-input input {
+  position: absolute;
+  left: 4px;
+  bottom: 0;
+  width: 21px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.rich-link-icon {
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 1;
+}
+.rich-document-bindings {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  padding: 0 22px 7px;
+  flex-shrink: 0;
+}
+.rich-document-bindings span {
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: #deefdf;
+  color: #26643a;
+  font-size: 10px;
+}
+.rich-document-error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  background: #fff1d8;
+  color: #875e20;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+.rich-document-error > span {
+  flex: 1;
+}
+.rich-document-error > button {
+  border: 1px solid #c6aa7b;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.rich-document-workspace {
+  min-height: 0;
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+.rich-document-outline {
+  width: 200px;
+  flex-shrink: 0;
+  padding: 20px 9px 15px 15px;
+  overflow: auto;
+  background: #f8fafd;
+  color: #4b5560;
+}
+.rich-document-outline h2 {
+  font:
+    600 12px Arial,
+    sans-serif;
+  margin: 4px 0 20px;
+}
+.rich-document-outline p {
+  font-size: 11px;
+  font-style: italic;
+  color: #73808a;
+  line-height: 1.5;
+  padding: 0 8px;
+}
+.rich-document-outline button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-radius: 4px;
+  padding: 8px 6px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rich-document-outline button:hover {
+  background: #e1eafa;
+  color: #174ea6;
+}
+.rich-document-viewport {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+  overflow-anchor: none;
+  overscroll-behavior: contain;
+  background: #f8fafd;
+  padding: 0 24px 70px;
+  scrollbar-color: #bfc7d0 transparent;
+}
+.rich-ruler {
+  position: relative;
+  min-width: 100px;
+  height: 25px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  margin: 0 auto 10px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 18px,
+    #b2b8c0 18px,
+    #b2b8c0 19px,
+    transparent 19px,
+    transparent 37px
+  );
+  background-size: auto 5px;
+  background-position: bottom;
+  background-repeat: repeat-x;
+  border-bottom: 1px solid #c9ced6;
+  color: #6c7680;
+  font-size: 9px;
+  user-select: none;
+  flex-shrink: 0;
+}
+.rich-ruler span {
+  padding: 0 3px 6px;
+  background: #f8fafd;
+}
+.rich-document-paper-space {
+  width: max-content;
+  padding: 25vh 100vw 65vh;
+  box-sizing: content-box;
+}
+.rich-document-paper-scale {
+  position: relative;
+  overflow: clip;
+}
+.rich-document-paper {
+  position: relative;
+  background: #fff;
+  border: 1px solid #c8cdd4;
+  box-shadow: 0 1px 3px #45566a10;
+  margin: 0;
+  box-sizing: border-box;
+  transform-origin: 0 0;
+  overflow: visible;
+  cursor: text;
+}
+.rich-document-paper.pageless {
+  min-height: 450px;
+  border: 0;
+  box-shadow: none;
+}
+.rich-document-content {
+  font:
+    11pt/1.15 Arial,
+    sans-serif;
+  color: #111827;
+  min-height: 120px;
+  outline: none !important;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+.rich-document-content:focus {
+  outline: none;
+}
+.rich-document-content p {
+  margin: 0 0 8pt;
+  line-height: inherit;
+}
+.rich-document-content p:last-child {
+  margin-bottom: 0;
+}
+.rich-document-content h1,
+.rich-document-content h2,
+.rich-document-content h3,
+.rich-document-content h4,
+.rich-document-content h5,
+.rich-document-content h6 {
+  letter-spacing: normal;
+  line-height: 1.25;
+  margin: 16pt 0 7pt;
+  font-weight: 600;
+  color: inherit;
+}
+.rich-document-content h1 {
+  font-size: 20pt;
+}
+.rich-document-content h2 {
+  font-size: 16pt;
+}
+.rich-document-content h3 {
+  font-size: 14pt;
+}
+.rich-document-content h4 {
+  font-size: 12pt;
+}
+.rich-document-content h5 {
+  font-size: 11pt;
+}
+.rich-document-content h6 {
+  font-size: 10pt;
+}
+.rich-document-content ul,
+.rich-document-content ol {
+  padding-left: 24px;
+  margin: 8pt 0;
+}
+.rich-document-content li {
+  margin: 3pt 0;
+}
+.rich-document-content li p {
+  margin: 0;
+}
+.rich-document-content ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+.rich-document-content ul[data-type="taskList"] > li {
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+}
+.rich-document-content ul[data-type="taskList"] > li > label {
+  flex-shrink: 0;
+  user-select: none;
+  margin-top: 1px;
+}
+.rich-document-content ul[data-type="taskList"] > li > label > input {
+  min-width: 0;
+  padding: 0;
+}
+.rich-document-content ul[data-type="taskList"] > li > div {
+  flex: 1;
+}
+.rich-document-content blockquote {
+  border-left: 3px solid #b7c5d4;
+  padding-left: 14px;
+  margin: 10pt 0;
+  color: #586675;
+}
+.rich-document-content pre {
+  padding: 12px;
+  background: #f2f4f7;
+  white-space: pre-wrap;
+}
+.rich-document-content code {
+  font:
+    10pt "Courier New",
+    monospace;
+}
+.rich-document-content a {
+  color: #1a73e8;
+  text-decoration: underline;
+}
+.rich-document-content hr {
+  border: 0;
+  border-top: 1px solid #9ca3af;
+  margin: 15pt 0;
+}
+.rich-document-content img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.rich-document-content .ProseMirror-selectednode {
+  outline: 2px solid #1a73e8;
+  outline-offset: 2px;
+}
+.rich-document-content table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin: 10pt 0;
+  width: 100%;
+  overflow: visible;
+  break-inside: auto;
+}
+.rich-document-content td,
+.rich-document-content th {
+  position: relative;
+  min-width: 28px;
+  border: 1px solid #8b949f;
+  padding: 5px 7px;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+.rich-document-content th {
+  font-weight: bold;
+  background: #f0f3f7;
+}
+.rich-document-content td > p,
+.rich-document-content th > p {
+  margin: 0 0 4pt;
+}
+.rich-document-content .selectedCell:after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: #77aaff33;
+  content: "";
+}
+.rich-document-content .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: -2px;
+  width: 4px;
+  background: #1a73e8;
+  pointer-events: none;
+}
+.rich-document-content.resize-cursor {
+  cursor: col-resize;
+}
+.rich-document-content .tableWrapper {
+  overflow: visible;
+}
+.rich-page-break {
+  display: block;
+  position: relative;
+  border-top: 1px dashed #c1c9d1;
+  margin: 20pt 0;
+  height: 24pt;
+  break-before: page;
+  user-select: none;
+}
+.rich-page-break:after {
+  content: "Разрыв страницы";
+  position: absolute;
+  top: 4px;
+  right: 0;
+  font:
+    9px Arial,
+    sans-serif;
+  color: #8a949d;
+}
+.rich-paper-header,
+.rich-paper-footer {
+  font:
+    10pt/1.4 Arial,
+    sans-serif;
+  color: #657080;
+  white-space: pre-wrap;
+}
+.rich-paper-header {
+  margin-bottom: 18pt;
+  border-bottom: 1px solid #eceff3;
+  padding-bottom: 6pt;
+}
+.rich-paper-footer {
+  margin-top: 26pt;
+  border-top: 1px solid #eceff3;
+  padding-top: 6pt;
+}
+.rich-page-number {
+  text-align: center;
+  margin-top: 14pt;
+  font-size: 10pt;
+  color: #58636e;
+}
+.rich-source-context {
+  background: #c8ead118;
+}
+.rich-source-number {
+  background: #79d49570;
+  box-shadow: none;
+  outline: 0;
+}
+.rich-search-match {
+  background: #ffdb6277;
+  outline: 1px solid #e7b329;
+}
+.rich-document-search {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  background: #fff;
+  border-bottom: 1px solid #d5dde7;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  font-size: 11px;
+}
+.rich-document-search > input {
+  height: 28px;
+  max-width: 190px;
+  font-size: 12px;
+  padding: 4px 7px;
+  border-radius: 4px;
+}
+.rich-document-search > button {
+  padding: 5px 8px;
+  background: #eef3f9;
+  border-radius: 4px;
+}
+.rich-document-search label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.rich-document-search input[type="checkbox"] {
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+.rich-document-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  height: 28px;
+  padding: 0 17px;
+  background: #f8fafd;
+  border-top: 1px solid #e4e8ee;
+  color: #6c7781;
+  font-size: 10px;
+}
+.rich-document-status label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.rich-document-status input[type="range"] {
+  width: 120px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  accent-color: #1a73e8;
+  background: transparent;
+}
+.rich-audit-overlay {
+  position: absolute;
+  left: 15px;
+  right: 15px;
+  bottom: 43px;
+  display: flex;
+  justify-content: center;
+  z-index: 14;
+  pointer-events: none;
+}
+.rich-audit-overlay > * {
+  pointer-events: auto;
+}
+.rich-document-loading {
+  position: absolute;
+  inset: 125px 0 28px;
+  background: #f8fafded;
+  display: grid;
+  place-items: center;
+  color: #64748b;
+}
+.rich-number-pick {
+  position: fixed;
+  z-index: 100;
+}
+.rich-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  background: #1f2e4338;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rich-dialog {
+  width: min(440px, calc(100vw - 40px));
+  max-height: 90vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: white;
+  border: 1px solid #d1d8e3;
+  border-radius: 8px;
+  box-shadow: 0 12px 44px #27395426;
+}
+.rich-dialog h2 {
+  font:
+    500 18px Arial,
+    sans-serif;
+}
+.rich-dialog > label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 12px;
+}
+.rich-dialog input,
+.rich-dialog select {
+  font-size: 13px;
+  min-height: 33px;
+  padding: 6px 8px;
+  border-radius: 4px;
+}
+.rich-dialog footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+}
+.rich-dialog footer button {
+  padding: 8px 15px;
+  color: #1a73e8;
+  border-radius: 4px;
+}
+.rich-dialog footer button[type="submit"] {
+  background: #1a73e8;
+  color: white;
+}
+.rich-page-margins {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.rich-page-margins label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+}
+.rich-dialog > .rich-page-number-control {
+  flex-direction: row;
+  align-items: center;
+}
+.rich-page-number-control input {
+  min-height: 0;
+  min-width: 0;
+  padding: 0;
+}
+@media (max-width: 1100px) {
+  .rich-save-state {
+    display: none;
+  }
+  .rich-document-titlebar {
+    padding: 9px 12px;
+    gap: 9px;
+  }
+  .rich-document-heading > strong {
+    font-size: 16px;
+  }
+  .rich-document-toolbar {
+    margin-left: 7px;
+    margin-right: 7px;
+  }
+  .rich-document-outline {
+    width: 165px;
+  }
+  .rich-document-viewport {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .rich-menu > button {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+  .rich-document-paper-space {
+    padding-left: 100vw;
+    padding-right: 100vw;
+  }
+}
+@media (max-width: 760px) {
+  .rich-document-outline {
+    display: none;
+  }
+  .rich-lock {
+    font-size: 10px;
+  }
+  .rich-document-heading > strong {
+    font-size: 14px;
+  }
+  .rich-document-titlebar {
+    min-height: 66px;
+  }
+  .rich-document-paper-space {
+    padding-left: 100vw;
+    padding-right: 100vw;
+  }
+  .rich-document-viewport {
+    padding: 0 8px 60px;
+  }
+  .rich-menu [role="menu"] {
+    min-width: 240px;
+    position: fixed;
+    top: 71px;
+    left: 12px;
+  }
+}
+.rich-document-import-warnings {
+  padding: 7px 18px;
+  flex-shrink: 0;
+  background: #fff8e9;
+  color: #865b1f;
+  font-size: 11px;
+}
+.rich-document-import-warnings summary {
+  cursor: pointer;
+}
+.rich-document-import-warnings ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  line-height: 1.5;
+}

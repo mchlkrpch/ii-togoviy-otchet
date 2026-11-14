@@ -1,0 +1,247 @@
+export type Status =
+  "verified" | "mismatch" | "unverified" | "review" | "excluded" | "error";
+export type Edit = {
+  kind: "fact" | "reported" | "cell" | "text" | "pdf_field";
+  target: string;
+  title: string;
+  value: string;
+  evidence?: Evidence;
+};
+export type Evidence = {
+  audit_origin?: string;
+  original_text?: string;
+  manual?: boolean;
+  pdf_field?: string;
+  document_id?: string;
+  locator?: string;
+  page?: number;
+  rect?: number[];
+  text: string;
+  method: string;
+  confidence: number;
+  sheet?: string;
+  cell?: string;
+  id?: string;
+  ocr_candidates?: { value: string; raw: string; confidence: number }[];
+};
+export type EvidenceAnnotation = { evidence: Evidence; label: string };
+export type NumericRegion = {
+  evidence: Evidence;
+  rect: number[];
+  text: string;
+  value: string;
+  method: string;
+};
+export type NumericTarget = { evidence: Evidence; value: string };
+export type NumberSelection = {
+  document_id: string;
+  value: string;
+  evidence: Evidence;
+  ref?: string;
+};
+export type NewVariable = {
+  key: string;
+  document_id: string;
+  value: string;
+  evidence: Evidence;
+};
+export type SavedVariable = NewVariable & { id: string; check_id: string };
+export type FormulaDraft = {
+  target: string;
+  expression: string;
+  inputs: { name: string; ref: string }[];
+  variables: NewVariable[];
+  reason: string;
+  cursor: number;
+  cursorEnd: number;
+};
+export type Input = {
+  name: string;
+  ref: string;
+  value?: string | null;
+  label?: string;
+  evidence?: Evidence;
+};
+export type Rule = {
+  expression: string;
+  inputs: { name: string; ref: string }[];
+};
+export type Node = {
+  id: string;
+  kind: "check" | "fact";
+  key?: string;
+  code?: string;
+  title?: string;
+  label?: string;
+  row?: string;
+  row_title?: string;
+  column?: number | null;
+  unit?: string;
+  reported?: string | null;
+  original_reported?: string | null;
+  expected: string | null;
+  value?: string | null;
+  delta?: string | null;
+  status: Status;
+  direct_status: Status;
+  inputs: Input[];
+  dependencies: string[];
+  dependents: string[];
+  blocked_by: string[];
+  evidence?: Evidence;
+  reported_evidence?: Evidence;
+  reported_needs_review?: boolean;
+  rule?: Rule | null;
+  formula?: string | null;
+  formula_error?: string | null;
+  note?: string;
+  category?: string;
+  document_id?: string;
+  manual?: boolean;
+  rule_manual?: boolean;
+  arithmetic?: {
+    label: string;
+    refs: string[];
+    expected: string | null;
+    delta: string | null;
+    status: Status;
+  }[];
+  reported_parts?: string[];
+  coverage_issues?: string[];
+  numeric_status?: Status;
+  explanation?: string[];
+  substitution?: string | null;
+};
+export type Fact = {
+  id: string;
+  key: string;
+  label: string;
+  value: string | null;
+  kind: string;
+  evidence: Evidence;
+  needs_review: boolean;
+  manual?: boolean;
+  original_value?: string | null;
+  formula?: string;
+  dependencies?: string[];
+};
+export type Cell = {
+  address: string;
+  sheet: string;
+  row: number;
+  column: number;
+  raw: string;
+  value: string | null;
+  formula: string | null;
+  dependencies: string[];
+  error: string | null;
+};
+export type Document = {
+  cell_origins?: Record<string, string>;
+  edited?: boolean;
+  pdf_fields?: PDFField[];
+  id: string;
+  name: string;
+  role: string;
+  format: string;
+  hash: string;
+  included: boolean;
+  state: string;
+  category: string | null;
+  category_reason: string;
+  decision_reasons: string[];
+  warnings: string[];
+  duplicate_of?: string;
+  facts: Record<string, Fact>;
+  blocks: Evidence[];
+  cells: Record<string, Cell>;
+  errors: string[];
+  page_count: number;
+  reviewed?: boolean;
+};
+export type PDFField = {
+  name: string;
+  value: string;
+  type: string;
+  page: number;
+  rect: number[];
+  manual?: boolean;
+  original_value?: string;
+};
+export type AuditEvent = {
+  id: string;
+  at: string;
+  kind: string;
+  target: string;
+  before: unknown;
+  after: unknown;
+  reason: string;
+  revision: number;
+};
+export type Context = {
+  contract: string;
+  start: string;
+  end: string;
+  target_year: string;
+  tolerance: string;
+};
+export type CaseResult = {
+  report_ids?: string[];
+  variables?: SavedVariable[];
+  id: string;
+  name: string;
+  revision: number;
+  created_at: string;
+  context: Context;
+  report_id: string;
+  documents: Document[];
+  nodes: Record<string, Node>;
+  checks: Node[];
+  issues: {
+    id: string;
+    type: string;
+    title: string;
+    document_id: string;
+    document_name: string;
+    included: boolean;
+  }[];
+  audit: AuditEvent[];
+  summary: {
+    counts: Partial<Record<Status, number>>;
+    target_counts: Partial<Record<Status, number>>;
+    numeric_counts?: Partial<Record<Status, number>>;
+    scope_issues?: string[];
+    context_complete?: boolean;
+    findings?: string[];
+    check_count: number;
+    source_count: number;
+    included_count: number;
+    total_reported: string | null;
+    total_expected: string | null;
+    total_delta: string | null;
+    conclusion: string;
+  };
+};
+export type CaseSummary = {
+  reports?: { id: string; name: string; format: string }[];
+  sources?: { id: string; name: string; format: string }[];
+  id: string;
+  name: string;
+  created_at: string;
+  revision: number;
+};
+export type Job = {
+  id: string;
+  status: string;
+  progress: number;
+  current_file?: string;
+  error?: string;
+  case_id: string;
+};
+export type ChangeRequest = {
+  kind: string;
+  target: string;
+  values: Record<string, unknown>;
+  reason: string;
+  reset?: boolean;
+};

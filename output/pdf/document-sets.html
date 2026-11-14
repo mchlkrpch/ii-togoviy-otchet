@@ -1,0 +1,4998 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>История документов · S01–S16</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font:13px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172333;background:#eef2f7;height:100vh;overflow:hidden}button,input{font:inherit}button,a{cursor:pointer}button{background:#fff;border:1px solid #d4deea;border-radius:7px;color:inherit;padding:7px 10px}button:hover{background:#edf4ff}a{color:#2563eb;text-decoration:none}header{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;background:#fff;border-bottom:1px solid #d8e0ea}header strong{font-size:17px}#summary{color:#64748b}.layout{display:grid;grid-template-columns:300px 1fr;height:calc(100vh - 60px)}aside{background:#fff;border-right:1px solid #d8e0ea;overflow:auto;padding:18px 12px}h1{font-size:18px;margin:0 4px 12px}.hint{color:#7a8799;font-size:11px;line-height:1.6;margin:10px 4px}#search{padding:10px;width:100%;border:1px solid #d8e0ea;border-radius:7px;margin-bottom:12px}.set{display:block;width:100%;text-align:left;border-color:transparent;border-radius:8px;margin:3px 0;padding:10px;line-height:1.45}.set.selected{background:#eaf1ff;border-color:#b9cff7}.set b{font-variant-numeric:tabular-nums;color:#2563eb}.set small{display:block;color:#64748b;font-size:10px;margin-top:5px}.status{display:inline-block;font-size:10px;border-radius:4px;padding:3px 5px;background:#e5f4ec;color:#166b53}.status.review{background:#fff1d6;color:#945e00}.status.numeric{background:#eaf0ff;color:#315ba1}main{display:flex;min-width:0;min-height:0;flex-direction:column}.case{padding:14px 18px;background:#f9fbfd;border-bottom:1px solid #d8e0ea}.title{display:flex;align-items:center;gap:12px}.title h2{font-size:17px;margin:0;flex:1}.formula{font:14px ui-monospace,monospace;background:#eef2f7;border-radius:6px;padding:9px 12px;margin:10px 0}.refs{display:flex;gap:6px;overflow-x:auto;padding-bottom:3px}.ref{flex-shrink:0;font-size:11px;text-align:left;max-width:240px}.ref.active{background:#dceaff;border-color:#93b5ec}.ref span{display:block;color:#64748b;font-size:10px;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bar{display:flex;justify-content:space-between;align-items:center;margin:10px 0 0;gap:15px;font-size:11px;color:#64748b}.note{margin-top:8px;font-size:11px;color:#946000;line-height:1.5}iframe{border:0;width:100%;flex:1;min-height:0;background:#e9eef3}.file-info{display:flex;gap:10px;align-items:center;min-width:0}#fileName{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#verification{margin-bottom:6px;font-size:12px}details{font-size:11px;margin:8px 0;color:#64748b}pre{max-height:130px;overflow:auto;white-space:pre-wrap}.empty{padding:20px;color:#64748b}@media(max-width:900px){.layout{grid-template-columns:235px 1fr}#summary{font-size:11px}.case{padding:10px}header{padding:0 12px}}
+</style></head><body>
+<header><strong>▦ История просмотра документов</strong><span id="summary"></span></header><div class="layout"><aside><h1>Наборы документов</h1><input id="search" type="search" placeholder="S01, ИИ, расходы…" aria-label="Поиск набора"><div id="sets"></div><p class="hint">Все наборы прочитаны пакетным скриптом. Метка «Просмотрен» появляется после загрузки файла в этом окне и сохраняется в браузере.</p><a href="document-sets.manifest.json" target="_blank">Полный отчёт проверки JSON ↗</a></aside>
+<main><section class="case"><div class="title"><button id="previous" aria-label="Предыдущий набор">←</button><h2 id="title"></h2><button id="next" aria-label="Следующий набор">→</button></div><div id="formula" class="formula"></div><div id="verification"></div><div id="refs" class="refs"></div><div id="note" class="note"></div><details><summary>Как найдены исходные поля</summary><pre id="evidence"></pre></details><div class="bar"><div class="file-info"><span id="fileName"></span><a id="original" target="_blank">Исходный PDF ↗</a><a id="structure" target="_blank">Структура JSON ↗</a></div><span id="loading"></span></div></section><iframe id="viewer" title="PDF и иерархия выбранного документа"></iframe></main></div>
+<script id="sets-data" type="application/json">{
+  "schema_version": "document-sets/1",
+  "sets": [
+    {
+      "id": "S01",
+      "title": "Поддержка лаборатории исторической генетики",
+      "folder": "S01_2024_Лаборатория_исторической_генетики",
+      "formula": "=(763+2237+1500+1500+2500)/1000",
+      "expected": "8.5",
+      "calculated": "8.5",
+      "status": "verified_values",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "annual_2024_part1",
+            "страница_PDF": 15,
+            "строка_или_показатель": "Направлено на поддержку научных исследований лаборатории в 2024 году",
+            "столбец_или_блок": "ЦК №2",
+            "значение": "8.5",
+            "единица": "млн руб."
+          },
+          "method": "unique_value_on_declared_page",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p15.n3",
+              "value": "8.5",
+              "raw": "8,5",
+              "source": {
+                "page": 15,
+                "bbox": [
+                  66.15629577636719,
+                  54.999595642089844,
+                  99.7322998046875,
+                  83.84759521484375
+                ]
+              },
+              "row_path": [
+                "8,5 МЛН"
+              ],
+              "column_path": []
+            }
+          ],
+          "status": "matched",
+          "source_value": "8.5",
+          "actual": "8.5",
+          "fact_id": "p15.n3",
+          "bbox": [
+            66.15629577636719,
+            54.999595642089844,
+            99.7322998046875,
+            83.84759521484375
+          ],
+          "url": "sets/annual_2024_part1.viewer.html#page=15&focus=p15.n3"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Лаборатория исторической генетики: 4 квартал, первая строка",
+            "столбец_или_блок": "Сумма по распределению, тыс. руб.; раздел ЦК №2",
+            "значение": "763",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section / explicit_occurrence",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r26c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№2 Лаборатория Исторической генетики",
+                "Лаборатория Исторической генетики, радиоуглеродного анализа и прикладной физики за 4 квартал"
+              ],
+              "row_hierarchy": [
+                "ЦК№2 Лаборатория Исторической генетики",
+                "Лаборатория Исторической генетики, радиоуглеродного анализа и прикладной физики за 4 квартал"
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "763",
+              "value_type": "decimal",
+              "raw": "763",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r26c2",
+                "bbox": [
+                  248.39,
+                  276.11,
+                  292.32,
+                  288.83
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r26c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "763",
+          "actual": "763",
+          "fact_id": "p3.t1/r26c2",
+          "bbox": [
+            248.39,
+            276.11,
+            292.32,
+            288.83
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr26c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Лаборатория исторической генетики: 4 квартал, вторая строка",
+            "столбец_или_блок": "Сумма по распределению, тыс. руб.; раздел ЦК №2",
+            "значение": "2237",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section / explicit_occurrence",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r27c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№2 Лаборатория Исторической генетики",
+                "Лаборатория Исторической генетики, радиоуглеродного анализа и прикладной физики за 4 квартал"
+              ],
+              "row_hierarchy": [
+                "ЦК№2 Лаборатория Исторической генетики",
+                "Лаборатория Исторической генетики, радиоуглеродного анализа и прикладной физики за 4 квартал"
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "2237",
+              "value_type": "decimal",
+              "raw": "2 237",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r27c2",
+                "bbox": [
+                  248.39,
+                  288.83,
+                  292.32,
+                  301.55
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r27c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "2237",
+          "actual": "2237",
+          "fact_id": "p3.t1/r27c2",
+          "bbox": [
+            248.39,
+            288.83,
+            292.32,
+            301.55
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr27c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Лаборатория исторической генетики: 1 квартал",
+            "столбец_или_блок": "Сумма по распределению, тыс. руб.; раздел ЦК №2",
+            "значение": "1500",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r28c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№2 Лаборатория Исторической генетики",
+                "Лаборатория Исторической генетики, радиоуглеродного анализа и прикладной физики за 1 квартал"
+              ],
+              "row_hierarchy": [
+                "ЦК№2 Лаборатория Исторической генетики",
+                "Лаборатория Исторической генетики, радиоуглеродного анализа и прикладной физики за 1 квартал"
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "1500",
+              "value_type": "decimal",
+              "raw": "1 500",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r28c2",
+                "bbox": [
+                  248.39,
+                  301.55,
+                  292.32,
+                  314.27
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r28c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "1500",
+          "actual": "1500",
+          "fact_id": "p3.t1/r28c2",
+          "bbox": [
+            248.39,
+            301.55,
+            292.32,
+            314.27
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr28c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Лаборатория исторической генетики: 2 квартал",
+            "столбец_или_блок": "Сумма по распределению, тыс. руб.; раздел ЦК №2",
+            "значение": "1500",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r29c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№2 Лаборатория Исторической генетики",
+                "Лаборатория Исторической генетики, радиоуглеродного анализа и прикладной физики за 2 квартал"
+              ],
+              "row_hierarchy": [
+                "ЦК№2 Лаборатория Исторической генетики",
+                "Лаборатория Исторической генетики, радиоуглеродного анализа и прикладной физики за 2 квартал"
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "1500",
+              "value_type": "decimal",
+              "raw": "1 500",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r29c2",
+                "bbox": [
+                  248.39,
+                  314.27,
+                  292.32,
+                  326.99
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r29c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "1500",
+          "actual": "1500",
+          "fact_id": "p3.t1/r29c2",
+          "bbox": [
+            248.39,
+            314.27,
+            292.32,
+            326.99
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr29c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Лаборатория исторической генетики: 3 квартал",
+            "столбец_или_блок": "Сумма по распределению, тыс. руб.; раздел ЦК №2",
+            "значение": "2500",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r30c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№2 Лаборатория Исторической генетики",
+                "Лаборатория Исторической генетики, радиоуглеродного анализа и прикладной физики за 3 квартал"
+              ],
+              "row_hierarchy": [
+                "ЦК№2 Лаборатория Исторической генетики",
+                "Лаборатория Исторической генетики, радиоуглеродного анализа и прикладной физики за 3 квартал"
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "2500",
+              "value_type": "decimal",
+              "raw": "2 500",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r30c2",
+                "bbox": [
+                  248.39,
+                  326.99,
+                  292.32,
+                  339.73
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r30c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "2500",
+          "actual": "2500",
+          "fact_id": "p3.t1/r30c2",
+          "bbox": [
+            248.39,
+            326.99,
+            292.32,
+            339.73
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr30c2"
+        }
+      ],
+      "note": "В источнике две отдельные строки подписаны «за 4 квартал»; они различаются порядком и суммами 763 и 2237. Обе учтены.",
+      "documents": [
+        "annual_2024_part1",
+        "finance_2024"
+      ]
+    },
+    {
+      "id": "S02",
+      "title": "Поддержка проектов ИИ и машинного обучения",
+      "folder": "S02_2024_Проекты_ИИ",
+      "formula": "=(5000+1200)/1000",
+      "expected": "6.2",
+      "calculated": "6.2",
+      "status": "verified_values",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "annual_2024_part1",
+            "страница_PDF": 19,
+            "строка_или_показатель": "Направлено на поддержку исследовательских проектов в 2024 году",
+            "столбец_или_блок": "ЦК №5",
+            "значение": "6.2",
+            "единица": "млн руб."
+          },
+          "method": "unique_value_on_declared_page",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p19.n7",
+              "value": "6.2",
+              "raw": "6,2",
+              "source": {
+                "page": 19,
+                "bbox": [
+                  65.65625,
+                  56.999595642089844,
+                  99.23224639892578,
+                  85.84759521484375
+                ]
+              },
+              "row_path": [
+                "6,2 млн"
+              ],
+              "column_path": []
+            }
+          ],
+          "status": "matched",
+          "source_value": "6.2",
+          "actual": "6.2",
+          "fact_id": "p19.n7",
+          "bbox": [
+            65.65625,
+            56.999595642089844,
+            99.23224639892578,
+            85.84759521484375
+          ],
+          "url": "sets/annual_2024_part1.viewer.html#page=19&focus=p19.n7"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Разработка оптимизатора для решения смешанно-целочисленных линейных программ",
+            "столбец_или_блок": "ЦК №5; сумма по распределению",
+            "значение": "5000",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r34c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№5 Искуственного интелекта и машинного обучения",
+                "Разработка оптимизатора для решения смешанно-целочисленных линейных программ"
+              ],
+              "row_hierarchy": [
+                "ЦК№5 Искуственного интелекта и машинного обучения",
+                "Разработка оптимизатора для решения смешанно-целочисленных линейных программ"
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "5000",
+              "value_type": "decimal",
+              "raw": "5 000",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r34c2",
+                "bbox": [
+                  248.39,
+                  359.05,
+                  292.32,
+                  371.77
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r34c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "5000",
+          "actual": "5000",
+          "fact_id": "p3.t1/r34c2",
+          "bbox": [
+            248.39,
+            359.05,
+            292.32,
+            371.77
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr34c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Стипендиальная программа поддержки студентов и аспирантов ФПМИ в области численных методов оптимизации",
+            "столбец_или_блок": "ЦК №5; сумма по распределению",
+            "значение": "1200",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r35c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№5 Искуственного интелекта и машинного обучения",
+                "Стипендиальная программа поддержки студентов и аспирантов ФПМИ, осуществляющих научно-исследовательскую деятельность в области численных методов оптимизации"
+              ],
+              "row_hierarchy": [
+                "ЦК№5 Искуственного интелекта и машинного обучения",
+                "Стипендиальная программа поддержки студентов и аспирантов ФПМИ, осуществляющих научно-исследовательскую деятельность в области численных методов оптимизации"
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "1200",
+              "value_type": "decimal",
+              "raw": "1 200",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r35c2",
+                "bbox": [
+                  248.39,
+                  371.77,
+                  292.32,
+                  390.85
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r35c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "1200",
+          "actual": "1200",
+          "fact_id": "p3.t1/r35c2",
+          "bbox": [
+            248.39,
+            371.77,
+            292.32,
+            390.85
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr35c2"
+        }
+      ],
+      "note": "",
+      "documents": [
+        "annual_2024_part1",
+        "finance_2024"
+      ]
+    },
+    {
+      "id": "S03",
+      "title": "Поддержка инициатив ФПМИ",
+      "folder": "S03_2024_Программы_ФПМИ",
+      "formula": "=ROUND((528+375+1085+347+308+575)/1000,1)",
+      "expected": "3.2",
+      "calculated": "3.2",
+      "status": "verified_values",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "annual_2024_part1",
+            "страница_PDF": 20,
+            "строка_или_показатель": "Направлено на поддержку инициатив по развитию математики и информатики в 2024 году",
+            "столбец_или_блок": "ЦК №6",
+            "значение": "3.2",
+            "единица": "млн руб."
+          },
+          "method": "unique_value_on_declared_page",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p20.n6",
+              "value": "3.2",
+              "raw": "3,2",
+              "source": {
+                "page": 20,
+                "bbox": [
+                  66.15625,
+                  56.999595642089844,
+                  99.73224639892578,
+                  85.84759521484375
+                ]
+              },
+              "row_path": [
+                "3,2 млн"
+              ],
+              "column_path": []
+            }
+          ],
+          "status": "matched",
+          "source_value": "3.2",
+          "actual": "3.2",
+          "fact_id": "p20.n6",
+          "bbox": [
+            66.15625,
+            56.999595642089844,
+            99.73224639892578,
+            85.84759521484375
+          ],
+          "url": "sets/annual_2024_part1.viewer.html#page=20&focus=p20.n6"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Гранты для абитуриентов ФПМИ",
+            "столбец_или_блок": "ЦК №6; сумма по распределению",
+            "значение": "528",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r37c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№6 ФПМИ",
+                "Гранты для абитуриентов ФПМИ"
+              ],
+              "row_hierarchy": [
+                "ЦК№6 ФПМИ",
+                "Гранты для абитуриентов ФПМИ"
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "528",
+              "value_type": "decimal",
+              "raw": "528",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r37c2",
+                "bbox": [
+                  248.39,
+                  395.17,
+                  292.32,
+                  401.53
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r37c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "528",
+          "actual": "528",
+          "fact_id": "p3.t1/r37c2",
+          "bbox": [
+            248.39,
+            395.17,
+            292.32,
+            401.53
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr37c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Стипендии «Наставник будущих Физтехов»",
+            "столбец_или_блок": "ЦК №6; сумма по распределению",
+            "значение": "375",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r38c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№6 ФПМИ",
+                "Стипендии \"Наставник будущих Физтехов\""
+              ],
+              "row_hierarchy": [
+                "ЦК№6 ФПМИ",
+                "Стипендии \"Наставник будущих Физтехов\""
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "375",
+              "value_type": "decimal",
+              "raw": "375",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r38c2",
+                "bbox": [
+                  248.39,
+                  401.53,
+                  292.32,
+                  407.89
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r38c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "375",
+          "actual": "375",
+          "fact_id": "p3.t1/r38c2",
+          "bbox": [
+            248.39,
+            401.53,
+            292.32,
+            407.89
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr38c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "На развитие студенческих талантов ФПМИ",
+            "столбец_или_блок": "ЦК №6; сумма по распределению",
+            "значение": "1085",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r39c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№6 ФПМИ",
+                "На развитие студенческих талантов ФПМИ"
+              ],
+              "row_hierarchy": [
+                "ЦК№6 ФПМИ",
+                "На развитие студенческих талантов ФПМИ"
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "1085",
+              "value_type": "decimal",
+              "raw": "1 085",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r39c2",
+                "bbox": [
+                  248.39,
+                  407.89,
+                  292.32,
+                  414.25
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r39c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "1085",
+          "actual": "1085",
+          "fact_id": "p3.t1/r39c2",
+          "bbox": [
+            248.39,
+            407.89,
+            292.32,
+            414.25
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr39c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Поездка на олимпиаду по программированию ICPC-ФПМИ",
+            "столбец_или_блок": "ЦК №6; сумма по распределению",
+            "значение": "347",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r40c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№6 ФПМИ",
+                "Поездка на олимпиаду по программированию ICPC-ФПМИ"
+              ],
+              "row_hierarchy": [
+                "ЦК№6 ФПМИ",
+                "Поездка на олимпиаду по программированию ICPC-ФПМИ"
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "347",
+              "value_type": "decimal",
+              "raw": "347",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r40c2",
+                "bbox": [
+                  248.39,
+                  414.25,
+                  292.32,
+                  420.61
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r40c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "347",
+          "actual": "347",
+          "fact_id": "p3.t1/r40c2",
+          "bbox": [
+            248.39,
+            414.25,
+            292.32,
+            420.61
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr40c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "«День математики»",
+            "столбец_или_блок": "ЦК №6; сумма по распределению",
+            "значение": "308",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r41c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№6 ФПМИ",
+                "\"День математики\""
+              ],
+              "row_hierarchy": [
+                "ЦК№6 ФПМИ",
+                "\"День математики\""
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "308",
+              "value_type": "decimal",
+              "raw": "308",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r41c2",
+                "bbox": [
+                  248.39,
+                  420.61,
+                  292.32,
+                  426.97
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r41c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "308",
+          "actual": "308",
+          "fact_id": "p3.t1/r41c2",
+          "bbox": [
+            248.39,
+            420.61,
+            292.32,
+            426.97
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr41c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Стипендии первокурсникам-грантовикам",
+            "столбец_или_блок": "ЦК №6; сумма по распределению",
+            "значение": "575",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r42c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№6 ФПМИ",
+                "Стипендии первокурсникам-грантовикам"
+              ],
+              "row_hierarchy": [
+                "ЦК№6 ФПМИ",
+                "Стипендии первокурсникам-грантовикам"
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "575",
+              "value_type": "decimal",
+              "raw": "575",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r42c2",
+                "bbox": [
+                  248.39,
+                  426.97,
+                  292.32,
+                  433.33
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r42c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "575",
+          "actual": "575",
+          "fact_id": "p3.t1/r42c2",
+          "bbox": [
+            248.39,
+            426.97,
+            292.32,
+            433.33
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr42c2"
+        }
+      ],
+      "note": "Детальная сумма 3218 тыс. руб. = 3.218 млн руб.; опубликованный итог округлен до десятых миллиона.",
+      "documents": [
+        "annual_2024_part1",
+        "finance_2024"
+      ]
+    },
+    {
+      "id": "S04",
+      "title": "План поддержки проектов ИИ",
+      "folder": "S04_2025_План_проектов_ИИ",
+      "formula": "=(5000+1500+1000)/1000",
+      "expected": "7.5",
+      "calculated": "7.5",
+      "status": "verified_values",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "annual_2024_part1",
+            "страница_PDF": 19,
+            "строка_или_показатель": "Средства к распределению: планы на 2025 год",
+            "столбец_или_блок": "ЦК №5",
+            "значение": "7.5",
+            "единица": "млн руб."
+          },
+          "method": "unique_value_on_declared_page",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p19.n19",
+              "value": "7.5",
+              "raw": "7,5",
+              "source": {
+                "page": 19,
+                "bbox": [
+                  320.30523681640625,
+                  682.3325805664062,
+                  350.17041015625,
+                  707.9959106445312
+                ]
+              },
+              "row_path": [
+                "7,5 млн руб."
+              ],
+              "column_path": []
+            }
+          ],
+          "status": "matched",
+          "source_value": "7.5",
+          "actual": "7.5",
+          "fact_id": "p19.n19",
+          "bbox": [
+            320.30523681640625,
+            682.3325805664062,
+            350.17041015625,
+            707.9959106445312
+          ],
+          "url": "sets/annual_2024_part1.viewer.html#page=19&focus=p19.n19"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 4,
+            "строка_или_показатель": "Разработка оптимизатора для решения смешанно-целочисленных линейных программ",
+            "столбец_или_блок": "План поддержанных проектов на 2025 год; ЦК №5; сумма распределения",
+            "значение": "5000",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p4.t1/r16c2",
+              "field_key": "/сумма распределения, тыс.руб.",
+              "metric": "сумма распределения, тыс.руб.",
+              "metric_key": "сумма распределения тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№5 Искуственного интелекта и машинного обучения",
+                "Разработка оптимизатора для решения смешанно-целочисленных линейных программ"
+              ],
+              "row_hierarchy": [
+                "ЦК№5 Искуственного интелекта и машинного обучения",
+                "Разработка оптимизатора для решения смешанно-целочисленных линейных программ"
+              ],
+              "column_path": [
+                "сумма распределения, тыс.руб."
+              ],
+              "value": "5000",
+              "value_type": "decimal",
+              "raw": "5 000",
+              "needs_review": false,
+              "source": {
+                "page": 4,
+                "table_id": "p4.t1",
+                "cell_id": "r16c2",
+                "bbox": [
+                  379.31,
+                  237.33,
+                  494.31,
+                  247.25
+                ],
+                "column_header_cell_ids": [
+                  "r1c2"
+                ],
+                "row_header_cell_ids": [
+                  "r16c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "5000",
+          "actual": "5000",
+          "fact_id": "p4.t1/r16c2",
+          "bbox": [
+            379.31,
+            237.33,
+            494.31,
+            247.25
+          ],
+          "url": "sets/finance_2024.viewer.html#page=4&focus=p4.t1%2Fr16c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 4,
+            "строка_или_показатель": "Стипендиальная программа поддержки студентов и аспирантов ФПМИ в области численных методов оптимизации",
+            "столбец_или_блок": "План поддержанных проектов на 2025 год; ЦК №5; сумма распределения",
+            "значение": "1500",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p4.t1/r17c2",
+              "field_key": "/сумма распределения, тыс.руб.",
+              "metric": "сумма распределения, тыс.руб.",
+              "metric_key": "сумма распределения тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№5 Искуственного интелекта и машинного обучения",
+                "Стипендиальная программа поддержки студентов и аспирантов ФПМИ, осуществляющих научно- исследовательскую деятельность в области численных методов оптимизации"
+              ],
+              "row_hierarchy": [
+                "ЦК№5 Искуственного интелекта и машинного обучения",
+                "Стипендиальная программа поддержки студентов и аспирантов ФПМИ, осуществляющих научно- исследовательскую деятельность в области численных методов оптимизации"
+              ],
+              "column_path": [
+                "сумма распределения, тыс.руб."
+              ],
+              "value": "1500",
+              "value_type": "decimal",
+              "raw": "1 500",
+              "needs_review": false,
+              "source": {
+                "page": 4,
+                "table_id": "p4.t1",
+                "cell_id": "r17c2",
+                "bbox": [
+                  379.31,
+                  247.25,
+                  494.31,
+                  269.21
+                ],
+                "column_header_cell_ids": [
+                  "r1c2"
+                ],
+                "row_header_cell_ids": [
+                  "r17c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "1500",
+          "actual": "1500",
+          "fact_id": "p4.t1/r17c2",
+          "bbox": [
+            379.31,
+            247.25,
+            494.31,
+            269.21
+          ],
+          "url": "sets/finance_2024.viewer.html#page=4&focus=p4.t1%2Fr17c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 4,
+            "строка_или_показатель": "Научно-образовательные практики",
+            "столбец_или_блок": "План поддержанных проектов на 2025 год; ЦК №5; сумма распределения",
+            "значение": "1000",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p4.t1/r18c2",
+              "field_key": "/сумма распределения, тыс.руб.",
+              "metric": "сумма распределения, тыс.руб.",
+              "metric_key": "сумма распределения тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№5 Искуственного интелекта и машинного обучения",
+                "Научно-образовательные практики"
+              ],
+              "row_hierarchy": [
+                "ЦК№5 Искуственного интелекта и машинного обучения",
+                "Научно-образовательные практики"
+              ],
+              "column_path": [
+                "сумма распределения, тыс.руб."
+              ],
+              "value": "1000",
+              "value_type": "decimal",
+              "raw": "1 000",
+              "needs_review": false,
+              "source": {
+                "page": 4,
+                "table_id": "p4.t1",
+                "cell_id": "r18c2",
+                "bbox": [
+                  379.31,
+                  269.21,
+                  494.31,
+                  279.21
+                ],
+                "column_header_cell_ids": [
+                  "r1c2"
+                ],
+                "row_header_cell_ids": [
+                  "r18c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "1000",
+          "actual": "1000",
+          "fact_id": "p4.t1/r18c2",
+          "bbox": [
+            379.31,
+            269.21,
+            494.31,
+            279.21
+          ],
+          "url": "sets/finance_2024.viewer.html#page=4&focus=p4.t1%2Fr18c2"
+        }
+      ],
+      "note": "Это план на 2025 год, не фактические расходы. Описания проектов в годовом отчете и финансовом плане различаются; сопоставлены раздел ЦК №5, период и три суммы.",
+      "documents": [
+        "annual_2024_part1",
+        "finance_2024"
+      ]
+    },
+    {
+      "id": "S05",
+      "title": "План программ ФПМИ",
+      "folder": "S05_2025_План_программ_ФПМИ",
+      "formula": "=ROUND((1500+1500+620)/1000,1)",
+      "expected": "3.6",
+      "calculated": "3.6",
+      "status": "verified_values",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "annual_2024_part1",
+            "страница_PDF": 21,
+            "строка_или_показатель": "Средства на программы: планы на 2025 год",
+            "столбец_или_блок": "ЦК №6",
+            "значение": "3.6",
+            "единица": "млн руб."
+          },
+          "method": "unique_value_on_declared_page",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p21.n8",
+              "value": "3.6",
+              "raw": "3,6",
+              "source": {
+                "page": 21,
+                "bbox": [
+                  285.94921875,
+                  652.9996948242188,
+                  319.5205383300781,
+                  681.8477172851562
+                ]
+              },
+              "row_path": [
+                "3,6 млн руб."
+              ],
+              "column_path": []
+            }
+          ],
+          "status": "matched",
+          "source_value": "3.6",
+          "actual": "3.6",
+          "fact_id": "p21.n8",
+          "bbox": [
+            285.94921875,
+            652.9996948242188,
+            319.5205383300781,
+            681.8477172851562
+          ],
+          "url": "sets/annual_2024_part1.viewer.html#page=21&focus=p21.n8"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 4,
+            "строка_или_показатель": "Стипендии «Наставник будущих Физтехов»",
+            "столбец_или_блок": "План поддержанных проектов на 2025 год; ЦК №6; сумма распределения",
+            "значение": "1500",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p4.t1/r20c2",
+              "field_key": "/сумма распределения, тыс.руб.",
+              "metric": "сумма распределения, тыс.руб.",
+              "metric_key": "сумма распределения тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№6 ФПМИ",
+                "Стипендии \"Наставник будущих Физтехов\""
+              ],
+              "row_hierarchy": [
+                "ЦК№6 ФПМИ",
+                "Стипендии \"Наставник будущих Физтехов\""
+              ],
+              "column_path": [
+                "сумма распределения, тыс.руб."
+              ],
+              "value": "1500",
+              "value_type": "decimal",
+              "raw": "1 500",
+              "needs_review": false,
+              "source": {
+                "page": 4,
+                "table_id": "p4.t1",
+                "cell_id": "r20c2",
+                "bbox": [
+                  379.31,
+                  288.81,
+                  494.31,
+                  298.37
+                ],
+                "column_header_cell_ids": [
+                  "r1c2"
+                ],
+                "row_header_cell_ids": [
+                  "r20c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "1500",
+          "actual": "1500",
+          "fact_id": "p4.t1/r20c2",
+          "bbox": [
+            379.31,
+            288.81,
+            494.31,
+            298.37
+          ],
+          "url": "sets/finance_2024.viewer.html#page=4&focus=p4.t1%2Fr20c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 4,
+            "строка_или_показатель": "Развитие спортивного программирования и математики",
+            "столбец_или_блок": "План поддержанных проектов на 2025 год; ЦК №6; сумма распределения",
+            "значение": "1500",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p4.t1/r21c2",
+              "field_key": "/сумма распределения, тыс.руб.",
+              "metric": "сумма распределения, тыс.руб.",
+              "metric_key": "сумма распределения тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№6 ФПМИ",
+                "Развитие спортивного программирования и математики"
+              ],
+              "row_hierarchy": [
+                "ЦК№6 ФПМИ",
+                "Развитие спортивного программирования и математики"
+              ],
+              "column_path": [
+                "сумма распределения, тыс.руб."
+              ],
+              "value": "1500",
+              "value_type": "decimal",
+              "raw": "1 500",
+              "needs_review": false,
+              "source": {
+                "page": 4,
+                "table_id": "p4.t1",
+                "cell_id": "r21c2",
+                "bbox": [
+                  379.31,
+                  298.37,
+                  494.31,
+                  307.97
+                ],
+                "column_header_cell_ids": [
+                  "r1c2"
+                ],
+                "row_header_cell_ids": [
+                  "r21c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "1500",
+          "actual": "1500",
+          "fact_id": "p4.t1/r21c2",
+          "bbox": [
+            379.31,
+            298.37,
+            494.31,
+            307.97
+          ],
+          "url": "sets/finance_2024.viewer.html#page=4&focus=p4.t1%2Fr21c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 4,
+            "строка_или_показатель": "Научная мобильность",
+            "столбец_или_блок": "План поддержанных проектов на 2025 год; ЦК №6; сумма распределения",
+            "значение": "620",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p4.t1/r22c2",
+              "field_key": "/сумма распределения, тыс.руб.",
+              "metric": "сумма распределения, тыс.руб.",
+              "metric_key": "сумма распределения тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№6 ФПМИ",
+                "Научная мобильность"
+              ],
+              "row_hierarchy": [
+                "ЦК№6 ФПМИ",
+                "Научная мобильность"
+              ],
+              "column_path": [
+                "сумма распределения, тыс.руб."
+              ],
+              "value": "620",
+              "value_type": "decimal",
+              "raw": "620",
+              "needs_review": false,
+              "source": {
+                "page": 4,
+                "table_id": "p4.t1",
+                "cell_id": "r22c2",
+                "bbox": [
+                  379.31,
+                  307.97,
+                  494.31,
+                  317.61
+                ],
+                "column_header_cell_ids": [
+                  "r1c2"
+                ],
+                "row_header_cell_ids": [
+                  "r22c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "620",
+          "actual": "620",
+          "fact_id": "p4.t1/r22c2",
+          "bbox": [
+            379.31,
+            307.97,
+            494.31,
+            317.61
+          ],
+          "url": "sets/finance_2024.viewer.html#page=4&focus=p4.t1%2Fr22c2"
+        }
+      ],
+      "note": "План на 2025 год. Детальная сумма 3.620 млн руб. округлена до 3.6 млн руб.",
+      "documents": [
+        "annual_2024_part1",
+        "finance_2024"
+      ]
+    },
+    {
+      "id": "S06",
+      "title": "Поддержка MIPTHEALTH",
+      "folder": "S06_2024_MIPTHEALTH",
+      "formula": "=ROUND((92+150)/1000,1)",
+      "expected": "0.2",
+      "calculated": "0.2",
+      "status": "verified_values",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "annual_2024_part2",
+            "страница_PDF": 9,
+            "строка_или_показатель": "Направлено на практический курс и программу здорового образа жизни в 2024 году",
+            "столбец_или_блок": "ЦК №12; печатная страница 30",
+            "значение": "0.2",
+            "единица": "млн руб."
+          },
+          "method": "unique_value_on_declared_page",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p9.n5",
+              "value": "0.2",
+              "raw": "0,2",
+              "source": {
+                "page": 9,
+                "bbox": [
+                  62.1348991394043,
+                  55.89447784423828,
+                  98.65621948242188,
+                  87.22084045410156
+                ]
+              },
+              "row_path": [
+                "0,2 МЛН"
+              ],
+              "column_path": []
+            }
+          ],
+          "status": "matched",
+          "source_value": "0.2",
+          "actual": "0.2",
+          "fact_id": "p9.n5",
+          "bbox": [
+            62.1348991394043,
+            55.89447784423828,
+            98.65621948242188,
+            87.22084045410156
+          ],
+          "url": "sets/annual_2024_part2.viewer.html#page=9&focus=p9.n5"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Практический курс «Первая медицинская помощь»",
+            "столбец_или_блок": "ЦК №12; сумма по распределению",
+            "значение": "92",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r54c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№12 MIPTHEALTH",
+                "Практический курс \"Первая медицинская помощь\""
+              ],
+              "row_hierarchy": [
+                "ЦК№12 MIPTHEALTH",
+                "Практический курс \"Первая медицинская помощь\""
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "92",
+              "value_type": "decimal",
+              "raw": "92",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r54c2",
+                "bbox": [
+                  248.39,
+                  501.76,
+                  292.32,
+                  508.12
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r54c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "92",
+          "actual": "92",
+          "fact_id": "p3.t1/r54c2",
+          "bbox": [
+            248.39,
+            501.76,
+            292.32,
+            508.12
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr54c2"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 3,
+            "строка_или_показатель": "Проект «Философия и культура здорового образа жизни»",
+            "столбец_или_блок": "ЦК №12; сумма по распределению",
+            "значение": "150",
+            "единица": "тыс. руб."
+          },
+          "method": "row_label_and_section",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p3.t1/r55c2",
+              "field_key": "/Отчёт о поддержаных проектах в 2024 году/сумма по распределению, тыс.руб.",
+              "metric": "Отчёт о поддержаных проектах в 2024 году",
+              "metric_key": "отчет о поддержаных проектах в 2024 году",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "ЦК№12 MIPTHEALTH",
+                "Проект \"Философия и культура здорового образа жизни\""
+              ],
+              "row_hierarchy": [
+                "ЦК№12 MIPTHEALTH",
+                "Проект \"Философия и культура здорового образа жизни\""
+              ],
+              "column_path": [
+                "Отчёт о поддержаных проектах в 2024 году",
+                "сумма по распределению, тыс.руб."
+              ],
+              "value": "150",
+              "value_type": "decimal",
+              "raw": "150",
+              "needs_review": false,
+              "source": {
+                "page": 3,
+                "table_id": "p3.t1",
+                "cell_id": "r55c2",
+                "bbox": [
+                  248.39,
+                  508.12,
+                  292.32,
+                  514.48
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c1"
+                ],
+                "row_header_cell_ids": [
+                  "r55c1"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "150",
+          "actual": "150",
+          "fact_id": "p3.t1/r55c2",
+          "bbox": [
+            248.39,
+            508.12,
+            292.32,
+            514.48
+          ],
+          "url": "sets/finance_2024.viewer.html#page=3&focus=p3.t1%2Fr55c2"
+        }
+      ],
+      "note": "В части 2 отчета номер страницы PDF 9 соответствует напечатанной странице 30. 242 тыс. руб. округлены до 0.2 млн руб.",
+      "documents": [
+        "annual_2024_part2",
+        "finance_2024"
+      ]
+    },
+    {
+      "id": "S07",
+      "title": "План расходов на сотрудников на 2023 год: перенос между документами",
+      "folder": "S07_2023_План_расходов_на_сотрудников",
+      "formula": "=7116+593+60+10",
+      "expected": "7779",
+      "calculated": "7779.00",
+      "status": "verified",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "finance_2023",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1. Расходы на содержание сотрудников фонда",
+            "столбец_или_блок": "План на 2023 год",
+            "значение": "7779",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r10c3",
+              "field_key": "/План административно-управленческих расходов за 2023-2024 г., тыс. руб./План на 2023 год",
+              "metric": "План административно-управленческих расходов за 2023-2024 г., тыс. руб.",
+              "metric_key": "план административно управленческих расходов за 2023 2024 г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.",
+                "Расходы на содержание сотрудников фонда"
+              ],
+              "row_hierarchy": [
+                "2.1.",
+                "Расходы на содержание сотрудников фонда"
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2023-2024 г., тыс. руб.",
+                "План на 2023 год"
+              ],
+              "value": "7779",
+              "value_type": "decimal",
+              "raw": "7 779",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r10c3",
+                "bbox": [
+                  304.59,
+                  233.61,
+                  388.18,
+                  245.49
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c3"
+                ],
+                "row_header_cell_ids": [
+                  "r10c1",
+                  "r10c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "7779",
+          "actual": "7779",
+          "fact_id": "p5.t1/r10c3",
+          "bbox": [
+            304.59,
+            233.61,
+            388.18,
+            245.49
+          ],
+          "url": "sets/finance_2023.viewer.html#page=5&focus=p5.t1%2Fr10c3"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1.2. Заработная плата с налогами и отчислениями",
+            "столбец_или_блок": "План на 2023 год",
+            "значение": "7116",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r11c5",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./План на 2023 год",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.2.",
+                "Заработная плата сотрудников Фонда c учётом налогов и отчислений в Фонды"
+              ],
+              "row_hierarchy": [
+                "2.1.2.",
+                "Заработная плата сотрудников Фонда c учётом налогов и отчислений в Фонды"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "План на 2023 год"
+              ],
+              "value": "7116.00",
+              "value_type": "decimal",
+              "raw": "7 116,00",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r11c5",
+                "bbox": [
+                  654.28,
+                  237.35,
+                  745.31,
+                  248.15
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c5"
+                ],
+                "row_header_cell_ids": [
+                  "r11c1",
+                  "r11c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "7116.00",
+          "actual": "7116.00",
+          "fact_id": "p5.t1/r11c5",
+          "bbox": [
+            654.28,
+            237.35,
+            745.31,
+            248.15
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr11c5"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1.3. Премиальные выплаты",
+            "столбец_или_блок": "План на 2023 год",
+            "значение": "593",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r12c5",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./План на 2023 год",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.3.",
+                "Премиальные выплаты сотрудникам фонда"
+              ],
+              "row_hierarchy": [
+                "2.1.3.",
+                "Премиальные выплаты сотрудникам фонда"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "План на 2023 год"
+              ],
+              "value": "593.00",
+              "value_type": "decimal",
+              "raw": "593,00",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r12c5",
+                "bbox": [
+                  654.28,
+                  248.15,
+                  745.31,
+                  258.95
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c5"
+                ],
+                "row_header_cell_ids": [
+                  "r12c1",
+                  "r12c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "593.00",
+          "actual": "593.00",
+          "fact_id": "p5.t1/r12c5",
+          "bbox": [
+            654.28,
+            248.15,
+            745.31,
+            258.95
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr12c5"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1.4. Вознаграждения по договорам ГПХ",
+            "столбец_или_блок": "План на 2023 год",
+            "значение": "60",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r13c5",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./План на 2023 год",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.4.",
+                "Расходы по оплате вознаграждения внешних специалистов( с учетом страховых взносов), привлеченных на основании гражданско-правовых договоров для выполнения работ/ оказания услуг"
+              ],
+              "row_hierarchy": [
+                "2.1.4.",
+                "Расходы по оплате вознаграждения внешних специалистов( с учетом страховых взносов), привлеченных на основании гражданско-правовых договоров для выполнения работ/ оказания услуг"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "План на 2023 год"
+              ],
+              "value": "60.00",
+              "value_type": "decimal",
+              "raw": "60,00",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r13c5",
+                "bbox": [
+                  654.28,
+                  258.95,
+                  745.31,
+                  289.69
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c5"
+                ],
+                "row_header_cell_ids": [
+                  "r13c1",
+                  "r13c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "60.00",
+          "actual": "60.00",
+          "fact_id": "p5.t1/r13c5",
+          "bbox": [
+            654.28,
+            258.95,
+            745.31,
+            289.69
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr13c5"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1.7. Налог УСН, пени",
+            "столбец_или_блок": "План на 2023 год",
+            "значение": "10",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r16c5",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./План на 2023 год",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.7.",
+                "Налог УСН. Пени за несвоевременную уплату налогов и взносов."
+              ],
+              "row_hierarchy": [
+                "2.1.7.",
+                "Налог УСН. Пени за несвоевременную уплату налогов и взносов."
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "План на 2023 год"
+              ],
+              "value": "10.00",
+              "value_type": "decimal",
+              "raw": "10,00",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r16c5",
+                "bbox": [
+                  654.28,
+                  311.28,
+                  745.31,
+                  322.06
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c5"
+                ],
+                "row_header_cell_ids": [
+                  "r16c1",
+                  "r16c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "10.00",
+          "actual": "10.00",
+          "fact_id": "p5.t1/r16c5",
+          "bbox": [
+            654.28,
+            311.28,
+            745.31,
+            322.06
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr16c5"
+        }
+      ],
+      "note": "Сопоставлены плановые, а не фактические суммы на 2023 год в финансовых пакетах двух лет.",
+      "documents": [
+        "finance_2023",
+        "finance_2022"
+      ]
+    },
+    {
+      "id": "S08",
+      "title": "Общий план расходов на 2023 год: сверка с детализацией предыдущего пакета",
+      "folder": "S08_2023_Общий_план_расходов",
+      "formula": "=7779+275+140+900",
+      "expected": "9094",
+      "calculated": "9094.00",
+      "status": "verified",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "finance_2023",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2. Расходы",
+            "столбец_или_блок": "План на 2023 год",
+            "значение": "9094",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r9c3",
+              "field_key": "/План административно-управленческих расходов за 2023-2024 г., тыс. руб./План на 2023 год",
+              "metric": "План административно-управленческих расходов за 2023-2024 г., тыс. руб.",
+              "metric_key": "план административно управленческих расходов за 2023 2024 г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2",
+                "Расходы"
+              ],
+              "row_hierarchy": [
+                "2",
+                "Расходы"
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2023-2024 г., тыс. руб.",
+                "План на 2023 год"
+              ],
+              "value": "9094",
+              "value_type": "decimal",
+              "raw": "9 094",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r9c3",
+                "bbox": [
+                  304.59,
+                  221.73,
+                  388.18,
+                  233.61
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c3"
+                ],
+                "row_header_cell_ids": [
+                  "r9c1",
+                  "r9c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "9094",
+          "actual": "9094",
+          "fact_id": "p5.t1/r9c3",
+          "bbox": [
+            304.59,
+            221.73,
+            388.18,
+            233.61
+          ],
+          "url": "sets/finance_2023.viewer.html#page=5&focus=p5.t1%2Fr9c3"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1. Расходы на содержание сотрудников фонда",
+            "столбец_или_блок": "План на 2023 год",
+            "значение": "7779",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r10c5",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./План на 2023 год",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.",
+                "Расходы на содержание сотрудников фонда"
+              ],
+              "row_hierarchy": [
+                "2.1.",
+                "Расходы на содержание сотрудников фонда"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "План на 2023 год"
+              ],
+              "value": "7779.00",
+              "value_type": "decimal",
+              "raw": "7 779,00",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r10c5",
+                "bbox": [
+                  654.28,
+                  226.55,
+                  745.31,
+                  237.35
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c5"
+                ],
+                "row_header_cell_ids": [
+                  "r10c1",
+                  "r10c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "7779.00",
+          "actual": "7779.00",
+          "fact_id": "p5.t1/r10c5",
+          "bbox": [
+            654.28,
+            226.55,
+            745.31,
+            237.35
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr10c5"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.2. Содержание офиса",
+            "столбец_или_блок": "План на 2023 год",
+            "значение": "275",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r17c5",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./План на 2023 год",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.2.",
+                "Содержание офиса"
+              ],
+              "row_hierarchy": [
+                "2.2.",
+                "Содержание офиса"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "План на 2023 год"
+              ],
+              "value": "275.00",
+              "value_type": "decimal",
+              "raw": "275,00",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r17c5",
+                "bbox": [
+                  654.28,
+                  322.06,
+                  745.31,
+                  332.9
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c5"
+                ],
+                "row_header_cell_ids": [
+                  "r17c1",
+                  "r17c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "275.00",
+          "actual": "275.00",
+          "fact_id": "p5.t1/r17c5",
+          "bbox": [
+            654.28,
+            322.06,
+            745.31,
+            332.9
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr17c5"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.4. Услуги контрагентов",
+            "столбец_или_блок": "План на 2023 год",
+            "значение": "140",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r23c5",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./План на 2023 год",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.4.",
+                "Услуги контрагентов (аудит, банк, нотариус)"
+              ],
+              "row_hierarchy": [
+                "2.4.",
+                "Услуги контрагентов (аудит, банк, нотариус)"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "План на 2023 год"
+              ],
+              "value": "140.00",
+              "value_type": "decimal",
+              "raw": "140,00",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r23c5",
+                "bbox": [
+                  654.28,
+                  386.88,
+                  745.31,
+                  397.7
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c5"
+                ],
+                "row_header_cell_ids": [
+                  "r23c1",
+                  "r23c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "140.00",
+          "actual": "140.00",
+          "fact_id": "p5.t1/r23c5",
+          "bbox": [
+            654.28,
+            386.88,
+            745.31,
+            397.7
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr23c5"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.5. Фандрайзинг",
+            "столбец_или_блок": "План на 2023 год",
+            "значение": "900",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r27c5",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./План на 2023 год",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.5.",
+                "Фандрайзинг"
+              ],
+              "row_hierarchy": [
+                "2.5.",
+                "Фандрайзинг"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "План на 2023 год"
+              ],
+              "value": "900.00",
+              "value_type": "decimal",
+              "raw": "900,00",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r27c5",
+                "bbox": [
+                  654.28,
+                  430.07,
+                  745.31,
+                  440.94
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c5"
+                ],
+                "row_header_cell_ids": [
+                  "r27c1",
+                  "r27c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "900.00",
+          "actual": "900.00",
+          "fact_id": "p5.t1/r27c5",
+          "bbox": [
+            654.28,
+            430.07,
+            745.31,
+            440.94
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr27c5"
+        }
+      ],
+      "note": "Общий план совпадает, но структура в более позднем пакете изменена: офис 425 вместо 275, фандрайзинг 750 вместо 900. Это сверка общего плана, а не доказательство неизменности его состава.",
+      "documents": [
+        "finance_2023",
+        "finance_2022"
+      ]
+    },
+    {
+      "id": "S09",
+      "title": "Остаток на начало 2023 года из исполнения за 2022 год",
+      "folder": "S09_2023_Перенос_остатка_из_2022",
+      "formula": "=ROUND(3304.40+4321.57-5389.98,0)",
+      "expected": "2236",
+      "calculated": "2236",
+      "status": "verified",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "finance_2023",
+            "страница_PDF": 5,
+            "строка_или_показатель": "0. Остаток на начало года",
+            "столбец_или_блок": "Исполнение фин. плана 2023 год",
+            "значение": "2236",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r3c4",
+              "field_key": "/План административно-управленческих расходов за 2023-2024 г., тыс. руб./Исполнение фин. плана 2023 год",
+              "metric": "План административно-управленческих расходов за 2023-2024 г., тыс. руб.",
+              "metric_key": "план административно управленческих расходов за 2023 2024 г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "0",
+                "Остаток на начало года"
+              ],
+              "row_hierarchy": [
+                "0",
+                "Остаток на начало года"
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2023-2024 г., тыс. руб.",
+                "Исполнение фин. плана 2023 год"
+              ],
+              "value": "2236",
+              "value_type": "decimal",
+              "raw": "2 236",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r3c4",
+                "bbox": [
+                  388.18,
+                  107.18,
+                  484.81,
+                  119.06
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r3c1",
+                  "r3c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "2236",
+          "actual": "2236",
+          "fact_id": "p5.t1/r3c4",
+          "bbox": [
+            388.18,
+            107.18,
+            484.81,
+            119.06
+          ],
+          "url": "sets/finance_2023.viewer.html#page=5&focus=p5.t1%2Fr3c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "0. Остаток на начало года",
+            "столбец_или_блок": "Исполнение плана на 31.12.2022",
+            "значение": "3304.40",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r3c4",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./Исполнение плана на 31.12.2022",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "0",
+                "Остаток на начало года"
+              ],
+              "row_hierarchy": [
+                "0",
+                "Остаток на начало года"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "Исполнение плана на 31.12.2022"
+              ],
+              "value": "3304.40",
+              "value_type": "decimal",
+              "raw": "3 304,40",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r3c4",
+                "bbox": [
+                  563.29,
+                  154.5,
+                  654.28,
+                  164.72
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r3c1",
+                  "r3c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "3304.40",
+          "actual": "3304.40",
+          "fact_id": "p5.t1/r3c4",
+          "bbox": [
+            563.29,
+            154.5,
+            654.28,
+            164.72
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr3c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "1. Поступления",
+            "столбец_или_блок": "Исполнение плана на 31.12.2022",
+            "значение": "4321.57",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r4c4",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./Исполнение плана на 31.12.2022",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "1",
+                "Поступления"
+              ],
+              "row_hierarchy": [
+                "1",
+                "Поступления"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "Исполнение плана на 31.12.2022"
+              ],
+              "value": "4321.57",
+              "value_type": "decimal",
+              "raw": "4 321,57",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r4c4",
+                "bbox": [
+                  563.29,
+                  164.72,
+                  654.28,
+                  174.92
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r4c1",
+                  "r4c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "4321.57",
+          "actual": "4321.57",
+          "fact_id": "p5.t1/r4c4",
+          "bbox": [
+            563.29,
+            164.72,
+            654.28,
+            174.92
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr4c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2. Расходы",
+            "столбец_или_блок": "Исполнение плана на 31.12.2022",
+            "значение": "5389.98",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r9c4",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./Исполнение плана на 31.12.2022",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2",
+                "Расходы"
+              ],
+              "row_hierarchy": [
+                "2",
+                "Расходы"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "Исполнение плана на 31.12.2022"
+              ],
+              "value": "5389.98",
+              "value_type": "decimal",
+              "raw": "5 389,98",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r9c4",
+                "bbox": [
+                  563.29,
+                  215.75,
+                  654.28,
+                  226.55
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r9c1",
+                  "r9c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "5389.98",
+          "actual": "5389.98",
+          "fact_id": "p5.t1/r9c4",
+          "bbox": [
+            563.29,
+            215.75,
+            654.28,
+            226.55
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr9c4"
+        }
+      ],
+      "note": "Получается остаток 2235.99 тыс. руб., равный строке 3 источника; в пакете следующего года он представлен с округлением до целой тысячи.",
+      "documents": [
+        "finance_2023",
+        "finance_2022"
+      ]
+    },
+    {
+      "id": "S10",
+      "title": "Фактические расходы на сотрудников за 2022 год",
+      "folder": "S10_2022_Расходы_на_сотрудников",
+      "formula": "=4570.41+19.59",
+      "expected": "4590.00",
+      "calculated": "4590.00",
+      "status": "verified",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1. Расходы на содержание сотрудников фонда",
+            "столбец_или_блок": "Исполнение плана на 31.12.2022",
+            "значение": "4590.00",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r10c4",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./Исполнение плана на 31.12.2022",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.",
+                "Расходы на содержание сотрудников фонда"
+              ],
+              "row_hierarchy": [
+                "2.1.",
+                "Расходы на содержание сотрудников фонда"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "Исполнение плана на 31.12.2022"
+              ],
+              "value": "4590.00",
+              "value_type": "decimal",
+              "raw": "4 590,00",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r10c4",
+                "bbox": [
+                  563.29,
+                  226.55,
+                  654.28,
+                  237.35
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r10c1",
+                  "r10c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "4590.00",
+          "actual": "4590.00",
+          "fact_id": "p5.t1/r10c4",
+          "bbox": [
+            563.29,
+            226.55,
+            654.28,
+            237.35
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr10c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1.2. Заработная плата с налогами и отчислениями",
+            "столбец_или_блок": "Исполнение плана на 31.12.2022",
+            "значение": "4570.41",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r11c4",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./Исполнение плана на 31.12.2022",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.2.",
+                "Заработная плата сотрудников Фонда c учётом налогов и отчислений в Фонды"
+              ],
+              "row_hierarchy": [
+                "2.1.2.",
+                "Заработная плата сотрудников Фонда c учётом налогов и отчислений в Фонды"
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "Исполнение плана на 31.12.2022"
+              ],
+              "value": "4570.41",
+              "value_type": "decimal",
+              "raw": "4 570,41",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r11c4",
+                "bbox": [
+                  563.29,
+                  237.35,
+                  654.28,
+                  248.15
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r11c1",
+                  "r11c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "4570.41",
+          "actual": "4570.41",
+          "fact_id": "p5.t1/r11c4",
+          "bbox": [
+            563.29,
+            237.35,
+            654.28,
+            248.15
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr11c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2022",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1.7. Налог УСН, пени",
+            "столбец_или_блок": "Исполнение плана на 31.12.2022",
+            "значение": "19.59",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r16c4",
+              "field_key": "/Административно-управленческие расходы за 2022г., тыс. руб./Исполнение плана на 31.12.2022",
+              "metric": "Административно-управленческие расходы за 2022г., тыс. руб.",
+              "metric_key": "административно управленческие расходы за 2022г тыс руб",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.7.",
+                "Налог УСН. Пени за несвоевременную уплату налогов и взносов."
+              ],
+              "row_hierarchy": [
+                "2.1.7.",
+                "Налог УСН. Пени за несвоевременную уплату налогов и взносов."
+              ],
+              "column_path": [
+                "Административно-управленческие расходы за 2022г., тыс. руб.",
+                "Исполнение плана на 31.12.2022"
+              ],
+              "value": "19.59",
+              "value_type": "decimal",
+              "raw": "19,59",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r16c4",
+                "bbox": [
+                  563.29,
+                  311.28,
+                  654.28,
+                  322.06
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r16c1",
+                  "r16c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "19.59",
+          "actual": "19.59",
+          "fact_id": "p5.t1/r16c4",
+          "bbox": [
+            563.29,
+            311.28,
+            654.28,
+            322.06
+          ],
+          "url": "sets/finance_2022.viewer.html#page=5&focus=p5.t1%2Fr16c4"
+        }
+      ],
+      "note": "Остальные подстроки группы 2.1 в этом столбце равны нулю.",
+      "documents": [
+        "finance_2022"
+      ]
+    },
+    {
+      "id": "S11",
+      "title": "Фактические расходы на сотрудников за 2024 год",
+      "folder": "S11_2024_Расходы_на_сотрудников",
+      "formula": "=8968.68+46.00+115.01",
+      "expected": "9129.69",
+      "calculated": "9129.69",
+      "status": "verified",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1. Расходы на содержание сотрудников фонда",
+            "столбец_или_блок": "Исполнение фин. плана 2024 год",
+            "значение": "9129.69",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r10c4",
+              "field_key": "/План административно-управленческих расходов за 2024-2025г./Исполнение фин. плана 2024 год, тыс.руб.",
+              "metric": "План административно-управленческих расходов за 2024-2025г.",
+              "metric_key": "план административно управленческих расходов за 2024 2025г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.",
+                "Расходы на содержание сотрудников фонда"
+              ],
+              "row_hierarchy": [
+                "2.1.",
+                "Расходы на содержание сотрудников фонда"
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2024-2025г.",
+                "Исполнение фин. плана 2024 год, тыс.руб."
+              ],
+              "value": "9129.69",
+              "value_type": "decimal",
+              "raw": "9 129,69",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r10c4",
+                "bbox": [
+                  292.67,
+                  194.36,
+                  363.25,
+                  203.0
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r10c1",
+                  "r10c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "9129.69",
+          "actual": "9129.69",
+          "fact_id": "p5.t1/r10c4",
+          "bbox": [
+            292.67,
+            194.36,
+            363.25,
+            203.0
+          ],
+          "url": "sets/finance_2024.viewer.html#page=5&focus=p5.t1%2Fr10c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1.2. Заработная плата с налогами и отчислениями",
+            "столбец_или_блок": "Исполнение фин. плана 2024 год",
+            "значение": "8968.68",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r11c4",
+              "field_key": "/План административно-управленческих расходов за 2024-2025г./Исполнение фин. плана 2024 год, тыс.руб.",
+              "metric": "План административно-управленческих расходов за 2024-2025г.",
+              "metric_key": "план административно управленческих расходов за 2024 2025г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.2.",
+                "Заработная плата сотрудников Фонда c учётом налогов и отчислений в Фонды"
+              ],
+              "row_hierarchy": [
+                "2.1.2.",
+                "Заработная плата сотрудников Фонда c учётом налогов и отчислений в Фонды"
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2024-2025г.",
+                "Исполнение фин. плана 2024 год, тыс.руб."
+              ],
+              "value": "8968.68",
+              "value_type": "decimal",
+              "raw": "8 968,68",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r11c4",
+                "bbox": [
+                  292.67,
+                  203.0,
+                  363.25,
+                  219.56
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r11c1",
+                  "r11c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "8968.68",
+          "actual": "8968.68",
+          "fact_id": "p5.t1/r11c4",
+          "bbox": [
+            292.67,
+            203.0,
+            363.25,
+            219.56
+          ],
+          "url": "sets/finance_2024.viewer.html#page=5&focus=p5.t1%2Fr11c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1.4. Вознаграждения по договорам ГПХ",
+            "столбец_или_блок": "Исполнение фин. плана 2024 год",
+            "значение": "46.00",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r12c4",
+              "field_key": "/План административно-управленческих расходов за 2024-2025г./Исполнение фин. плана 2024 год, тыс.руб.",
+              "metric": "План административно-управленческих расходов за 2024-2025г.",
+              "metric_key": "план административно управленческих расходов за 2024 2025г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.4.",
+                "Расходы по оплате вознаграждения внешних специалистов( с учетом страховых взносов), привлеченных на основании гражданско-правовых договоров для выполнения работ/ оказания услуг"
+              ],
+              "row_hierarchy": [
+                "2.1.4.",
+                "Расходы по оплате вознаграждения внешних специалистов( с учетом страховых взносов), привлеченных на основании гражданско-правовых договоров для выполнения работ/ оказания услуг"
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2024-2025г.",
+                "Исполнение фин. плана 2024 год, тыс.руб."
+              ],
+              "value": "46.00",
+              "value_type": "decimal",
+              "raw": "46,00",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r12c4",
+                "bbox": [
+                  292.67,
+                  219.56,
+                  363.25,
+                  256.07
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r12c1",
+                  "r12c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "46.00",
+          "actual": "46.00",
+          "fact_id": "p5.t1/r12c4",
+          "bbox": [
+            292.67,
+            219.56,
+            363.25,
+            256.07
+          ],
+          "url": "sets/finance_2024.viewer.html#page=5&focus=p5.t1%2Fr12c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1.7. Налог УСН, пени",
+            "столбец_или_блок": "Исполнение фин. плана 2024 год",
+            "значение": "115.01",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r13c4",
+              "field_key": "/План административно-управленческих расходов за 2024-2025г./Исполнение фин. плана 2024 год, тыс.руб.",
+              "metric": "План административно-управленческих расходов за 2024-2025г.",
+              "metric_key": "план административно управленческих расходов за 2024 2025г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.7.",
+                "Налог УСН. Пени за несвоевременную уплату налогов и взносов."
+              ],
+              "row_hierarchy": [
+                "2.1.7.",
+                "Налог УСН. Пени за несвоевременную уплату налогов и взносов."
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2024-2025г.",
+                "Исполнение фин. плана 2024 год, тыс.руб."
+              ],
+              "value": "115.01",
+              "value_type": "decimal",
+              "raw": "115,01",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r13c4",
+                "bbox": [
+                  292.67,
+                  256.07,
+                  363.25,
+                  272.56
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r13c1",
+                  "r13c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "115.01",
+          "actual": "115.01",
+          "fact_id": "p5.t1/r13c4",
+          "bbox": [
+            292.67,
+            256.07,
+            363.25,
+            272.56
+          ],
+          "url": "sets/finance_2024.viewer.html#page=5&focus=p5.t1%2Fr13c4"
+        }
+      ],
+      "note": "",
+      "documents": [
+        "finance_2024"
+      ]
+    },
+    {
+      "id": "S12",
+      "title": "Общие фактические административные расходы за 2024 год",
+      "folder": "S12_2024_Общие_административные_расходы",
+      "formula": "=9129.69+464.33+135.67+6724.96",
+      "expected": "16454.65",
+      "calculated": "16454.65",
+      "status": "verified",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2. Расходы",
+            "столбец_или_блок": "Исполнение фин. плана 2024 год",
+            "значение": "16454.65",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r9c4",
+              "field_key": "/План административно-управленческих расходов за 2024-2025г./Исполнение фин. плана 2024 год, тыс.руб.",
+              "metric": "План административно-управленческих расходов за 2024-2025г.",
+              "metric_key": "план административно управленческих расходов за 2024 2025г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2",
+                "Расходы"
+              ],
+              "row_hierarchy": [
+                "2",
+                "Расходы"
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2024-2025г.",
+                "Исполнение фин. плана 2024 год, тыс.руб."
+              ],
+              "value": "16454.65",
+              "value_type": "decimal",
+              "raw": "16 454,65",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r9c4",
+                "bbox": [
+                  292.67,
+                  185.72,
+                  363.25,
+                  194.36
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r9c1",
+                  "r9c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "16454.65",
+          "actual": "16454.65",
+          "fact_id": "p5.t1/r9c4",
+          "bbox": [
+            292.67,
+            185.72,
+            363.25,
+            194.36
+          ],
+          "url": "sets/finance_2024.viewer.html#page=5&focus=p5.t1%2Fr9c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.1. Расходы на содержание сотрудников фонда",
+            "столбец_или_блок": "Исполнение фин. плана 2024 год",
+            "значение": "9129.69",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r10c4",
+              "field_key": "/План административно-управленческих расходов за 2024-2025г./Исполнение фин. плана 2024 год, тыс.руб.",
+              "metric": "План административно-управленческих расходов за 2024-2025г.",
+              "metric_key": "план административно управленческих расходов за 2024 2025г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.1.",
+                "Расходы на содержание сотрудников фонда"
+              ],
+              "row_hierarchy": [
+                "2.1.",
+                "Расходы на содержание сотрудников фонда"
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2024-2025г.",
+                "Исполнение фин. плана 2024 год, тыс.руб."
+              ],
+              "value": "9129.69",
+              "value_type": "decimal",
+              "raw": "9 129,69",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r10c4",
+                "bbox": [
+                  292.67,
+                  194.36,
+                  363.25,
+                  203.0
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r10c1",
+                  "r10c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "9129.69",
+          "actual": "9129.69",
+          "fact_id": "p5.t1/r10c4",
+          "bbox": [
+            292.67,
+            194.36,
+            363.25,
+            203.0
+          ],
+          "url": "sets/finance_2024.viewer.html#page=5&focus=p5.t1%2Fr10c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.2. Содержание офиса",
+            "столбец_или_блок": "Исполнение фин. плана 2024 год",
+            "значение": "464.33",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r14c4",
+              "field_key": "/План административно-управленческих расходов за 2024-2025г./Исполнение фин. плана 2024 год, тыс.руб.",
+              "metric": "План административно-управленческих расходов за 2024-2025г.",
+              "metric_key": "план административно управленческих расходов за 2024 2025г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.2.",
+                "Содержание офиса"
+              ],
+              "row_hierarchy": [
+                "2.2.",
+                "Содержание офиса"
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2024-2025г.",
+                "Исполнение фин. плана 2024 год, тыс.руб."
+              ],
+              "value": "464.33",
+              "value_type": "decimal",
+              "raw": "464,33",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r14c4",
+                "bbox": [
+                  292.67,
+                  272.56,
+                  363.25,
+                  281.25
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r14c1",
+                  "r14c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "464.33",
+          "actual": "464.33",
+          "fact_id": "p5.t1/r14c4",
+          "bbox": [
+            292.67,
+            272.56,
+            363.25,
+            281.25
+          ],
+          "url": "sets/finance_2024.viewer.html#page=5&focus=p5.t1%2Fr14c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.4. Услуги контрагентов",
+            "столбец_или_блок": "Исполнение фин. плана 2024 год",
+            "значение": "135.67",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r20c4",
+              "field_key": "/План административно-управленческих расходов за 2024-2025г./Исполнение фин. плана 2024 год, тыс.руб.",
+              "metric": "План административно-управленческих расходов за 2024-2025г.",
+              "metric_key": "план административно управленческих расходов за 2024 2025г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.4.",
+                "Услуги контрагентов (аудит, банк, нотариус)"
+              ],
+              "row_hierarchy": [
+                "2.4.",
+                "Услуги контрагентов (аудит, банк, нотариус)"
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2024-2025г.",
+                "Исполнение фин. плана 2024 год, тыс.руб."
+              ],
+              "value": "135.67",
+              "value_type": "decimal",
+              "raw": "135,67",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r20c4",
+                "bbox": [
+                  292.67,
+                  322.65,
+                  363.25,
+                  331.32
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r20c1",
+                  "r20c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "135.67",
+          "actual": "135.67",
+          "fact_id": "p5.t1/r20c4",
+          "bbox": [
+            292.67,
+            322.65,
+            363.25,
+            331.32
+          ],
+          "url": "sets/finance_2024.viewer.html#page=5&focus=p5.t1%2Fr20c4"
+        },
+        {
+          "reference": {
+            "документ": "finance_2024",
+            "страница_PDF": 5,
+            "строка_или_показатель": "2.5. Фандрайзинг",
+            "столбец_или_блок": "Исполнение фин. плана 2024 год",
+            "значение": "6724.96",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p5.t1/r24c4",
+              "field_key": "/План административно-управленческих расходов за 2024-2025г./Исполнение фин. плана 2024 год, тыс.руб.",
+              "metric": "План административно-управленческих расходов за 2024-2025г.",
+              "metric_key": "план административно управленческих расходов за 2024 2025г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "2.5.",
+                "Фандрайзинг"
+              ],
+              "row_hierarchy": [
+                "2.5.",
+                "Фандрайзинг"
+              ],
+              "column_path": [
+                "План административно-управленческих расходов за 2024-2025г.",
+                "Исполнение фин. плана 2024 год, тыс.руб."
+              ],
+              "value": "6724.96",
+              "value_type": "decimal",
+              "raw": "6 724,96",
+              "needs_review": false,
+              "source": {
+                "page": 5,
+                "table_id": "p5.t1",
+                "cell_id": "r24c4",
+                "bbox": [
+                  292.67,
+                  356.12,
+                  363.25,
+                  364.82
+                ],
+                "column_header_cell_ids": [
+                  "r1c1",
+                  "r2c4"
+                ],
+                "row_header_cell_ids": [
+                  "r24c1",
+                  "r24c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "6724.96",
+          "actual": "6724.96",
+          "fact_id": "p5.t1/r24c4",
+          "bbox": [
+            292.67,
+            356.12,
+            363.25,
+            364.82
+          ],
+          "url": "sets/finance_2024.viewer.html#page=5&focus=p5.t1%2Fr24c4"
+        }
+      ],
+      "note": "Использованы опубликованные итоги групп. Суммы детальных подстрок групп 2.2 и 2.5 отличаются от их итогов на 0.01 тыс. руб.; эти расхождения отмечены отдельно.",
+      "documents": [
+        "finance_2024"
+      ]
+    },
+    {
+      "id": "S13",
+      "title": "Расходы на содержание аппарата управления в бухгалтерской отчетности",
+      "folder": "S13_2025_Содержание_аппарата_управления",
+      "formula": "=11790+3634",
+      "expected": "15424",
+      "calculated": "15424",
+      "status": "verified",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 11,
+            "строка_или_показатель": "6320. Расходы на содержание аппарата управления",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "15424",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p11.t1/r2c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "Расходы на содержание аппарата управления 9.5",
+                "6320"
+              ],
+              "row_hierarchy": [
+                "Расходы на содержание аппарата управления 9.5",
+                "6320"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "-15424",
+              "value_type": "decimal",
+              "raw": "( 15 424 )",
+              "needs_review": false,
+              "source": {
+                "page": 11,
+                "table_id": "p11.t1",
+                "cell_id": "r2c3",
+                "bbox": [
+                  400.29,
+                  71.57,
+                  476.25,
+                  88.92
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r2c1",
+                  "r2c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "-15424",
+          "normalization": "absolute_accounting_expense_as_declared_in_set",
+          "actual": "15424",
+          "fact_id": "p11.t1/r2c3",
+          "bbox": [
+            400.29,
+            71.57,
+            476.25,
+            88.92
+          ],
+          "url": "sets/audit_2025.viewer.html#page=11&focus=p11.t1%2Fr2c3"
+        },
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 11,
+            "строка_или_показатель": "6321. Расходы, связанные с оплатой труда, включая начисления",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "11790",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p11.t1/r3c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "в том числе: расходы, связанные с оплатой труда (включая начисления)",
+                "6321"
+              ],
+              "row_hierarchy": [
+                "в том числе: расходы, связанные с оплатой труда (включая начисления)",
+                "6321"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "-11790",
+              "value_type": "decimal",
+              "raw": "( 11 790 )",
+              "needs_review": false,
+              "source": {
+                "page": 11,
+                "table_id": "p11.t1",
+                "cell_id": "r3c3",
+                "bbox": [
+                  400.29,
+                  88.92,
+                  476.25,
+                  104.99
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r3c1",
+                  "r3c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "-11790",
+          "normalization": "absolute_accounting_expense_as_declared_in_set",
+          "actual": "11790",
+          "fact_id": "p11.t1/r3c3",
+          "bbox": [
+            400.29,
+            88.92,
+            476.25,
+            104.99
+          ],
+          "url": "sets/audit_2025.viewer.html#page=11&focus=p11.t1%2Fr3c3"
+        },
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 11,
+            "строка_или_показатель": "6326. Прочие",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "3634",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p11.t1/r8c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "прочие",
+                "6326"
+              ],
+              "row_hierarchy": [
+                "прочие",
+                "6326"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "-3634",
+              "value_type": "decimal",
+              "raw": "( 3 634 )",
+              "needs_review": false,
+              "source": {
+                "page": 11,
+                "table_id": "p11.t1",
+                "cell_id": "r8c3",
+                "bbox": [
+                  400.29,
+                  164.52,
+                  476.25,
+                  178.07
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r8c1",
+                  "r8c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "-3634",
+          "normalization": "absolute_accounting_expense_as_declared_in_set",
+          "actual": "3634",
+          "fact_id": "p11.t1/r8c3",
+          "bbox": [
+            400.29,
+            164.52,
+            476.25,
+            178.07
+          ],
+          "url": "sets/audit_2025.viewer.html#page=11&focus=p11.t1%2Fr8c3"
+        }
+      ],
+      "note": "Форма 0710003 в составе аудиторского пакета. Прочие подстроки группы 6320 — прочерки; расходы показаны в скобках, здесь использованы положительные величины расходов.",
+      "documents": [
+        "audit_2025"
+      ]
+    },
+    {
+      "id": "S14",
+      "title": "Всего использовано средств по бухгалтерской отчетности",
+      "folder": "S14_2025_Всего_использовано_средств",
+      "formula": "=114788+15424+1579",
+      "expected": "131791",
+      "calculated": "131791",
+      "status": "verified",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 11,
+            "строка_или_показатель": "6300. Использовано (израсходовано) средств — всего",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "131791",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p11.t1/r11c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "total",
+                "reference": false
+              },
+              "row_path": [
+                "Использовано (израсходовано) средств - всего",
+                "6300"
+              ],
+              "row_hierarchy": [
+                "Всего"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "-131791",
+              "value_type": "decimal",
+              "raw": "( 131 791 )",
+              "needs_review": false,
+              "source": {
+                "page": 11,
+                "table_id": "p11.t1",
+                "cell_id": "r11c3",
+                "bbox": [
+                  400.29,
+                  205.67,
+                  476.25,
+                  220.07
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r11c1",
+                  "r11c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "-131791",
+          "normalization": "absolute_accounting_expense_as_declared_in_set",
+          "actual": "131791",
+          "fact_id": "p11.t1/r11c3",
+          "bbox": [
+            400.29,
+            205.67,
+            476.25,
+            220.07
+          ],
+          "url": "sets/audit_2025.viewer.html#page=11&focus=p11.t1%2Fr11c3"
+        },
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 10,
+            "строка_или_показатель": "6310. Расходы на целевые мероприятия",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "114788",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p10.t1/r10c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "Использовано (израсходовано)средств 9.5 Расходы на целевые мероприятия",
+                "6310"
+              ],
+              "row_hierarchy": [
+                "Использовано (израсходовано)средств 9.5 Расходы на целевые мероприятия",
+                "6310"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "-114788",
+              "value_type": "decimal",
+              "raw": "( 114 788 )",
+              "needs_review": false,
+              "source": {
+                "page": 10,
+                "table_id": "p10.t1",
+                "cell_id": "r10c3",
+                "bbox": [
+                  400.42,
+                  346.92,
+                  476.72,
+                  365.27
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r10c1",
+                  "r10c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "-114788",
+          "normalization": "absolute_accounting_expense_as_declared_in_set",
+          "actual": "114788",
+          "fact_id": "p10.t1/r10c3",
+          "bbox": [
+            400.42,
+            346.92,
+            476.72,
+            365.27
+          ],
+          "url": "sets/audit_2025.viewer.html#page=10&focus=p10.t1%2Fr10c3"
+        },
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 11,
+            "строка_или_показатель": "6320. Расходы на содержание аппарата управления",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "15424",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p11.t1/r2c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "Расходы на содержание аппарата управления 9.5",
+                "6320"
+              ],
+              "row_hierarchy": [
+                "Расходы на содержание аппарата управления 9.5",
+                "6320"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "-15424",
+              "value_type": "decimal",
+              "raw": "( 15 424 )",
+              "needs_review": false,
+              "source": {
+                "page": 11,
+                "table_id": "p11.t1",
+                "cell_id": "r2c3",
+                "bbox": [
+                  400.29,
+                  71.57,
+                  476.25,
+                  88.92
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r2c1",
+                  "r2c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "-15424",
+          "normalization": "absolute_accounting_expense_as_declared_in_set",
+          "actual": "15424",
+          "fact_id": "p11.t1/r2c3",
+          "bbox": [
+            400.29,
+            71.57,
+            476.25,
+            88.92
+          ],
+          "url": "sets/audit_2025.viewer.html#page=11&focus=p11.t1%2Fr2c3"
+        },
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 11,
+            "строка_или_показатель": "6330. Приобретение основных средств, инвентаря и иного имущества",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "1579",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p11.t1/r9c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "9.5 Приобретение основных средств, инвентаря и иного имущества",
+                "6330"
+              ],
+              "row_hierarchy": [
+                "9.5 Приобретение основных средств, инвентаря и иного имущества",
+                "6330"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "-1579",
+              "value_type": "decimal",
+              "raw": "( 1 579 )",
+              "needs_review": false,
+              "source": {
+                "page": 11,
+                "table_id": "p11.t1",
+                "cell_id": "r9c3",
+                "bbox": [
+                  400.29,
+                  178.07,
+                  476.25,
+                  191.62
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r9c1",
+                  "r9c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "-1579",
+          "normalization": "absolute_accounting_expense_as_declared_in_set",
+          "actual": "1579",
+          "fact_id": "p11.t1/r9c3",
+          "bbox": [
+            400.29,
+            178.07,
+            476.25,
+            191.62
+          ],
+          "url": "sets/audit_2025.viewer.html#page=11&focus=p11.t1%2Fr9c3"
+        }
+      ],
+      "note": "Форма 0710003; строка 6350 — прочерк. Скобки в источнике обозначают расходы, в формуле использованы их абсолютные величины.",
+      "documents": [
+        "audit_2025"
+      ]
+    },
+    {
+      "id": "S15",
+      "title": "Всего поступило средств по бухгалтерской отчетности",
+      "folder": "S15_2025_Всего_поступило_средств",
+      "formula": "=487396+981+415033",
+      "expected": "903410",
+      "calculated": "903410",
+      "status": "verified",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 10,
+            "строка_или_показатель": "6200. Поступило средств — всего",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "903410",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p10.t1/r9c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "total",
+                "reference": false
+              },
+              "row_path": [
+                "Поступило средств - всего",
+                "6200"
+              ],
+              "row_hierarchy": [
+                "Всего"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "903410",
+              "value_type": "decimal",
+              "raw": "903 410",
+              "needs_review": false,
+              "source": {
+                "page": 10,
+                "table_id": "p10.t1",
+                "cell_id": "r9c3",
+                "bbox": [
+                  400.42,
+                  330.59,
+                  476.72,
+                  346.92
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r9c1",
+                  "r9c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "903410",
+          "actual": "903410",
+          "fact_id": "p10.t1/r9c3",
+          "bbox": [
+            400.42,
+            330.59,
+            476.72,
+            346.92
+          ],
+          "url": "sets/audit_2025.viewer.html#page=10&focus=p10.t1%2Fr9c3"
+        },
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 10,
+            "строка_или_показатель": "6220. Целевые взносы",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "487396",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p10.t1/r5c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "9.5 Целевые взносы",
+                "6220"
+              ],
+              "row_hierarchy": [
+                "9.5 Целевые взносы",
+                "6220"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "487396",
+              "value_type": "decimal",
+              "raw": "487 396",
+              "needs_review": false,
+              "source": {
+                "page": 10,
+                "table_id": "p10.t1",
+                "cell_id": "r5c3",
+                "bbox": [
+                  400.42,
+                  275.74,
+                  476.72,
+                  289.32
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r5c1",
+                  "r5c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "487396",
+          "actual": "487396",
+          "fact_id": "p10.t1/r5c3",
+          "bbox": [
+            400.42,
+            275.74,
+            476.72,
+            289.32
+          ],
+          "url": "sets/audit_2025.viewer.html#page=10&focus=p10.t1%2Fr5c3"
+        },
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 10,
+            "строка_или_показатель": "6240. Прибыль от приносящей доход деятельности",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "981",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p10.t1/r7c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "9.5 Прибыль от приносящей доход деятельности организации",
+                "6240"
+              ],
+              "row_hierarchy": [
+                "9.5 Прибыль от приносящей доход деятельности организации",
+                "6240"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "981",
+              "value_type": "decimal",
+              "raw": "981",
+              "needs_review": false,
+              "source": {
+                "page": 10,
+                "table_id": "p10.t1",
+                "cell_id": "r7c3",
+                "bbox": [
+                  400.42,
+                  302.99,
+                  476.72,
+                  316.67
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r7c1",
+                  "r7c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "981",
+          "actual": "981",
+          "fact_id": "p10.t1/r7c3",
+          "bbox": [
+            400.42,
+            302.99,
+            476.72,
+            316.67
+          ],
+          "url": "sets/audit_2025.viewer.html#page=10&focus=p10.t1%2Fr7c3"
+        },
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 10,
+            "строка_или_показатель": "6250. Прочие",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "415033",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p10.t1/r8c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "9.5 Прочие",
+                "6250"
+              ],
+              "row_hierarchy": [
+                "9.5 Прочие",
+                "6250"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "415033",
+              "value_type": "decimal",
+              "raw": "415 033",
+              "needs_review": false,
+              "source": {
+                "page": 10,
+                "table_id": "p10.t1",
+                "cell_id": "r8c3",
+                "bbox": [
+                  400.42,
+                  316.67,
+                  476.72,
+                  330.59
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r8c1",
+                  "r8c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "415033",
+          "actual": "415033",
+          "fact_id": "p10.t1/r8c3",
+          "bbox": [
+            400.42,
+            316.67,
+            476.72,
+            330.59
+          ],
+          "url": "sets/audit_2025.viewer.html#page=10&focus=p10.t1%2Fr8c3"
+        }
+      ],
+      "note": "Форма 0710003; остальные строки поступлений — прочерки.",
+      "documents": [
+        "audit_2025"
+      ]
+    },
+    {
+      "id": "S16",
+      "title": "Остаток средств на конец 2025 года",
+      "folder": "S16_2025_Остаток_на_конец_года",
+      "formula": "=1271638+903410-131791",
+      "expected": "2043257",
+      "calculated": "2043257",
+      "status": "verified",
+      "arithmetic_matches": true,
+      "matches": [
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 11,
+            "строка_или_показатель": "6400. Остаток средств на конец периода",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "2043257",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p11.t1/r12c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "Остаток средств на ювйец периода",
+                "6400"
+              ],
+              "row_hierarchy": [
+                "Остаток средств на ювйец периода",
+                "6400"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "2043257",
+              "value_type": "decimal",
+              "raw": "2 043 257",
+              "needs_review": false,
+              "source": {
+                "page": 11,
+                "table_id": "p11.t1",
+                "cell_id": "r12c3",
+                "bbox": [
+                  400.29,
+                  220.07,
+                  476.25,
+                  238.77
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r12c1",
+                  "r12c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "2043257",
+          "actual": "2043257",
+          "fact_id": "p11.t1/r12c3",
+          "bbox": [
+            400.29,
+            220.07,
+            476.25,
+            238.77
+          ],
+          "url": "sets/audit_2025.viewer.html#page=11&focus=p11.t1%2Fr12c3"
+        },
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 10,
+            "строка_или_показатель": "6100. Остаток средств на начало периода",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "1271638",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p10.t1/r2c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "detail",
+                "reference": false
+              },
+              "row_path": [
+                "Остаток средств на начало периода",
+                "6100"
+              ],
+              "row_hierarchy": [
+                "Остаток средств на начало периода",
+                "6100"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "1271638",
+              "value_type": "decimal",
+              "raw": "1 271 638",
+              "needs_review": false,
+              "source": {
+                "page": 10,
+                "table_id": "p10.t1",
+                "cell_id": "r2c3",
+                "bbox": [
+                  400.42,
+                  227.57,
+                  476.72,
+                  245.87
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r2c1",
+                  "r2c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "1271638",
+          "actual": "1271638",
+          "fact_id": "p10.t1/r2c3",
+          "bbox": [
+            400.42,
+            227.57,
+            476.72,
+            245.87
+          ],
+          "url": "sets/audit_2025.viewer.html#page=10&focus=p10.t1%2Fr2c3"
+        },
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 10,
+            "строка_или_показатель": "6200. Поступило средств — всего",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "903410",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p10.t1/r9c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "total",
+                "reference": false
+              },
+              "row_path": [
+                "Поступило средств - всего",
+                "6200"
+              ],
+              "row_hierarchy": [
+                "Всего"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "903410",
+              "value_type": "decimal",
+              "raw": "903 410",
+              "needs_review": false,
+              "source": {
+                "page": 10,
+                "table_id": "p10.t1",
+                "cell_id": "r9c3",
+                "bbox": [
+                  400.42,
+                  330.59,
+                  476.72,
+                  346.92
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r9c1",
+                  "r9c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "903410",
+          "actual": "903410",
+          "fact_id": "p10.t1/r9c3",
+          "bbox": [
+            400.42,
+            330.59,
+            476.72,
+            346.92
+          ],
+          "url": "sets/audit_2025.viewer.html#page=10&focus=p10.t1%2Fr9c3"
+        },
+        {
+          "reference": {
+            "документ": "audit_2025",
+            "страница_PDF": 11,
+            "строка_или_показатель": "6300. Использовано (израсходовано) средств — всего",
+            "столбец_или_блок": "За 2025 г.",
+            "значение": "131791",
+            "единица": "тыс. руб."
+          },
+          "method": "row_code_and_column",
+          "candidate_count": 1,
+          "candidates": [
+            {
+              "id": "p11.t1/r11c3",
+              "field_key": "/За 2025 г.",
+              "metric": "За 2025 г.",
+              "metric_key": "за 2025 г",
+              "unit": null,
+              "row_context": {
+                "aggregation": "total",
+                "reference": false
+              },
+              "row_path": [
+                "Использовано (израсходовано) средств - всего",
+                "6300"
+              ],
+              "row_hierarchy": [
+                "Всего"
+              ],
+              "column_path": [
+                "За 2025 г."
+              ],
+              "value": "-131791",
+              "value_type": "decimal",
+              "raw": "( 131 791 )",
+              "needs_review": false,
+              "source": {
+                "page": 11,
+                "table_id": "p11.t1",
+                "cell_id": "r11c3",
+                "bbox": [
+                  400.29,
+                  205.67,
+                  476.25,
+                  220.07
+                ],
+                "column_header_cell_ids": [
+                  "r1c3"
+                ],
+                "row_header_cell_ids": [
+                  "r11c1",
+                  "r11c2"
+                ]
+              }
+            }
+          ],
+          "status": "matched",
+          "source_value": "-131791",
+          "normalization": "absolute_accounting_expense_as_declared_in_set",
+          "actual": "131791",
+          "fact_id": "p11.t1/r11c3",
+          "bbox": [
+            400.29,
+            205.67,
+            476.25,
+            220.07
+          ],
+          "url": "sets/audit_2025.viewer.html#page=11&focus=p11.t1%2Fr11c3"
+        }
+      ],
+      "note": "Форма 0710003. Величина расходов 131791 вычитается; в источнике она указана в скобках.",
+      "documents": [
+        "audit_2025"
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "annual_2024_part1",
+      "name": "Отчет ФЦК МФТИ за 2024 г (1 часть)",
+      "pages": 22,
+      "viewer": "sets/annual_2024_part1.viewer.html",
+      "original": "sets/annual_2024_part1.pdf",
+      "structure": "sets/annual_2024_part1.structure.json"
+    },
+    {
+      "id": "finance_2024",
+      "name": "Финансовый план на 2024 г",
+      "pages": 5,
+      "viewer": "sets/finance_2024.viewer.html",
+      "original": "sets/finance_2024.pdf",
+      "structure": "sets/finance_2024.structure.json"
+    },
+    {
+      "id": "annual_2024_part2",
+      "name": "Отчет ФЦК МФТИ за 2024 г (2 часть)",
+      "pages": 17,
+      "viewer": "sets/annual_2024_part2.viewer.html",
+      "original": "sets/annual_2024_part2.pdf",
+      "structure": "sets/annual_2024_part2.structure.json"
+    },
+    {
+      "id": "finance_2023",
+      "name": "Финансовый план на 2023 год",
+      "pages": 5,
+      "viewer": "sets/finance_2023.viewer.html",
+      "original": "sets/finance_2023.pdf",
+      "structure": "sets/finance_2023.structure.json"
+    },
+    {
+      "id": "finance_2022",
+      "name": "Финансовый план на 2022 год",
+      "pages": 5,
+      "viewer": "sets/finance_2022.viewer.html",
+      "original": "sets/finance_2022.pdf",
+      "structure": "sets/finance_2022.structure.json"
+    },
+    {
+      "id": "audit_2025",
+      "name": "Заключение аудитора за 2025 год",
+      "pages": 29,
+      "viewer": "sets/audit_2025.viewer.html",
+      "original": "sets/audit_2025.pdf",
+      "structure": "sets/audit_2025.structure.json"
+    }
+  ],
+  "processing_history": [
+    {
+      "document": "annual_2024_part1",
+      "action": "read_and_parsed_local_pdf",
+      "sha256": "428b13c704258685a9fab8f9e7a5f0931df76f99edf6de18fae79cefd9c83bd9",
+      "pages": 22,
+      "facts": 0
+    },
+    {
+      "document": "finance_2024",
+      "action": "read_and_parsed_local_pdf",
+      "sha256": "fc5cb44126efaddbb138423c985d28e41baf64efb96f869388d16aee57d1261f",
+      "pages": 5,
+      "facts": 396
+    },
+    {
+      "document": "annual_2024_part2",
+      "action": "read_and_parsed_local_pdf",
+      "sha256": "9951483bbe1f71fb9a98542f97ce25c8f127de97b5d42e384c57f438669fcca7",
+      "pages": 17,
+      "facts": 0
+    },
+    {
+      "document": "finance_2023",
+      "action": "read_and_parsed_local_pdf",
+      "sha256": "d39ce465ec83718f5342f2616fea8cc2a78add471b348f0f561be44e96c3e98a",
+      "pages": 5,
+      "facts": 514
+    },
+    {
+      "document": "finance_2022",
+      "action": "read_and_parsed_local_pdf",
+      "sha256": "90a57451c963a0074728f144672aff970b6a78babf3bb07c334e45805be91ade",
+      "pages": 5,
+      "facts": 513
+    },
+    {
+      "document": "audit_2025",
+      "action": "read_and_parsed_local_pdf",
+      "sha256": "334274639316fe98e7497c0de6ffeb0ce91720d9617fc0be7eed9c7ee96bbd3a",
+      "pages": 29,
+      "facts": 62
+    }
+  ],
+  "summary": {
+    "sets": 16,
+    "documents": 6,
+    "pages": 83,
+    "verified": 10,
+    "verified_values": 6,
+    "needs_review": 0
+  }
+}
+</script><script>
+'use strict';
+const manifest=JSON.parse(document.getElementById('sets-data').textContent),$=id=>document.getElementById(id);
+let index=0,refIndex=0,visits={};const editedViewers=new Set();
+function hasEdits(item){return item.documents.some(id=>editedViewers.has(manifest.documents.find(d=>d.id===id)?.viewer));}
+try{visits=JSON.parse(localStorage.getItem('pdf-structure-set-history')||'{}');if(!visits||typeof visits!=='object'||Array.isArray(visits))visits={};}catch{}
+function el(tag,text){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;return e;}
+function status(item){if(hasEdits(item))return 'Есть правки · пересверить';return item.status==='verified'?'Поля + формула':item.status==='verified_values'?'Числа + формула':'Требует проверки';}
+function renderList(){const list=$('sets');list.replaceChildren();const q=$('search').value.toLowerCase();for(const [i,item]of manifest.sets.entries()){if(!(item.id+' '+item.title).toLowerCase().includes(q))continue;const b=el('button');b.className='set'+(i===index?' selected':'');b.dataset.set=item.id;const name=el('div');name.append(el('b',item.id+' '),document.createTextNode(item.title));const badge=el('span',status(item));badge.className='status'+((item.status==='needs_review'||hasEdits(item))?' review':item.status==='verified_values'?' numeric':'');b.append(name,badge,el('small',(visits[item.id]?'Просмотрен · ':'Разобран · ')+item.documents.length+' файл(а)'));b.onclick=()=>openSet(i);list.append(b);}}
+function openReference(i){refIndex=i;const item=manifest.sets[index],match=item.matches[i],ref=match.reference,doc=manifest.documents.find(d=>d.id===ref['документ']);for(const [n,b]of [...$('refs').children].entries())b.classList.toggle('active',n===i);$('fileName').textContent=doc.name+' · PDF-с. '+ref['страница_PDF'];$('original').href=doc.original+'#page='+ref['страница_PDF'];$('structure').href=doc.structure;$('loading').textContent='Открываю файл…';const [urlPath,urlHash]=match.url.split('#');$('viewer').src=urlPath+'?ui=5'+(urlHash?'#'+urlHash:'');}
+function openSet(i){index=(i+manifest.sets.length)%manifest.sets.length;const item=manifest.sets[index];history.replaceState(null,'','#set='+item.id);$('title').textContent=item.id+' · '+item.title;$('formula').textContent=item.formula+' → '+(item.calculated??'не вычислено')+' (итог в PDF: '+(item.matches[0].actual??'не найден')+')';$('verification').textContent=status(item)+' · '+item.matches.filter(m=>m.status==='matched').length+'/'+item.matches.length+' ссылок найдены однозначно';$('note').textContent=(item.status==='verified_values'?'Итоговый показатель найден по уникальному числу на указанной странице; смысловую привязку нужно проверить. ':'')+item.note;$('evidence').textContent=item.matches.map((m,n)=>(n?'Источник '+n:'Итог')+': '+m.method+' · '+m.status+' · PDF='+m.source_value+' · ожидается='+m.reference['значение']+(m.normalization?' · '+m.normalization:'')).join('\n');$('refs').replaceChildren();item.matches.forEach((match,n)=>{const b=el('button',n?'Источник '+n+' · '+match.reference['значение']:'Итог · '+match.reference['значение']);b.className='ref';b.dataset.reference=n;b.append(el('span',match.reference['строка_или_показатель']));b.onclick=()=>openReference(n);$('refs').append(b);});renderList();openReference(0);}
+$('viewer').addEventListener('load',()=>{if(!$('viewer').getAttribute('src'))return;const item=manifest.sets[index],ref=item.matches[refIndex].reference;const saved=visits[item.id]||{files:[]};saved.last_viewed=new Date().toISOString();const id=ref['документ'];if(!saved.files.includes(id))saved.files.push(id);visits[item.id]=saved;try{localStorage.setItem('pdf-structure-set-history',JSON.stringify(visits));}catch{}$('loading').textContent='Файл открыт';renderList();});
+function correctionWarning(){const item=manifest.sets[index];if(hasEdits(item)){$('verification').textContent='Есть сохранённые правки. Формула выше показывает исходный прогон; требуется повторная сверка.';$('note').textContent='Ручные исправления восстановлены с диска. '+item.note;}else{$('verification').textContent=status(item)+' · '+item.matches.filter(m=>m.status==='matched').length+'/'+item.matches.length+' ссылок найдены однозначно';$('note').textContent=(item.status==='verified_values'?'Итоговый показатель найден по уникальному числу на указанной странице; смысловую привязку нужно проверить. ':'')+item.note;}}
+const originalOpenSet=openSet;openSet=function(i){originalOpenSet(i);correctionWarning();};
+async function reloadCorrectionStatus(){try{const response=await fetch('/api/edit-status',{cache:'no-store'});if(!response.ok)return;const statuses=await response.json();editedViewers.clear();for(const entry of statuses)if(entry.operation_count)editedViewers.add(entry.viewer);renderList();correctionWarning();}catch{}}
+window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==$('viewer').contentWindow||event.data?.type!=='structure-edited')return;reloadCorrectionStatus();});
+reloadCorrectionStatus();
+$('search').oninput=renderList;$('previous').onclick=()=>openSet(index-1);$('next').onclick=()=>openSet(index+1);const sum=manifest.summary;$('summary').textContent=sum.sets+' наборов · '+sum.documents+' уникальных PDF · '+sum.pages+' страниц';const initial=new URLSearchParams(location.hash.slice(1)).get('set');openSet(Math.max(0,manifest.sets.findIndex(s=>s.id===initial)));
+</script></body></html>

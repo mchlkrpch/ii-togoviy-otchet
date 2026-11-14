@@ -1,0 +1,86 @@
+{
+  "case_id": "eeb55680d2024050bb002e86560854e4",
+  "revision": 1,
+  "truth_file": "!Правильные_ответы_и_разбор.xlsx",
+  "scope": "Количественные расхождения пяти размеченных строк данного набора. Связанные агрегаты считаются отдельными строками. Итоговые статусы дополнительно учитывают сомнения в зависимостях.",
+  "sample_size": 5,
+  "true_positive": 2,
+  "false_positive": 0,
+  "false_negative": 0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1": 1.0,
+  "report_extraction_exact": 5,
+  "expected_value_exact": 5,
+  "classification_exact": 5,
+  "rows": [
+    {
+      "code": "0200",
+      "truth_reported": "5558474.83",
+      "truth_expected": "5558474.83",
+      "truth_status": "verified",
+      "reported": "5558474.83",
+      "expected": "5558474.83",
+      "prediction": "verified",
+      "final_status": "review"
+    },
+    {
+      "code": "0300",
+      "truth_reported": "1671359.96",
+      "truth_expected": "1671359.96",
+      "truth_status": "verified",
+      "reported": "1671359.96",
+      "expected": "1671359.96",
+      "prediction": "verified",
+      "final_status": "review"
+    },
+    {
+      "code": "0800",
+      "truth_reported": "1145798.10",
+      "truth_expected": "1133298.10",
+      "truth_status": "mismatch",
+      "reported": "1145798.10",
+      "expected": "1133298.10",
+      "prediction": "mismatch",
+      "final_status": "mismatch"
+    },
+    {
+      "code": "0900",
+      "truth_reported": "3204744.51",
+      "truth_expected": "3204744.51",
+      "truth_status": "verified",
+      "reported": "3204744.51",
+      "expected": "3204744.51",
+      "prediction": "verified",
+      "final_status": "verified"
+    },
+    {
+      "code": "total",
+      "truth_reported": "11580377.40",
+      "truth_expected": "11567877.40",
+      "truth_status": "mismatch",
+      "reported": "11580377.40",
+      "expected": "11567877.40",
+      "prediction": "mismatch",
+      "final_status": "review"
+    }
+  ],
+  "document_exclusions": [
+    {
+      "document": "10_Акт_ADM-27_копия.pdf",
+      "type": "duplicate",
+      "found": true
+    },
+    {
+      "document": "14_Акт_ОРГ-0603.pdf",
+      "type": "outside_period",
+      "found": true
+    },
+    {
+      "document": "15_Акт_ADM-75_15-05-2026.pdf",
+      "type": "wrong_contract",
+      "found": true
+    }
+  ],
+  "limitations": "Один небольшой открытый набор. Метрики не оценивают качество на новых формах документов или всех 51 проверках. Книга эталона читается только этой отдельной командой."
+}

@@ -1,0 +1,66 @@
+.structure-slice-overlay {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: crosshair;
+  user-select: none;
+}
+.structure-slice-overlay.picking-parent {
+  pointer-events: none;
+}
+.structure-slice-overlay .slice-target {
+  fill: none;
+  stroke: #005eb8;
+  stroke-width: 2;
+}
+.structure-slice-overlay .slice-guide {
+  stroke: #005eb8;
+  stroke-width: 2;
+  stroke-dasharray: 5 2;
+  pointer-events: none;
+}
+.structure-slice-overlay .slice-piece {
+  fill: #005eb8;
+  fill-opacity: .12;
+  stroke: #005eb8;
+  stroke-width: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.structure-slice-overlay .slice-piece:hover {
+  fill-opacity: .34;
+}
+.structure-slice-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+.structure-slice-controls .slice-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.structure-slice-controls .slice-start[aria-pressed="true"] {
+  background: #e0effa;
+}
+.structure-slice-controls select {
+  max-width: 100%;
+}
+.structure-editor-tools {
+  padding: 0 12px 8px;
+  font-size: 11px;
+}
+.structure-slice-controls [role="alert"] {
+  color: #a12b1f;
+}
+.structure-slice-overlay .slice-piece-number {
+  fill: #005eb8;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
