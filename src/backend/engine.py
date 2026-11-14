@@ -147,7 +147,7 @@ def document_decisions(documents, context):
             document_date = fact_value(document, "date")
             if not document_date and not published_tables:
                 warnings.append("missing_date")
-            elif context.get("start") and context.get("end"):
+            elif document_date and context.get("start") and context.get("end") and not published_tables:
                 period = fact_value(document, "period")
                 if period:
                     year, month = map(int, period.split("-"))
@@ -545,7 +545,7 @@ def validate_change(case, kind, target, values):
             document = documents.get(variable["document_id"])
             if not isinstance(key, str) or not re.fullmatch(r"manual_[a-f0-9]{32}", key):
                 raise ValueError("Некорректный идентификатор переменной")
-            if not document or document["role"] not in ("source", "report") or document["role"] == "source" and not document["included"]:
+            if not document or not (document["role"] == "source" and document["included"] or document["role"] == "report" and result["context"].get("basis") == "published_financial_tables"):
                 raise ValueError("Переменная должна ссылаться на включенный первичный документ")
             evidence = variable["evidence"]
             if not isinstance(evidence, dict) or evidence.get("document_id") != document["id"]:
@@ -660,7 +660,7 @@ def validate_change(case, kind, target, values):
             source = result["nodes"][item["ref"]]
             if source["kind"] == "fact":
                 document = next(document for document in result["documents"] if document["id"] == source["document_id"])
-                if document["role"] not in ("source", "report") or document["role"] == "source" and not document["included"]:
+                if not (document["role"] == "source" and document["included"] or document["role"] == "report" and result["context"].get("basis") == "published_financial_tables"):
                     raise ValueError("Для формулы выберите включенный первичный документ или проверяемый показатель")
             names.append(item["name"])
         if not names or len(names) != len(set(names)):

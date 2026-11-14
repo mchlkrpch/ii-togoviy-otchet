@@ -1278,6 +1278,8 @@
   }
 }
 .formula-prediction { border-top: 1px solid #c8d8e9; padding: 8px 12px; max-height: 42vh; overflow: auto; }
+.document-set-list { display: flex; flex-direction: column; gap: 6px; max-height: 60vh; overflow: auto; }
+.document-set-list button { text-align: left; justify-content: flex-start; }
 .formula-prediction-actions { display: flex; align-items: flex-start; gap: 12px; }
 .formula-prediction details { min-width: 180px; max-width: 440px; }
 .formula-prediction summary { cursor: pointer; padding: 7px; }

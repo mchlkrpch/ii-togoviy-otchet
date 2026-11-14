@@ -23,6 +23,7 @@ import {
   UploadDialog,
 } from "./components";
 import VerificationWorkbench from "./VerificationWorkbench";
+import DocumentSetsDialog from "./DocumentSetsDialog";
 import { ExplorerSash, ProjectHistory, WorkspaceActions, projectHref } from "./ProjectNavigation";
 import type {
   CaseResult,
@@ -50,6 +51,7 @@ export default function App() {
   const [job, setJob] = useState<Job | null>(null);
   const [error, setError] = useState("");
   const [showUpload, setShowUpload] = useState(false);
+  const [showSets, setShowSets] = useState(false);
   const [evidence, setEvidence] = useState<{
     documentId: string;
     evidence?: Evidence;
@@ -346,6 +348,7 @@ export default function App() {
                   result={result}
                   busy={busy || !!job}
                   onDemo={startDemo}
+                  onSets={() => setShowSets(true)}
                   onView={setView}
                   onRefresh={() => result && openCase(result.id)}
                 />
@@ -410,6 +413,7 @@ export default function App() {
                       result={result}
                       busy={busy || !!job}
                       onDemo={startDemo}
+                      onSets={() => setShowSets(true)}
                       onView={setView}
                       onRefresh={() => result && openCase(result.id)}
                     />
@@ -463,6 +467,10 @@ export default function App() {
             </div>
           </div>
         </div>
+      {showSets && <DocumentSetsDialog onClose={() => setShowSets(false)} onImport={job => {
+        setShowSets(false);
+        setJob(job);
+      }} />}
       {showUpload && (
         <UploadDialog
           busy={!!job}

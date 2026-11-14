@@ -28,6 +28,7 @@ from structure_edits import EditError
 
 BASE = Path(__file__).resolve().parents[1]
 SOURCE_DIR = Path(os.environ.get("AUDIT_INPUT_DIR", BASE.parent / "вводные"))
+SETS_DIR = Path(os.environ.get("AUDIT_SETS_DIR", BASE.parent / "document_sets"))
 store = Store()
 store.recover_interrupted_jobs()
 executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="document-import")
@@ -132,6 +133,25 @@ def list_cases():
              "reports": [{key: document[key] for key in ("id", "name", "format")} for document in case["documents"] if document["role"] == "report"],
              "sources": [{key: document[key] for key in ("id", "name", "format")} for document in case["documents"] if document["role"] == "source"]}
             for case in store.list_cases()]
+
+
+@app.get("/api/document-sets")
+def document_sets():
+    from .document_sets import available_sets
+    return available_sets(SETS_DIR)
+
+
+@app.post("/api/document-sets/{identifier}/import", status_code=202)
+def import_document_set(identifier: str):
+    from .document_sets import process_set, read_selection
+    try:
+        read_selection(SETS_DIR, identifier)
+    except ValueError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    job = {"id": uuid4().hex, "case_id": uuid4().hex, "status": "queued", "progress": 0, "created_at": now()}
+    store.save_job(job)
+    executor.submit(process_set, store, SETS_DIR, identifier, job)
+    return job
 
 
 @app.post("/api/cases/demo", status_code=202)

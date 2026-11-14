@@ -326,6 +326,7 @@ export function WorkspaceActions({
   onDemo,
   onView,
   onRefresh,
+  onSets,
 }: {
   result: CaseResult | null;
   busy: boolean;
@@ -334,6 +335,7 @@ export function WorkspaceActions({
     view: "checks" | "documents" | "graph" | "history" | "settings",
   ) => void;
   onRefresh: () => void;
+  onSets?: () => void;
 }) {
   const menu = useRef<HTMLDetailsElement>(null);
   const heading = useRef<HTMLElement>(null);
@@ -390,6 +392,7 @@ export function WorkspaceActions({
             <FolderOpen size={14} />
             Набор из «вводные»
           </button>
+          {onSets && <button onClick={onSets} disabled={busy}><FolderOpen size={14} />Наборы документов МФТИ</button>}
         </div>
       </details>
     </div>
