@@ -1,0 +1,241 @@
+{
+  "targets": [
+    {
+      "set": "КФЗ",
+      "target": "0200",
+      "operands": [
+        {
+          "filename": "02_01_Ведомость_ЗП_Январь_2026.xlsx",
+          "locator": "Ведомость!C8"
+        },
+        {
+          "filename": "02_02_Ведомость_ЗП_Февраль_2026.xlsx",
+          "locator": "Ведомость!C8"
+        },
+        {
+          "filename": "02_03_Ведомость_ЗП_Март_2026.xlsx",
+          "locator": "Ведомость!C8"
+        },
+        {
+          "filename": "02_04_Ведомость_ЗП_Апрель_2026.xlsx",
+          "locator": "Ведомость!C8"
+        },
+        {
+          "filename": "02_05_Ведомость_ЗП_Май_2026.xlsx",
+          "locator": "Ведомость!C8"
+        }
+      ],
+      "workbook": "../../вводные/!Правильные_ответы_и_разбор.xlsx",
+      "cell": "C4"
+    },
+    {
+      "set": "КФЗ",
+      "target": "0200.main",
+      "value": "5054470.26",
+      "operands": [
+        {
+          "filename": "02_01_Ведомость_ЗП_Январь_2026.xlsx",
+          "locator": "Ведомость!C6"
+        },
+        {
+          "filename": "02_02_Ведомость_ЗП_Февраль_2026.xlsx",
+          "locator": "Ведомость!C6"
+        },
+        {
+          "filename": "02_03_Ведомость_ЗП_Март_2026.xlsx",
+          "locator": "Ведомость!C6"
+        },
+        {
+          "filename": "02_04_Ведомость_ЗП_Апрель_2026.xlsx",
+          "locator": "Ведомость!C6"
+        },
+        {
+          "filename": "02_05_Ведомость_ЗП_Май_2026.xlsx",
+          "locator": "Ведомость!C6"
+        }
+      ]
+    },
+    {
+      "set": "КФЗ",
+      "target": "0300",
+      "operands": [
+        {
+          "filename": "03_01_Страховые_взносы_Январь_2026.xlsx",
+          "locator": "Расчет взносов!B6"
+        },
+        {
+          "filename": "03_02_Страховые_взносы_Февраль_2026.xlsx",
+          "locator": "Расчет взносов!B6"
+        },
+        {
+          "filename": "03_03_Страховые_взносы_Март_2026.xlsx",
+          "locator": "Расчет взносов!B6"
+        },
+        {
+          "filename": "03_04_Страховые_взносы_Апрель_2026.xlsx",
+          "locator": "Расчет взносов!B6"
+        },
+        {
+          "filename": "03_05_Страховые_взносы_Май_2026.xlsx",
+          "locator": "Расчет взносов!B6"
+        }
+      ],
+      "workbook": "../../вводные/!Правильные_ответы_и_разбор.xlsx",
+      "cell": "C5"
+    },
+    {
+      "set": "КФЗ",
+      "target": "0800",
+      "operands": [
+        {
+          "filename": "04_Акт_118_28-01-2026.pdf",
+          "locator": "Страница 1"
+        },
+        {
+          "filename": "05_Счет-акт_174_25-02-2026.pdf",
+          "locator": "Страница 1"
+        },
+        {
+          "filename": "07_УПД_0426-77.pdf",
+          "locator": "Страница 1"
+        },
+        {
+          "filename": "06_Служебная_записка_КЛ-31.docx",
+          "locator": "Таблица 1, строка 2"
+        }
+      ],
+      "workbook": "../../вводные/!Правильные_ответы_и_разбор.xlsx",
+      "cell": "C6"
+    },
+    {
+      "set": "КФЗ",
+      "target": "0900",
+      "operands": [
+        {
+          "filename": "08_Акт_ИА-15_31-01-2026.pdf",
+          "locator": "Страница 1"
+        },
+        {
+          "filename": "09_Акт_ADM-27_27-02-2026.pdf",
+          "locator": "Страница 1"
+        },
+        {
+          "filename": "13_УПД_УПР-55.pdf",
+          "locator": "Страница 1"
+        },
+        {
+          "filename": "11_Справка_ИТ_03-26.docx",
+          "locator": "Таблица 1, строка 2"
+        },
+        {
+          "filename": "12_Акт_связь_0426.png",
+          "locator": "Изображение"
+        }
+      ],
+      "workbook": "../../вводные/!Правильные_ответы_и_разбор.xlsx",
+      "cell": "C7"
+    },
+    {
+      "set": "КФЗ",
+      "target": "total",
+      "workbook": "../../вводные/!Правильные_ответы_и_разбор.xlsx",
+      "cell": "C8"
+    },
+    {
+      "set": "S01",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S01_2024_Лаборатория_исторической_генетики/set.json"
+    },
+    {
+      "set": "S02",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S02_2024_Проекты_ИИ/set.json"
+    },
+    {
+      "set": "S03",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S03_2024_Программы_ФПМИ/set.json"
+    },
+    {
+      "set": "S04",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S04_2025_План_проектов_ИИ/set.json"
+    },
+    {
+      "set": "S05",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S05_2025_План_программ_ФПМИ/set.json"
+    },
+    {
+      "set": "S06",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S06_2024_MIPTHEALTH/set.json"
+    },
+    {
+      "set": "S07",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S07_2023_План_расходов_на_сотрудников/set.json"
+    },
+    {
+      "set": "S08",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S08_2023_Общий_план_расходов/set.json"
+    },
+    {
+      "set": "S09",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S09_2023_Перенос_остатка_из_2022/set.json"
+    },
+    {
+      "set": "S10",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S10_2022_Расходы_на_сотрудников/set.json"
+    },
+    {
+      "set": "S11",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S11_2024_Расходы_на_сотрудников/set.json"
+    },
+    {
+      "set": "S12",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S12_2024_Общие_административные_расходы/set.json"
+    },
+    {
+      "set": "S13",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S13_2025_Содержание_аппарата_управления/set.json"
+    },
+    {
+      "set": "S14",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S14_2025_Всего_использовано_средств/set.json"
+    },
+    {
+      "set": "S15",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S15_2025_Всего_поступило_средств/set.json"
+    },
+    {
+      "set": "S16",
+      "target": "goal",
+      "group": "S01–S16",
+      "set_manifest": "../../document_sets/S16_2025_Остаток_на_конец_года/set.json"
+    }
+  ]
+}
