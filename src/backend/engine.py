@@ -137,14 +137,15 @@ def document_decisions(documents, context):
         elif document["errors"]:
             reasons.append("extraction_error")
         if document["role"] == "source":
-            if not context.get("contract"):
+            published_tables = context.get("basis") == "published_financial_tables"
+            if not context.get("contract") and not published_tables:
                 warnings.append("missing_context")
-            if not contract:
+            if not contract and not published_tables:
                 warnings.append("missing_contract")
             elif context.get("contract") and contract != context["contract"]:
                 reasons.append("wrong_contract")
             document_date = fact_value(document, "date")
-            if not document_date:
+            if not document_date and not published_tables:
                 warnings.append("missing_date")
             elif context.get("start") and context.get("end"):
                 period = fact_value(document, "period")
@@ -158,14 +159,14 @@ def document_decisions(documents, context):
                         warnings.append("partial_period")
                 elif not context["start"] <= document_date <= context["end"]:
                     reasons.append("outside_period")
-            else:
+            elif not published_tables:
                 warnings.append("missing_context")
-            if not document.get("category"):
+            if not document.get("category") and not published_tables:
                 warnings.append("unmapped_category")
-            if fact_value(document, "amount") is None:
+            if fact_value(document, "amount") is None and not published_tables:
                 warnings.append("missing_amount")
             for key in ("contract", "date", "amount"):
-                if document["facts"].get(key, {}).get("needs_review"):
+                if document["facts"].get(key, {}).get("needs_review") and not published_tables:
                     warnings.append("uncertain_extraction")
         included = not reasons
         if "include" in document:
@@ -223,7 +224,7 @@ def display_amount(value):
 
 def scope_issues(context):
     issues = []
-    if not context.get("contract"):
+    if not context.get("contract") and context.get("basis") != "published_financial_tables":
         issues.append("Не указан договор")
     if not context.get("start") or not context.get("end"):
         issues.append("Не задан период проверки. В сумму могут попасть документы других месяцев")
@@ -390,7 +391,7 @@ def calculate(case):
             if document["state"] == "review" and not document.get("reviewed"):
                 doubtful = True
             node["status"] = "review" if doubtful else "verified"
-            if not document["included"]:
+            if not document["included"] and document["role"] != "report":
                 node["status"] = "excluded"
             node["direct_status"] = node["status"]
             node["inputs"] = [{"name": f"x{index + 1}", "ref": dependency["id"], "value": dependency["expected"], "label": dependency.get("label", "")}
@@ -544,7 +545,7 @@ def validate_change(case, kind, target, values):
             document = documents.get(variable["document_id"])
             if not isinstance(key, str) or not re.fullmatch(r"manual_[a-f0-9]{32}", key):
                 raise ValueError("Некорректный идентификатор переменной")
-            if not document or document["role"] != "source" or not document["included"]:
+            if not document or document["role"] not in ("source", "report") or document["role"] == "source" and not document["included"]:
                 raise ValueError("Переменная должна ссылаться на включенный первичный документ")
             evidence = variable["evidence"]
             if not isinstance(evidence, dict) or evidence.get("document_id") != document["id"]:
@@ -659,7 +660,7 @@ def validate_change(case, kind, target, values):
             source = result["nodes"][item["ref"]]
             if source["kind"] == "fact":
                 document = next(document for document in result["documents"] if document["id"] == source["document_id"])
-                if document["role"] != "source" or not document["included"]:
+                if document["role"] not in ("source", "report") or document["role"] == "source" and not document["included"]:
                     raise ValueError("Для формулы выберите включенный первичный документ или проверяемый показатель")
             names.append(item["name"])
         if not names or len(names) != len(set(names)):

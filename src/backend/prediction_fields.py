@@ -12,12 +12,15 @@ def structure_fields(document, model):
     for page in model["pages"]:
         size = page.get("size", page.get("size_points"))
         nodes = page.get("nodes", [])
-        heading = " ".join(node["label"] for node in nodes if node["kind"] == "text" and node["bbox"][1] < size[1] * .16)
+        heading = " ".join(node["label"] for node in nodes if node["bbox"][1] < size[1] * .12
+                           and re.search(r"план|отч[её]т|тыс|млн", node["label"], re.I))
         for node in nodes:
             if node["kind"] != "value" or node.get("value_type") != "decimal":
                 continue
             rows, columns = node.get("row_path", []), node.get("column_path", [])
             label = " | ".join(rows) or node.get("metric", "")
+            if not label:
+                continue
             # Header units may be specified in the page caption.
             unit_text = " ".join([*columns, heading])
             unit = "млн руб." if re.search(r"млн", unit_text, re.I) else "тыс. руб." if re.search(r"тыс", unit_text, re.I) else "RUB"

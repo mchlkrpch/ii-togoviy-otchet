@@ -3,6 +3,8 @@ import { Check, FilePlus2, Save, X } from "lucide-react";
 import { request, amount } from "./api";
 import { draftRule, usedNewVariables } from "./formulaModel";
 import type { CaseResult, FormulaDraft } from "./types";
+import type { Evidence } from "./types";
+import FormulaPrediction from "./FormulaPrediction";
 
 export default function FormulaEditor({
   result,
@@ -15,6 +17,7 @@ export default function FormulaEditor({
   focusVersion,
   onVariable,
   notice,
+  onPredictionSource,
 }: {
   result: CaseResult;
   draft: FormulaDraft;
@@ -26,6 +29,7 @@ export default function FormulaEditor({
   focusVersion: number;
   onVariable: (ref: string, name: string) => void;
   notice?: string;
+  onPredictionSource: (evidence: Evidence) => void;
 }) {
   const textarea = useRef<HTMLTextAreaElement>(null);
   const [filesOpen, setFilesOpen] = useState(false);
@@ -274,6 +278,7 @@ export default function FormulaEditor({
           {notice}
         </p>
       )}
+      <FormulaPrediction result={result} draft={draft} onDraft={onDraft} onSource={onPredictionSource} busy={busy} />
       <footer>
         <input
           aria-label="Причина изменения формулы"

@@ -307,6 +307,10 @@ export default function VerificationWorkbench({
                 focusVersion={focusVersion}
                 onVariable={showVariable}
                 notice={message}
+                onPredictionSource={(evidence) => {
+                  if (evidence.document_id) setActiveId(evidence.document_id);
+                  setFocusedEvidence(evidence);
+                }}
               />
             ) : (
               selected && (

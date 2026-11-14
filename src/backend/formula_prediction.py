@@ -81,7 +81,7 @@ def scaled_name(index, source, target):
 
 def predict(target, fields, semantic_encoder=encoder):
     """Only the metadata keys above reach the encoder or candidate ranking."""
-    fields = [field for field in fields if field["id"] != target["id"] and field.get("available", True)]
+    fields = [field for field in fields if field["id"] not in (target["id"], target.get("source_ref")) and field.get("available", True)]
     if not fields:
         return {"suggestions": [], "abstention": "Нет доступных первичных полей", "model": "rubert-tiny2"}
     similarities = semantic_encoder.similarities(metadata_text(target), [metadata_text(field) for field in fields])

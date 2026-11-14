@@ -54,6 +54,12 @@ class FormulaPreview(BaseModel):
     variables: list[dict] = Field(default_factory=list)
 
 
+class FormulaPrediction(BaseModel):
+    target: str = Field(min_length=1, max_length=200)
+    revision: int
+    document_ids: list[str] | None = Field(default=None, max_length=150)
+
+
 class StructureEdit(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -116,6 +122,7 @@ def health():
         "structure_slice": True,
         "ocr": bool(shutil.which("tesseract")),
         "demo_available": SOURCE_DIR.is_dir(),
+        "formula_prediction": True,
     }
 
 
@@ -280,6 +287,18 @@ def formula_preview(case_id: str, draft: FormulaPreview):
         return {key: node.get(key) for key in ("expected", "reported", "delta", "status", "inputs", "blocked_by")}
     except (ValueError, TypeError, KeyError) as exc:
         raise HTTPException(400, str(exc)) from exc
+
+
+@app.post("/api/cases/{case_id}/formula-prediction")
+def formula_prediction(case_id: str, request: FormulaPrediction):
+    from .prediction_service import suggest
+    case = get_case(case_id)
+    if case["revision"] != request.revision:
+        raise HTTPException(409, "Проект изменился. Обновите его перед предсказанием.")
+    try:
+        return suggest(case, store, request.target, request.document_ids)
+    except (ValueError, ImportError, OSError) as exc:
+        raise HTTPException(422, str(exc)) from exc
 
 
 @app.get("/api/cases/{case_id}/documents/{document_id}/file")

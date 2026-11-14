@@ -1277,3 +1277,14 @@
     font-size: 20px;
   }
 }
+.formula-prediction { border-top: 1px solid #c8d8e9; padding: 8px 12px; max-height: 42vh; overflow: auto; }
+.formula-prediction-actions { display: flex; align-items: flex-start; gap: 12px; }
+.formula-prediction details { min-width: 180px; max-width: 440px; }
+.formula-prediction summary { cursor: pointer; padding: 7px; }
+.formula-prediction label { display: flex; align-items: center; gap: 6px; padding: 3px 0; overflow-wrap: anywhere; }
+.formula-prediction label input { flex: 0 0 auto; width: auto; }
+.formula-prediction article { margin-top: 8px; padding: 10px; border: 1px solid #c4d6eb; background: #f4f8fd; }
+.formula-prediction article code { display: block; white-space: pre-wrap; overflow-wrap: anywhere; }
+.formula-prediction p { margin: 7px 0; font-size: 12px; }
+.prediction-sources { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px; }
+.prediction-sources button { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; text-align: left; background: white; padding: 7px; border: 1px solid #c4d6eb; overflow-wrap: anywhere; }
