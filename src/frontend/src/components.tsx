@@ -8,7 +8,6 @@ import {
   ChevronDown,
   CircleAlert,
   CircleCheck,
-  CircleHelp,
   Clock3,
   FileCheck2,
   FileSpreadsheet,
@@ -38,7 +37,7 @@ export function Badge({ status, label }: { status: Status; label?: string }) {
     status === "verified"
       ? CircleCheck
       : status === "mismatch"
-        ? CircleHelp
+        ? CircleAlert
         : status === "review"
           ? CircleAlert
           : Clock3;
@@ -653,7 +652,7 @@ export function UploadDialog({
   const [sources, setSources] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
   return (
-    <Modal title="Новая проверка" onClose={onClose}>
+    <Modal title="Новая проверка" onClose={onClose} className="project-create-dialog">
       <form
         onSubmit={async (event) => {
           event.preventDefault();
@@ -682,9 +681,9 @@ export function UploadDialog({
       >
         <label>
           Название проверки
-          <input name="name" defaultValue="Проверка отчетности" required />
+          <input name="name" defaultValue="Проверка отчетности" maxLength={200} required />
         </label>
-        <label className="upload-zone">
+        <label className={`upload-zone${report ? " has-files" : ""}`}>
           <FileCheck2 size={25} />
           <strong>
             {reports.length > 1
@@ -703,7 +702,7 @@ export function UploadDialog({
             }
           />
         </label>
-        <label className="upload-zone compact">
+        <label className={`upload-zone compact${sources.length ? " has-files" : ""}`}>
           <Files size={23} />
           <strong>
             {sources.length
@@ -726,9 +725,8 @@ export function UploadDialog({
             <ChevronDown size={14} />
           </summary>
           <p className="upload-scope-help">
-            Укажите период для отбора документов. Если он записан в файле
-            00_README, выберите этот файл вместе с первичкой. При пустом периоде
-            результат будет предварительным.
+            Добавьте 00_README вместе с первичными документами или укажите период вручную.
+            Без периода результат будет предварительным.
           </p>
           <label>
             Номер договора

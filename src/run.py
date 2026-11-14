@@ -39,10 +39,10 @@ def main():
         with urllib.request.urlopen(url + "/api/health", timeout=1) as response:
             state = json.load(response)
             if state.get("application") == "report-verification":
-                if state.get("structure_slice") is not True:
+                if state.get("structure_slice") is not True or state.get("formula_prediction") is not True:
                     parser.exit(
                         1,
-                        f"На {url} запущена старая версия сервера без актуальных инструментов разметки. "
+                        f"На {url} запущена предыдущая версия сервера. "
                         "Остановите её (Ctrl+C в терминале запуска) и запустите приложение снова.\n",
                     )
                 print(f"Приложение уже запущено: {url}")
@@ -62,6 +62,10 @@ def main():
     if not marker.exists() or marker.read_text() != fingerprint:
         run([python, "-m", "pip", "install", "-r", requirements])
         marker.write_text(fingerprint)
+    from prepare_model import DEFAULT_PATH
+    model_directory = Path(os.environ.get("AUDIT_MODEL_DIR", DEFAULT_PATH))
+    if not (model_directory / "manifest.json").is_file():
+        run([python, BASE / "prepare_model.py", "--output", model_directory])
     frontend = BASE / "frontend"
     source_paths = [frontend / "package.json", frontend / "package-lock.json", frontend / "index.html", frontend / "vite.config.ts", *list((frontend / "src").rglob("*"))]
     built = frontend / "dist" / "index.html"

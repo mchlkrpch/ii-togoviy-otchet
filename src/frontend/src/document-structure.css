@@ -30,6 +30,31 @@
   background: #fff;
   border-right: 1px solid var(--structure-border);
 }
+.structure-sidebar-heading {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  min-height: 54px;
+  padding: 8px 16px 8px 20px;
+}
+.structure-sidebar-heading h2 {
+  margin: 0;
+  color: var(--mipt-blue, var(--structure-blue));
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+.structure-sidebar-heading .structure-close {
+  width: 35px;
+  height: 35px;
+  border: 0;
+  background: var(--mipt-light-blue, #eaf4fc);
+}
+.structure-sidebar-heading .structure-close:hover {
+  background: #d8eafb;
+}
 .structure-heading {
   display: flex;
   align-items: start;
@@ -124,7 +149,7 @@
   align-items: center;
   margin: 1px 0;
 }
-.structure-tree-row:hover, .structure-tree-row.selected {
+.structure-tree-row:hover, .structure-tree-row.selected, .structure-tree-row.previewed {
   background: #eaf4fc;
 }
 .structure-tree-row.selected {
@@ -151,6 +176,24 @@
   color: #5c7186;
   font-size: 10px;
 }
+.structure-key-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  border-radius: 3px;
+  background: #f1f5fa;
+}
+.structure-key-value [data-structure-part] {
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+.structure-key-value [data-structure-part="key"] {
+  color: #506275;
+}
+.structure-key-value [data-structure-part].previewed {
+  color: #124879;
+  background: #d7e9fb;
+}
 .structure-swatch {
   width: 6px;
   height: 6px;
@@ -175,19 +218,22 @@
 .structure-regions rect {
   fill: var(--field-color);
   stroke: var(--field-color);
-  stroke-opacity: .58;
-  fill-opacity: .07;
+  stroke-opacity: .29;
+  fill-opacity: .035;
 }
 .structure-regions .structure-branch {
-  fill-opacity: .04;
+  fill-opacity: .02;
   stroke-width: 1.25;
 }
 .structure-regions .structure-key {
   stroke-dasharray: 3 2;
 }
 .structure-regions .related {
-  fill-opacity: .2;
   stroke-opacity: .9;
+}
+.structure-regions .axis-related {
+  fill-opacity: .08;
+  stroke-opacity: .65;
 }
 .structure-regions .chosen {
   fill-opacity: .16;
@@ -195,6 +241,7 @@
 }
 .structure-regions .structure-outline {
   fill: none;
+  stroke-opacity: .9;
   stroke-width: 2;
 }
 .structure-editor {
@@ -252,6 +299,5 @@
   }
   .structure-sidebar {
     border-right: 0;
-    border-bottom: 1px solid var(--structure-border);
   }
 }

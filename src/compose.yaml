@@ -7,6 +7,7 @@ services:
       - "127.0.0.1:${AUDIT_PORT:-8765}:8765"
     volumes:
       - ../вводные:/data/input:ro
+      - ../document_sets:/data/document_sets:ro
       - ./.data/docker:/data/state
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8765/api/health')"]

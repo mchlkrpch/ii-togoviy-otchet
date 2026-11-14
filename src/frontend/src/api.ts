@@ -24,7 +24,7 @@ export async function request<T>(url: string, init?: RequestInit): Promise<T> {
 
 export const statusLabels = {
   verified: "Подтверждено",
-  mismatch: "Вопрос",
+  mismatch: "Потенциальное расхождение",
   unverified: "Нет подтверждения",
   review: "Требует проверки",
   excluded: "Исключено",

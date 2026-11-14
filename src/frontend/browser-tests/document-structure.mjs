@@ -28,16 +28,39 @@ try {
   await mode.click();
   await expect(mode).toHaveAttribute("aria-pressed", "true");
   await expect(tree.getByText(/Таблица · 17 граф/)).toBeVisible({ timeout: 60_000 });
-  await expect(tree.getByText(/Исполнитель\s*:/)).toBeVisible();
+  await expect(tree.getByRole("heading", { name: "Иерархия полей" })).toBeVisible();
+  const pair = tree.getByRole("button", { name: /Исполнитель\s*:/ }).first();
+  await expect(pair).toBeVisible();
   assert.ok(await canvas.locator(".structure-branch").count() > 2);
 
+  const labor = tree.locator(".structure-node").filter({ hasText: /Трудоемкость/ }).first();
+  await labor.click();
+  const cell = tree.locator(".structure-node").filter({ hasText: /34,14.*2026/ }).first();
+  await cell.click();
+  const activeId = await cell.getAttribute("data-structure-select");
+  const overlay = canvas.locator(".structure-regions");
+  await expect(overlay.locator(`.structure-field[data-structure-node="${activeId}"][data-structure-axis="both"]`)).toHaveCount(1);
+  assert.ok(await overlay.locator('.structure-field[data-structure-axis="row"]').count() > 5);
+  assert.ok(await overlay.locator('.structure-field[data-structure-axis="column"]').count() > 1);
+  const inactive = overlay.locator('.structure-field:not(.chosen,.axis-related,.related)').first();
+  await expect(inactive).toHaveCSS("fill-opacity", "0.035");
+  const cellBox = await overlay.locator(`.structure-field[data-structure-node="${activeId}"]`).boundingBox();
+  assert.ok(cellBox);
+  await page.getByRole("button", { name: "Снять выбор поля" }).click();
+  await page.mouse.move(cellBox.x + cellBox.width / 2, cellBox.y + cellBox.height / 2);
+  await expect(overlay.locator(`.structure-field.chosen[data-structure-node="${activeId}"]`)).toHaveCount(1);
   await tree.locator(".structure-node").filter({ hasText: /Затраты на оплату труда.*Стать/ }).first().click();
   await expect(tree.getByRole("button", { name: /^в том числе:/i }).first()).toBeVisible();
   assert.ok(await canvas.locator(".structure-field.related").count() > 2);
 
-  const pair = tree.getByRole("button", { name: /Исполнитель\s*:/ }).first();
   const pairId = await pair.getAttribute("data-structure-select");
+  for (const part of ["key", "value"]) {
+    await pair.locator(`[data-structure-part="${part}"]`).hover();
+    await expect(overlay.locator(`rect.chosen[data-structure-node="${pairId}"][data-structure-part="${part}"]`)).toHaveCount(1);
+    await expect(overlay.locator(`rect.chosen[data-structure-node="${pairId}"][data-structure-part]`)).toHaveCount(1);
+  }
   await pair.click();
+  await toolbar.hover();
   const editor = page.getByRole("form", { name: "Текст поля" });
   const value = editor.getByRole("textbox", { name: "Значение поля" });
   await expect(value).toHaveAttribute("readonly", "");
@@ -78,13 +101,16 @@ try {
   if (!await photo.count())
     await page.getByRole("button", { name: "Раскрыть первичные файлы" }).first().click();
   await photo.click();
-  await expect(mode).toHaveAttribute("aria-pressed", "false");
-  await mode.click();
+  await expect(mode).toHaveAttribute("aria-pressed", "true");
   await expect(tree.getByText(/Реквизиты · ключ: значение/)).toBeVisible({ timeout: 60_000 });
   assert.ok(await canvas.locator(".structure-key").count() > 0);
   const size = await canvas.locator(".structure-regions").boundingBox();
   const image = await canvas.locator("img").boundingBox();
   assert.ok(size && image && Math.abs(size.height - image.height) < 1);
+  await mode.click();
+  await page.locator('.project-history a[data-format="pdf"]').first().click();
+  await expect(mode).toHaveAttribute("aria-pressed", "false");
+  await expect(tree).toHaveCount(0);
   assert.deepEqual(errors, []);
   console.log("PDF hierarchy, paired regions, picture OCR, save/reload and toolbar mode verified");
 } finally {

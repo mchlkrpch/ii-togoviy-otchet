@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, FilePlus2, Save, X } from "lucide-react";
 import { request, amount } from "./api";
-import { draftRule, usedNewVariables } from "./formulaModel";
+import { draftRule, removeFormulaVariable, usedNewVariables } from "./formulaModel";
 import type { CaseResult, FormulaDraft } from "./types";
 import type { Evidence } from "./types";
 import FormulaPrediction from "./FormulaPrediction";
+import type { PredictionSession } from "./FormulaPrediction";
+import type { MutableRefObject } from "react";
 
 export default function FormulaEditor({
   result,
@@ -18,30 +20,36 @@ export default function FormulaEditor({
   onVariable,
   notice,
   onPredictionSource,
+  predictOnOpen,
+  predictionSession,
 }: {
   result: CaseResult;
   draft: FormulaDraft;
   onDraft: (draft: FormulaDraft) => void;
   onChooseFile: (id: string) => void;
-  onSave: () => void;
+  onSave: (candidate?: FormulaDraft) => Promise<void>;
   onCancel: () => void;
   busy: boolean;
   focusVersion: number;
   onVariable: (ref: string, name: string) => void;
   notice?: string;
   onPredictionSource: (evidence: Evidence) => void;
+  predictOnOpen: boolean;
+  predictionSession: MutableRefObject<PredictionSession>;
 }) {
   const textarea = useRef<HTMLTextAreaElement>(null);
   const [filesOpen, setFilesOpen] = useState(false);
   const [fileIndex, setFileIndex] = useState(0);
   const [filter, setFilter] = useState("");
   const [preview, setPreview] = useState<{
+    payload: string;
     expected: string | null;
     delta: string | null;
     status: string;
   }>();
   const [error, setError] = useState("");
   const [previewing, setPreviewing] = useState(false);
+  const [editNotice, setEditNotice] = useState("");
   const rule = useMemo(
     () => draftRule(draft),
     [draft.expression, draft.inputs],
@@ -68,7 +76,7 @@ export default function FormulaEditor({
       })
         .then((data) => {
           if (alive) {
-            setPreview(data);
+            setPreview({ ...data, payload });
             setPreviewing(false);
           }
         })
@@ -144,6 +152,7 @@ export default function FormulaEditor({
           placeholder="Введите формулу или нажмите / для выбора числа"
           onChange={(event) => {
             setFilesOpen(false);
+            setEditNotice("");
             onDraft({
               ...draft,
               expression: event.target.value,
@@ -260,25 +269,46 @@ export default function FormulaEditor({
           const value = variable?.value || result.nodes[input.ref]?.expected;
           const used = rule.inputs.some((item) => item.name === input.name);
           return (
-            <button
-              key={input.name}
-              className={used ? "" : "unused"}
-              title={used ? "Показать источник" : "Не используется в формуле"}
-              onClick={() => onVariable(input.ref, input.name)}
-            >
-              <strong>{input.name}</strong>
-              <span>{value ?? "—"}</span>
-              {variable && <small>новая</small>}
-            </button>
+            <div key={input.name} className="formula-draft-variable">
+              <button
+                className={used ? "" : "unused"}
+                title={used ? "Показать источник" : "Не используется в формуле"}
+                onClick={() => onVariable(input.ref, input.name)}
+              >
+                <strong>{input.name}</strong>
+                <span>{value ?? "—"}</span>
+                {variable && <small>новая</small>}
+              </button>
+              <button
+                className="formula-remove-variable"
+                aria-label={`Убрать ${input.name} из формулы`}
+                title={`Убрать ${input.name} из формулы`}
+                disabled={busy}
+                onClick={() => {
+                  const next = removeFormulaVariable(draft, input.name);
+                  setEditNotice(next.inputs.length === draft.inputs.length
+                    ? "Переменная выделена. Исправьте выражение, чтобы убрать её из расчёта."
+                    : "");
+                  onDraft(next);
+                  window.requestAnimationFrame(() => {
+                    textarea.current?.focus({ preventScroll: true });
+                    textarea.current?.setSelectionRange(next.cursor, next.cursorEnd);
+                  });
+                }}
+              >
+                <X size={13} />
+              </button>
+            </div>
           );
         })}
       </div>
-      {notice && (
+      {(editNotice || notice) && (
         <p className="formula-editor-notice" role="status">
-          {notice}
+          {editNotice || notice}
         </p>
       )}
-      <FormulaPrediction result={result} draft={draft} onDraft={onDraft} onSource={onPredictionSource} busy={busy} />
+      <FormulaPrediction result={result} draft={draft} onEdit={onDraft} onSave={onSave} onSource={onPredictionSource}
+        busy={busy} predictOnOpen={predictOnOpen} session={predictionSession} />
       <footer>
         <input
           aria-label="Причина изменения формулы"
@@ -306,12 +336,13 @@ export default function FormulaEditor({
         </button>
         <button
           className="button primary"
-          onClick={onSave}
+          onClick={() => void onSave()}
           disabled={
             busy ||
             previewing ||
             !!error ||
             !preview ||
+            preview.payload !== payload ||
             draft.reason.trim().length < 3
           }
         >

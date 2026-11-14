@@ -15,14 +15,14 @@ import {
   structureNodeAt,
   useDocumentStructure,
 } from "./DocumentStructure";
-import type { Box, StructureNode } from "./DocumentStructure";
+import type { Box, StructureFocus, StructureNode } from "./DocumentStructure";
 import { SliceControls, SliceOverlay } from "./StructureSlice";
 import type { SliceCuts } from "./StructureSlice";
 import { loadCamera } from "./viewCamera";
 import { useDocumentCamera } from "./useDocumentCamera";
-import { request } from "./api";
+import { request, statusLabels } from "./api";
 import { canonicalNumber } from "./numericText";
-import { calculationExpression } from "./calculationDisplay";
+import { calculationExpression, calculationStatus } from "./calculationDisplay";
 import { cellPosition, evidenceKey, isSameEvidence } from "./workbenchModel";
 import { SpreadsheetOriginal, WordOriginal } from "./OfficeOriginal";
 import type { OriginalSheet } from "./OfficeOriginal";
@@ -41,6 +41,8 @@ import type {
 
 export type DocumentViewerProps = {
   revision?: number;
+  structureOpen?: boolean;
+  onStructureOpenChange?: (open: boolean) => void;
   onWorkbookChange?: (change: ChangeRequest) => Promise<boolean | undefined>;
   onEditField?: (edit: Edit) => void;
   busy?: boolean;
@@ -53,6 +55,7 @@ export type DocumentViewerProps = {
   document: Document;
   highlights?: Evidence[];
   activeEvidence?: Evidence;
+  focusedEvidence?: Evidence;
   onSelectEvidence?: (evidence: Evidence) => void;
   reportNodes?: Node[];
   selectedIds?: string[];
@@ -87,6 +90,8 @@ export default function DocumentViewer(props: DocumentViewerProps) {
 
 function OriginalDocumentViewer({
   caseId,
+  structureOpen: controlledStructureOpen,
+  onStructureOpenChange,
   onEditField,
   busy = false,
   onUseNumber,
@@ -97,6 +102,7 @@ function OriginalDocumentViewer({
   document: source,
   highlights = [],
   activeEvidence,
+  focusedEvidence,
   onSelectEvidence,
   reportNodes = [],
   selectedIds = [],
@@ -147,7 +153,10 @@ function OriginalDocumentViewer({
   const imageFormat = ["pdf", "png", "jpg", "jpeg", "tif", "tiff"].includes(
     source.format,
   );
-  const [structureOpen, setStructureOpen] = useState(false);
+  const [localStructureOpen, setLocalStructureOpen] = useState(false);
+  const structureOpen = controlledStructureOpen ?? localStructureOpen;
+  const [treePreview, setTreePreview] = useState<StructureFocus>();
+  const [canvasPreview, setCanvasPreview] = useState<StructureFocus>();
   const [structureSelection, setStructureSelection] = useState<{ page: number; id: string }>();
   const [fieldFocus, setFieldFocus] = useState<{ box: Box; size: [number, number] }>();
   const [sliceDraft, setSliceDraft] = useState<(SliceCuts & { page: number; id: string; box: Box; pickingParent: boolean })>();
@@ -156,6 +165,12 @@ function OriginalDocumentViewer({
   const showStructure = imageFormat && structureOpen && !onUseNumber;
   const structure = useDocumentStructure(url, showStructure, page);
   const structurePage = showStructure ? structure.page : undefined;
+  useEffect(() => {
+    if (!showStructure) {
+      setTreePreview(undefined);
+      setCanvasPreview(undefined);
+    }
+  }, [showStructure]);
   const selectedField = structureSelection?.page === page
     ? structurePage?.nodes.find((node) => node.id === structureSelection.id)
     : undefined;
@@ -164,18 +179,54 @@ function OriginalDocumentViewer({
     sliceDraft.box.every((coordinate, index) => coordinate === sliceBox?.[index])
     ? sliceDraft : undefined;
   const pieces = slice ? (slice.xCuts.length + 1) * (slice.yCuts.length + 1) : 1;
+  const structurePreview = slice ? undefined : canvasPreview ?? treePreview;
+  function clearStructurePreview() {
+    setTreePreview(undefined);
+    setCanvasPreview(undefined);
+  }
+  function setStructureOpen(open: boolean) {
+    clearStructurePreview();
+    (onStructureOpenChange ?? setLocalStructureOpen)(open);
+  }
+  function previewFieldAt(event: React.PointerEvent<HTMLDivElement>) {
+    if (!structurePage || pan || slice || event.buttons || event.pointerType === "touch") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return;
+    const x = (event.clientX - bounds.left) / bounds.width;
+    const y = (event.clientY - bounds.top) / bounds.height;
+    const node = structureNodeAt(structurePage, x, y);
+    let part: StructureFocus["part"];
+    if (node?.kind === "key_value") {
+      const px = x * structurePage.size[0];
+      const py = y * structurePage.size[1];
+      const inside = (box?: Box) =>
+        box && px >= box[0] && px <= box[2] && py >= box[1] && py <= box[3];
+      if (inside(node.value_bbox)) part = "value";
+      else if (inside(node.key_bbox)) part = "key";
+    }
+    setCanvasPreview((previous) => {
+      if (previous?.id === node?.id && previous?.part === part) return previous;
+      return node ? { id: node.id, part } : undefined;
+    });
+  }
   function cancelSlice() {
     setSliceDraft(undefined);
     setSliceError("");
   }
-  function selectField(node: StructureNode, reveal = false) {
-    if (slice) return;
+  function selectField(node: StructureNode, reveal = false, event?: React.MouseEvent) {
+    if (slice) return false;
     setStructureSelection({ page, id: node.id });
+    const check = reportNodes.find(({ reported_evidence: evidence }) =>
+      evidence?.page === page && evidence.locator === `Страница ${page} · ${node.id}`,
+    );
+    if (check) onSelectReport?.(check, event ?? { shiftKey: false, ctrlKey: false, metaKey: false });
     if (reveal && structurePage)
       setFieldFocus({ box: node.field_bbox ?? node.bbox, size: structurePage.size });
+    return !!check;
   }
   function startSlice() {
     if (!selectedField || !sliceBox || locked) return;
+    clearStructurePreview();
     setPan(false);
     setSliceError("");
     setSliceDraft({ page, id: selectedField.id, box: sliceBox, xCuts: [], yCuts: [], pickingParent: false });
@@ -254,6 +305,9 @@ function OriginalDocumentViewer({
       setColumn(Math.floor((pos.column - 1) / 100) * 100 + 1);
     }
   }, [source.id]);
+  useEffect(() => {
+    if (focusedEvidence?.page) setPage(focusedEvidence.page);
+  }, [focusedEvidence]);
   useEffect(() => setImageError(false), [page]);
   useEffect(() => {
     if (source.format !== "docx") return;
@@ -555,8 +609,7 @@ function OriginalDocumentViewer({
     if (structurePage) {
       const field = structureNodeAt(structurePage, x, y);
       if (field) {
-        selectField(field);
-        return;
+        if (selectField(field, false, event) || field.kind !== "value") return;
       }
     }
     const node = reportNodes.find((node) => {
@@ -607,6 +660,8 @@ function OriginalDocumentViewer({
           key={page}
           page={structurePage}
           selected={selectedField?.id}
+          focus={structurePreview}
+          onFocusField={setTreePreview}
           onSelect={(node) => selectField(node, true)}
           onClose={() => { cancelSlice(); setStructureOpen(false); }}
           loading={structure.loading}
@@ -637,7 +692,7 @@ function OriginalDocumentViewer({
                 className="icon-button"
                 aria-label="Предыдущая страница"
                 disabled={page <= 1 || sliceSaving}
-                onClick={() => { cancelSlice(); setPage(page - 1); }}
+                onClick={() => { cancelSlice(); clearStructurePreview(); setPage(page - 1); }}
               >
                 <ArrowLeft size={14} />
               </button>
@@ -645,7 +700,7 @@ function OriginalDocumentViewer({
                 className="icon-button"
                 aria-label="Следующая страница"
                 disabled={page >= pageCount || sliceSaving}
-                onClick={() => { cancelSlice(); setPage(page + 1); }}
+                onClick={() => { cancelSlice(); clearStructurePreview(); setPage(page + 1); }}
               >
                 <ArrowRight size={14} />
               </button>
@@ -688,7 +743,7 @@ function OriginalDocumentViewer({
             aria-label="Перемещать документ"
             aria-pressed={pan}
             disabled={!!slice}
-            onClick={() => setPan(true)}
+            onClick={() => { setCanvasPreview(undefined); setPan(true); }}
           >
             <Hand size={15} />
           </button>
@@ -801,6 +856,8 @@ function OriginalDocumentViewer({
                   width: (Math.max(1, camera.metrics.width - 32) * zoom) / 100,
                 }}
                 onClick={originalClick}
+                onPointerMove={previewFieldAt}
+                onPointerLeave={() => setCanvasPreview(undefined)}
                 onDoubleClick={(event) => {
                   if (slice || locked || pan || !onEditField || onUseNumber) return;
                   const box = event.currentTarget.getBoundingClientRect(),
@@ -1030,7 +1087,7 @@ function OriginalDocumentViewer({
                       </span>
                     );
                   })}
-                {structurePage && <StructureRegions page={structurePage} selected={selectedField} />}
+                {structurePage && <StructureRegions page={structurePage} selected={selectedField} focus={structurePreview} />}
                 {slice && sliceBox && structurePage && (
                   <SliceOverlay
                     box={sliceBox}
@@ -1093,18 +1150,21 @@ function OriginalDocumentViewer({
                   )
                   .map((node) => {
                     const r = node.reported_evidence!.rect!;
+                    const status = calculationStatus(node);
+                    const showStatus = status === "mismatch" || Boolean(calculationExpression(node));
+                    const label = showStatus ? `${node.title} · ${statusLabels[status]}` : node.title;
                     return (
                       <button
                         key={node.id}
-                        className={`report-image-cell ${calculationExpression(node) ? node.status : "value-only"} ${selectedIds.includes(node.id) ? "selected" : ""}`}
+                        className={`report-image-cell ${showStatus ? status : "value-only"} ${selectedIds.includes(node.id) ? "selected" : ""}`}
                         style={{
                           left: `${r[0] * 100}%`,
                           top: `${r[1] * 100}%`,
                           width: `${(r[2] - r[0]) * 100}%`,
                           height: `${(r[3] - r[1]) * 100}%`,
                         }}
-                        title={node.title}
-                        aria-label={calculationExpression(node) ? `${node.title} · ${node.status === "verified" ? "Подтверждено" : "Вопрос"}` : `${node.title} · ${node.reported ?? node.value ?? ""}`}
+                        title={label}
+                        aria-label={showStatus ? label : `${node.title} · ${node.reported ?? node.value ?? ""}`}
                         aria-pressed={selectedIds.includes(node.id)}
                         onClick={(event) => {
                           if (event.detail === 0) {
@@ -1125,7 +1185,7 @@ function OriginalDocumentViewer({
                           }
                         }}
                       >
-                        {calculationExpression(node) && <span className="original-status-dot" />}
+                        {showStatus && <span className="original-status-dot" />}
                       </button>
                     );
                   })}

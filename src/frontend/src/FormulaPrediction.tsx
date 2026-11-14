@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { MutableRefObject } from "react";
 import { Sparkles } from "lucide-react";
 import { amount, request } from "./api";
 import type { CaseResult, Evidence, FormulaDraft, Input, NewVariable, Rule } from "./types";
@@ -8,6 +9,7 @@ type Proposal = {
   reason: string;
   expected: string | null;
   delta: string | null;
+  reported_preview?: string | null;
   inputs: Input[];
   variables: NewVariable[];
   warnings: string[];
@@ -21,26 +23,40 @@ type Prediction = {
   abstention?: string;
   suggestions: Proposal[];
 };
+export type PredictionSession = { key: string; prediction?: Prediction; selectedDocuments: string[] };
 
-export default function FormulaPrediction({ result, draft, onDraft, onSource, busy }: {
+export default function FormulaPrediction({ result, draft, onEdit, onSave, onSource, busy, predictOnOpen, session }: {
   result: CaseResult;
   draft: FormulaDraft;
-  onDraft: (draft: FormulaDraft) => void;
+  onEdit: (draft: FormulaDraft) => void;
+  onSave: (draft: FormulaDraft) => Promise<void>;
   onSource: (evidence: Evidence) => void;
   busy: boolean;
+  predictOnOpen: boolean;
+  session: MutableRefObject<PredictionSession>;
 }) {
   const [prediction, setPrediction] = useState<Prediction>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedDocuments, setSelectedDocuments] = useState<string[]>([]);
   const generation = useRef(0);
+  const sessionKey = `${result.id}:${result.revision}:${draft.target}`;
   useEffect(() => {
     generation.current++;
-    setPrediction(undefined);
+    const saved = session.current.key === sessionKey ? session.current : { key: sessionKey, selectedDocuments: [] };
+    session.current = saved;
+    setPrediction(saved.prediction);
+    setSelectedDocuments(saved.selectedDocuments);
     setLoading(false);
     setError("");
-  }, [result.id, result.revision, draft.target]);
+  }, [sessionKey]);
   useEffect(() => () => { generation.current++; }, []);
+  useEffect(() => {
+    if (predictOnOpen && !session.current.prediction) {
+      const timer = window.setTimeout(() => void predict(), 0);
+      return () => window.clearTimeout(timer);
+    }
+  }, [predictOnOpen]);
   async function predict() {
     const current = ++generation.current;
     setLoading(true);
@@ -53,17 +69,20 @@ export default function FormulaPrediction({ result, draft, onDraft, onSource, bu
         body: JSON.stringify({ target: draft.target, revision: result.revision,
           document_ids: selectedDocuments.length ? selectedDocuments : null }),
       });
-      if (current === generation.current) setPrediction(data);
+      if (current === generation.current) {
+        session.current = { key: sessionKey, prediction: data, selectedDocuments };
+        setPrediction(data);
+      }
     } catch (reason) {
       if (current === generation.current) setError(String(reason).replace(/^Error: /, ""));
     } finally {
       if (current === generation.current) setLoading(false);
     }
   }
-  function apply(proposal: Proposal) {
-    onDraft({ ...draft, expression: proposal.rule.expression, inputs: proposal.rule.inputs,
-      variables: proposal.variables, reason: draft.reason || "Принята предложенная ИИ формула после проверки источников",
-      cursor: proposal.rule.expression.length, cursorEnd: proposal.rule.expression.length });
+  function proposalDraft(proposal: Proposal): FormulaDraft {
+    return { ...draft, expression: proposal.rule.expression, inputs: proposal.rule.inputs,
+      variables: proposal.variables, reason: draft.reason.trim().length >= 3 ? draft.reason : "Принято предложение ИИ",
+      cursor: proposal.rule.expression.length, cursorEnd: proposal.rule.expression.length };
   }
   return <div className="formula-prediction">
     <div className="formula-prediction-actions">
@@ -71,11 +90,13 @@ export default function FormulaPrediction({ result, draft, onDraft, onSource, bu
         <Sparkles size={15} />{loading ? "Анализ метаданных…" : "Предсказать ИИ"}
       </button>
       <details>
-        <summary>Источники · {selectedDocuments.length || "все первичные"}</summary>
+        <summary>Источники · {selectedDocuments.length || "автовыбор"}</summary>
         {result.documents.filter(document => document.role !== "reference").map(document =>
           <label key={document.id}>
             <input type="checkbox" checked={selectedDocuments.includes(document.id)} onChange={event => {
-              setSelectedDocuments(previous => event.target.checked ? [...previous, document.id] : previous.filter(id => id !== document.id));
+              const next = event.target.checked ? [...selectedDocuments, document.id] : selectedDocuments.filter(id => id !== document.id);
+              session.current = { key: sessionKey, selectedDocuments: next };
+              setSelectedDocuments(next);
               generation.current++;
               setLoading(false);
               setPrediction(undefined);
@@ -85,7 +106,6 @@ export default function FormulaPrediction({ result, draft, onDraft, onSource, bu
     </div>
     {error && <p role="alert" className="formula-preview-error">{error}</p>}
     {prediction && <div aria-label="Предложенные формулы">
-      <small>{prediction.model} · CPU · локально · {prediction.fields_considered} полей · {prediction.elapsed_ms} мс</small>
       {prediction.abstention && <p role="status">{prediction.abstention}</p>}
       {prediction.suggestions.map((proposal, index) => <article key={index}>
         <code>{proposal.rule.expression}</code>
@@ -98,10 +118,20 @@ export default function FormulaPrediction({ result, draft, onDraft, onSource, bu
             <small>{input.label}</small>
           </button>;
         })}</div>
-        <p>Расчет {amount(proposal.expected)} · расхождение {amount(proposal.delta)}</p>
+        {proposal.expected != null ? (
+          <p>Расчет {amount(proposal.expected)} · расхождение {amount(proposal.delta)}</p>
+        ) : (
+          <p>Ожидаемое значение пока недоступно{proposal.reported_preview != null &&
+            ` · по значениям в отчете ${amount(proposal.reported_preview)}`}</p>
+        )}
         {proposal.warnings.map(warning => <p key={warning}>{warning}</p>)}
-        <button className="button secondary" disabled={busy || prediction.revision !== result.revision} onClick={() => apply(proposal)}>
-          Использовать в черновике
+        <button className="button secondary" disabled={busy || prediction.revision !== result.revision}
+          onClick={() => onEdit(proposalDraft(proposal))}>
+          Редактировать предложение
+        </button>
+        <button className="button primary" disabled={busy || prediction.revision !== result.revision}
+          onClick={() => void onSave(proposalDraft(proposal))}>
+          Сохранить предложение
         </button>
       </article>)}
     </div>}

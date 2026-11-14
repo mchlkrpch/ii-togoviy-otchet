@@ -19,6 +19,8 @@ export type StructureNode = {
   field_bbox?: Box;
   key_bbox?: Box;
   value_bbox?: Box;
+  column?: number;
+  column_span?: number;
   color: string;
   row_path?: string[];
   column_path?: string[];
@@ -29,7 +31,9 @@ export type StructurePage = {
   size: [number, number];
   nodes: StructureNode[];
   roots: string[];
+  row_roots?: { children: string[] }[];
 };
+export type StructureFocus = { id: string; part?: "key" | "value" };
 type Structure = { version: number; model: { pages: StructurePage[] } };
 
 const nodeLabel = (node: StructureNode) =>
@@ -113,43 +117,108 @@ export function structureNodeAt(page: StructurePage, x: number, y: number) {
   return result;
 }
 
-export function StructureRegions({ page, selected }: { page: StructurePage; selected?: StructureNode }) {
+function tableAxes(page: StructurePage, active: StructureNode | undefined, nodes: Map<string, StructureNode>) {
+  const rows = new Set<string>();
+  const columns = new Set<string>();
+  const collect = (ids: Set<string>, id: string) => {
+    if (ids.has(id)) return;
+    ids.add(id);
+    for (const childId of nodes.get(id)?.children ?? []) collect(ids, childId);
+  };
+  // Generated Slice fields inherit their table coordinates from the original cell.
+  let cell = active;
+  while (cell && cell.column === undefined)
+    cell = cell.parent ? nodes.get(cell.parent) : undefined;
+  if (cell?.kind !== "value" || cell.column === undefined) return { rows, columns };
+
+  let table = cell;
+  while (table.parent) {
+    const parent = nodes.get(table.parent);
+    if (!parent) break;
+    table = parent;
+  }
+  if (table.kind !== "table") return { rows, columns };
+  const tableFields = new Set<string>();
+  collect(tableFields, table.id);
+  const matchingRows = page.row_roots?.filter((row) => row.children.includes(cell.id)) ?? [];
+  for (const row of matchingRows) {
+    for (const id of row.children) {
+      if (tableFields.has(id)) collect(rows, id);
+    }
+  }
+
+  const cellBox = cell.field_bbox ?? cell.bbox;
+  const start = cell.column;
+  const end = start + (cell.column_span ?? 1);
+  for (const id of tableFields) {
+    const candidate = nodes.get(id);
+    if (!candidate || candidate.column === undefined) continue;
+    if (candidate.column < end && candidate.column + (candidate.column_span ?? 1) > start) {
+      if (candidate.kind === "header") columns.add(id);
+      else collect(columns, id);
+    }
+    if (!matchingRows.length && candidate.kind === "value") {
+      // Some native tables omit nonnumeric rows from the projection.
+      const bounds = candidate.field_bbox ?? candidate.bbox;
+      if (Math.min(cellBox[3], bounds[3]) - Math.max(cellBox[1], bounds[1]) > 0.01)
+        collect(rows, id);
+    }
+  }
+  return { rows, columns };
+}
+
+export function StructureRegions({
+  page, selected, focus,
+}: {
+  page: StructurePage;
+  selected?: StructureNode;
+  focus?: StructureFocus;
+}) {
   const groupMask = useId();
   if (!page.size[0] || !page.size[1]) return null;
   const nodes = new Map(page.nodes.map((node) => [node.id, node]));
+  const focused = focus && nodes.get(focus.id);
+  const active = focused || selected;
+  const activePart = focused?.kind === "key_value" ? focus?.part : undefined;
+  const activePartBox = activePart === "key" ? active?.key_bbox : activePart === "value" ? active?.value_bbox : undefined;
+  const { rows, columns } = tableAxes(page, active, nodes);
   const depths = new Map<string, number>();
-  const queue = selected ? [selected.id] : [];
-  if (selected) depths.set(selected.id, 0);
+  const queue = active ? [active.id] : [];
+  if (active) depths.set(active.id, 0);
   for (const id of queue) {
+    if (activePart) break;
     for (const child of nodes.get(id)?.children ?? []) {
       if (depths.has(child)) continue;
       depths.set(child, depths.get(id)! + 1);
       queue.push(child);
     }
   }
-  function region(node: StructureNode, box: Box, name: string) {
-    const depth = depths.get(node.id);
-    const opacity = depth === undefined ? undefined : 0.16 / (2 ** depth);
+  function region(node: StructureNode, box: Box, name: string, part?: StructureFocus["part"]) {
+    const depth = activePart && part !== activePart ? undefined : depths.get(node.id);
+    const axis = rows.has(node.id) ? (columns.has(node.id) ? "both" : "row")
+      : columns.has(node.id) ? "column" : undefined;
+    const highlight = depth === 0 ? "chosen" : depth !== undefined ? "related" : axis ? "axis-related" : "";
     return (
       <rect
         key={node.id + name}
         x={box[0]} y={box[1]} width={Math.max(0, box[2] - box[0])} height={Math.max(0, box[3] - box[1])}
         vectorEffect="non-scaling-stroke"
         data-structure-node={node.id}
+        data-structure-axis={axis}
+        data-structure-part={part}
         mask={name === "structure-group-fill" ? `url(#${groupMask})` : undefined}
-        className={`${name} ${depth === 0 ? "chosen" : depth === undefined ? "" : "related"}`}
+        className={`${name} ${highlight}`}
         style={{
           "--field-color": node.color,
-          ...(name !== "structure-outline" && depth !== undefined && {
-            fillOpacity: name === "structure-branch" ? 0 : opacity,
-          }),
+          ...(name !== "structure-outline" && depth !== undefined && { fillOpacity: 0.16 / (2 ** depth) }),
+          ...(name === "structure-branch" && highlight && { fillOpacity: 0 }),
         } as CSSProperties}
       />
     );
   }
   return (
     <svg className="structure-regions" aria-hidden="true" viewBox={`0 0 ${page.size.join(" ")}`} preserveAspectRatio="none">
-      {selected && !selected.field_bbox && (
+      {active && !active.field_bbox && (
         <>
           <defs>
             <mask id={groupMask} maskUnits="userSpaceOnUse" x={0} y={0} width={page.size[0]} height={page.size[1]}>
@@ -161,26 +230,33 @@ export function StructureRegions({ page, selected }: { page: StructurePage; sele
               })}
             </mask>
           </defs>
-          {region(selected, selected.bbox, "structure-group-fill")}
+          {region(active, active.bbox, "structure-group-fill")}
         </>
       )}
       {page.nodes.filter((node) => node.kind === "table" || (node.kind === "header" && nodes.get(node.parent ?? "")?.kind === "table"))
         .map((node) => region(node, node.bbox, "structure-branch"))}
       {page.nodes.flatMap((node) => {
-        if (node.kind === "key_value" && node.key_bbox && node.value_bbox)
-          return [region(node, node.key_bbox, "structure-key"), region(node, node.value_bbox, "structure-field")];
+        if (node.kind === "key_value" && (node.key_bbox || node.value_bbox)) {
+          return [
+            node.key_bbox && region(node, node.key_bbox, "structure-key", "key"),
+            node.value_bbox && region(node, node.value_bbox, "structure-field", "value"),
+          ];
+        }
         return node.field_bbox ? [region(node, node.field_bbox, "structure-field")] : [];
       })}
-      {selected && region(selected, selected.field_bbox ?? selected.bbox, "structure-outline")}
+      {selected && region(selected,
+        (selected.id === active?.id && activePartBox) || selected.field_bbox || selected.bbox, "structure-outline")}
     </svg>
   );
 }
 
 export function StructureTree({
-  page, selected, onSelect, onClose, loading, error, retry,
+  page, selected, focus, onFocusField, onSelect, onClose, loading, error, retry,
 }: {
   page?: StructurePage;
   selected?: string;
+  focus?: StructureFocus;
+  onFocusField: (focus?: StructureFocus) => void;
   onSelect: (node: StructureNode) => void;
   onClose: () => void;
   loading: boolean;
@@ -188,6 +264,8 @@ export function StructureTree({
   retry: () => void;
 }) {
   const scroll = useRef<HTMLDivElement>(null);
+  const pointerFocus = useRef<StructureFocus | undefined>(undefined);
+  const keyboardFocus = useRef<StructureFocus | undefined>(undefined);
   const [query, setQuery] = useState("");
   const [expansion, setExpansion] = useState<Record<string, boolean>>({});
   const nodes = useMemo(() => new Map(page?.nodes.map((node) => [node.id, node])), [page]);
@@ -207,13 +285,40 @@ export function StructureTree({
     }
   }
 
+  function previewPointer(next?: StructureFocus) {
+    const previous = pointerFocus.current;
+    if (previous?.id === next?.id && previous?.part === next?.part) return;
+    pointerFocus.current = next;
+    onFocusField(next ?? keyboardFocus.current);
+  }
+
+  function previewKeyboard(next?: StructureFocus) {
+    keyboardFocus.current = next;
+    onFocusField(next ?? pointerFocus.current);
+  }
+
   function branch(id: string, depth = 0) {
     const node = nodes.get(id);
     if (!node || (tokens.length && !matches.has(id))) return null;
     const isOpen = !!tokens.length || (expansion[id] ?? (depth === 0 || parentIds.has(id)));
+    const pair = node.kind === "key_value";
     return (
       <li key={id}>
-        <div className={selected === id ? "structure-tree-row selected" : "structure-tree-row"}>
+        <div
+          className={`structure-tree-row${selected === id ? " selected" : ""}${focus?.id === id ? " previewed" : ""}`}
+          onPointerOver={(event) => {
+            if (event.pointerType === "touch" || !(event.target instanceof Element)) return;
+            const part = event.target.closest<HTMLElement>("[data-structure-part]")?.dataset.structurePart;
+            previewPointer({ id, part: part === "key" || part === "value" ? part : undefined });
+          }}
+          onPointerLeave={() => previewPointer()}
+          onFocus={(event) => {
+            if (event.target.matches(":focus-visible")) previewKeyboard({ id });
+          }}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) previewKeyboard();
+          }}
+        >
           {node.children.length ? (
             <button
               className="structure-branch-toggle"
@@ -230,6 +335,12 @@ export function StructureTree({
             className="structure-node"
             aria-pressed={selected === id}
             data-structure-select={id}
+            onKeyDown={(event) => {
+              if (!pair || (event.key !== "ArrowLeft" && event.key !== "ArrowRight")) return;
+              event.preventDefault();
+              const part = event.key === "ArrowLeft" ? "key" : "value";
+              previewKeyboard({ id, part });
+            }}
             onClick={() => {
               if (node.children.length && !isOpen)
                 setExpansion((previous) => ({ ...previous, [id]: true }));
@@ -238,7 +349,18 @@ export function StructureTree({
           >
             <span className="structure-swatch" style={{ background: node.color }} aria-hidden="true" />
             <span>
-              {nodeLabel(node)}
+              {pair ? (
+                <span className="structure-key-value">
+                  <span
+                    data-structure-part="key"
+                    className={focus?.id === id && focus.part === "key" ? "previewed" : undefined}
+                  >{node.label}:</span>{" "}
+                  <span
+                    data-structure-part="value"
+                    className={focus?.id === id && focus.part === "value" ? "previewed" : undefined}
+                  >{node.value}</span>
+                </span>
+              ) : nodeLabel(node)}
               {node.needs_review && <span className="structure-review" title="Проверить распознавание" aria-label="Проверить распознавание"> ⚑</span>}
               {node.kind === "value" && !!node.row_path?.length && (
                 <small> · {node.row_path.join(" → ")}</small>
@@ -274,8 +396,8 @@ export function StructureTree({
   const tree = page?.roots.map((id) => branch(id)).filter(Boolean);
   return (
     <aside id="document-structure" className="structure-sidebar" aria-label="Структура документа">
-      <header className="structure-heading">
-        <div><small>Карта документа</small><h2>Иерархия полей</h2></div>
+      <header className="structure-sidebar-heading">
+        <h2>Иерархия полей</h2>
         <button type="button" className="structure-close" onClick={onClose} aria-label="Скрыть структуру документа"><X size={16} /></button>
       </header>
       {!loading && !error && !!page?.roots.length && (

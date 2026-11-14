@@ -22,6 +22,15 @@ SUPPORTED = {".pdf", ".docx", ".xlsx", ".png", ".jpg", ".jpeg", ".tif", ".tiff",
 MONTHS = {"январ": 1, "феврал": 2, "март": 3, "апрел": 4, "ма[йя]": 5,
           "июн": 6, "июл": 7, "август": 8, "сентябр": 9, "октябр": 10,
           "ноябр": 11, "декабр": 12}
+REPORT_DATE = r"(?:\d{1,2}\.\d{1,2}\.20\d{2}|\d{1,2}\s+(?:" + "|".join(MONTHS) + r")[а-яё]*\s+20\d{2})\b"
+STAGE_BOUNDARY = re.compile(
+    rf"\b(?P<label>начало|окончание|конец)\s+(?:(?P<stage>\d+)\s*[-–]?\s*(?:го\s+)?)?"
+    rf"(?P<scope>этапа|отч[её]тного\s+периода)\s*[:—–-]?\s*(?P<date>{REPORT_DATE})", re.I,
+)
+REPORT_PERIOD = re.compile(
+    rf"\bотч[её]тный\s+период\s*[:—–-]?\s*(?:с\s+)?({REPORT_DATE})"
+    rf"\s*(?:г\.?\s*)?(?:по|до|[-–—])\s*({REPORT_DATE})", re.I,
+)
 REPORT_COLUMNS = {
     3: ("labor", "Трудоемкость", "чел.-мес."),
     4: ("0100", "Материальные затраты", "RUB"),
@@ -383,6 +392,38 @@ def extract_facts(document):
                 add_fact(document, key, label, None,
                          {"locator": "Реквизит не найден", "text": "", "method": "missing", "confidence": 0},
                          "money" if key == "amount" else "text")
+
+
+def report_period(report):
+    """Return an unambiguous range stated in the report's own text."""
+    text = "\n".join(block["text"] for block in report.get("blocks", []))
+
+    def parse(value):
+        try:
+            if "." in value:
+                return datetime.strptime(value, "%d.%m.%Y").date()
+            return date.fromisoformat(f"{parse_month(value)}-{int(value.split()[0]):02}")
+        except ValueError:
+            return None
+
+    ranges = set()
+    for start, end in REPORT_PERIOD.findall(text):
+        ranges.add((parse(start), parse(end)))
+    boundaries = defaultdict(lambda: defaultdict(set))
+    for match in STAGE_BOUNDARY.finditer(text):
+        scope = "period" if match["scope"].lower() != "этапа" else match["stage"] or "stage"
+        key = "start" if match["label"].lower() == "начало" else "end"
+        boundaries[scope][key].add(parse(match["date"]))
+    for bounds in boundaries.values():
+        if len(bounds["start"]) == len(bounds["end"]) == 1:
+            ranges.add((next(iter(bounds["start"])), next(iter(bounds["end"]))))
+        elif bounds["start"] and bounds["end"]:
+            return {}
+    if len(ranges) == 1:
+        start, end = next(iter(ranges))
+        if start and end and start <= end:
+            return {"start": start.isoformat(), "end": end.isoformat()}
+    return {}
 
 
 def parse_month(text):

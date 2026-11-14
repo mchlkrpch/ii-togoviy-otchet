@@ -135,6 +135,9 @@ def update_structure(store, case_id, document, path, change):
     data = json.dumps(corrections, ensure_ascii=False, separators=(",", ":"))
     key = case_id, document["id"], document["hash"]
     with store.connect() as connection:
+        connection.execute("BEGIN IMMEDIATE")
+        if not path.is_file():
+            raise RevisionConflict("Исходный файл больше недоступен.")
         if version == 0:
             result = connection.execute(
                 "INSERT OR IGNORE INTO document_structure(case_id, document_id, digest, version, corrections) "

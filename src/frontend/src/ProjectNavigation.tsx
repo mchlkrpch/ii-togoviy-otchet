@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
+import { createPortal } from "react-dom";
 import {
   ChevronDown,
   ChevronRight,
@@ -10,10 +11,13 @@ import {
   History,
   Image,
   ListChecks,
+  MoreHorizontal,
   PanelLeftClose,
+  Pencil,
   Plus,
   RefreshCw,
   Settings2,
+  Trash2,
 } from "lucide-react";
 import type { CaseResult, CaseSummary } from "./types";
 
@@ -90,6 +94,7 @@ export function ProjectHistory({
   width,
   onWidth,
   onRename,
+  onDelete,
   resizeHandle = true,
 }: {
   cases: CaseSummary[];
@@ -103,11 +108,14 @@ export function ProjectHistory({
   width: number;
   onWidth: (width: number) => void;
   onRename: (id: string, name: string) => Promise<boolean>;
+  onDelete: (project: CaseSummary) => void;
   resizeHandle?: boolean;
 }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [editing, setEditing] = useState<string>();
   const [draft, setDraft] = useState("");
+  const [menu, setMenu] = useState<{ project: CaseSummary; x: number; y: number; trigger: HTMLElement }>();
+  const menuRef = useRef<HTMLDivElement>(null);
   const finishing = useRef(false),
     resizing = useRef<{ x: number; width: number } | null>(null);
   useEffect(() => {
@@ -118,6 +126,21 @@ export function ProjectHistory({
     )
       setExpanded((current) => new Set([...current, activeResult.id]));
   }, [activeDocumentId, activeResult?.id]);
+  useEffect(() => {
+    if (!menu) return;
+    menuRef.current?.querySelector("button")?.focus();
+    function dismiss(event: PointerEvent) {
+      if (event.target instanceof Node && !menuRef.current?.contains(event.target) && !menu?.trigger.contains(event.target))
+        setMenu(undefined);
+    }
+    function dismissOnResize() { setMenu(undefined); }
+    window.addEventListener("pointerdown", dismiss);
+    window.addEventListener("resize", dismissOnResize);
+    return () => {
+      window.removeEventListener("pointerdown", dismiss);
+      window.removeEventListener("resize", dismissOnResize);
+    };
+  }, [menu]);
   async function finish(id: string) {
     if (finishing.current) return;
     finishing.current = true;
@@ -133,6 +156,7 @@ export function ProjectHistory({
     if (event.defaultPrevented || event.button !== 0 || event.metaKey ||
       event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
+    setMenu(undefined);
     if (id && onDocument) onDocument(project.id, id);
     else if (project.id !== activeId) onSelect(project.id);
   }
@@ -179,7 +203,12 @@ export function ProjectHistory({
               className={`unified-project${active ? " current-project" : ""}`}
               aria-label={project.name}
             >
-              <header className="explorer-project-heading">
+              <header className="explorer-project-heading" onContextMenu={(event) => {
+                if (editing === project.id) return;
+                event.preventDefault();
+                const trigger = event.currentTarget.querySelector<HTMLElement>(".explorer-project-actions");
+                if (trigger) setMenu({ project, x: event.clientX, y: event.clientY, trigger });
+              }}>
                 <button
                   className="explorer-expander"
                   aria-label={
@@ -236,6 +265,16 @@ export function ProjectHistory({
                     {project.name}
                   </a>
                 )}
+                <button type="button" className="explorer-project-actions"
+                  title="Действия проекта" aria-label={`Действия проекта «${project.name}»`}
+                  aria-haspopup="menu" aria-expanded={menu?.project.id === project.id}
+                  onClick={(event) => {
+                    const trigger = event.currentTarget;
+                    const { left, bottom } = trigger.getBoundingClientRect();
+                    setMenu(menu?.project.id === project.id ? undefined : { project, x: left, y: bottom + 4, trigger });
+                  }}>
+                  <MoreHorizontal size={16} aria-hidden="true" />
+                </button>
               </header>
               {reports.map((report) => (
                 <a
@@ -282,6 +321,31 @@ export function ProjectHistory({
           );
         })}
       </nav>
+      {menu && createPortal(
+        <div ref={menuRef} className="explorer-project-menu" role="menu" aria-label="Действия проекта"
+          style={{ left: `clamp(8px, ${menu.x}px, 100vw - 186px)`, top: `clamp(8px, ${menu.y}px, 100vh - 92px)` }}
+          onKeyDown={(event) => {
+            if (event.key === "Escape" || event.key === "Tab") {
+              event.preventDefault();
+              setMenu(undefined);
+              menu.trigger.focus();
+            } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+              event.preventDefault();
+              const items = [...event.currentTarget.querySelectorAll("button")];
+              items.find((item) => item !== document.activeElement)?.focus();
+            }
+          }}>
+          <button type="button" role="menuitem" onClick={() => {
+            setMenu(undefined);
+            beginRename(menu.project);
+          }}><Pencil size={14} aria-hidden="true" /> Переименовать</button>
+          <button type="button" role="menuitem" className="project-delete-action" onClick={() => {
+            setMenu(undefined);
+            menu.trigger.focus();
+            onDelete(menu.project);
+          }}><Trash2 size={14} aria-hidden="true" /> Удалить проект</button>
+        </div>, document.body,
+      )}
       {resizeHandle && <div
         className="project-resizer"
         role="separator"
@@ -332,7 +396,7 @@ export function WorkspaceActions({
   busy: boolean;
   onDemo: () => void;
   onView: (
-    view: "checks" | "documents" | "graph" | "history" | "settings",
+    view: "checks" | "documents" | "graph" | "history" | "settings" | "summary",
   ) => void;
   onRefresh: () => void;
   onSets?: () => void;
@@ -372,6 +436,7 @@ export function WorkspaceActions({
           menu.current.open = false;
           heading.current?.focus();
         }}>
+          <button onClick={() => onView("summary")}><ListChecks size={14} />Заключение и экспорт</button>
           <button onClick={() => onView("documents")}>
             <ListChecks size={14} />
             Реестр документов

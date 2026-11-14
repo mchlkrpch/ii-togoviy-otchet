@@ -23,6 +23,9 @@ class LocalEncoder:
         if self.model is None:
             if not (self.path / "model.safetensors").is_file():
                 raise ValueError("Веса rubert-tiny2 отсутствуют. Выполните python prepare_model.py в src.")
+            os.environ["HF_HUB_OFFLINE"] = "1"
+            os.environ["TRANSFORMERS_OFFLINE"] = "1"
+            os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
             import torch
             from transformers import AutoModel, AutoTokenizer
             torch.set_num_threads(int(os.environ.get("AUDIT_MODEL_THREADS", "2")))

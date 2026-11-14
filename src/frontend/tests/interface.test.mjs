@@ -40,8 +40,8 @@ module.exports=async()=>{
  const primary={...report,id:'primary',name:'Первичка.pdf',role:'source',included:true};
  const other={...primary,id:'other',name:'Другой.pdf'};
  const unused={...primary,id:'unused',name:'Не участвует.pdf'};
- const cell={expected:'100',delta:'23',rule:{expression:'x1 + x2'},inputs:[{name:'x1',ref:'source',value:'70'},{name:'x2',ref:'source2',value:'30'}],id:'r2026_c15',kind:'check',code:'0800',title:'Затраты',row:'2026',reported:'123',status:'mismatch',reported_evidence:{document_id:'report',page:1,rect:[.2,.2,.4,.3]},dependencies:['source','source2']};
- const noFormula={...cell,id:'r2025_c15',row:'2025',rule:null,inputs:[],dependencies:[],expected:null,delta:null};
+ const cell={expected:'100',delta:'23',rule:{expression:'x1 + x2'},inputs:[{name:'x1',ref:'source',value:'70'},{name:'x2',ref:'source2',value:'30'}],id:'r2026_c15',kind:'check',code:'0800',title:'Затраты',row:'2026',reported:'123',status:'review',numeric_status:'mismatch',reported_evidence:{document_id:'report',page:1,rect:[.2,.2,.4,.3]},dependencies:['source','source2']};
+ const noFormula={...cell,id:'r2025_c15',row:'2025',rule:null,inputs:[],dependencies:[],expected:null,delta:null,numeric_status:'unverified'};
  await act(async()=>root.render(<FormulaOverlay node={noFormula} onVariable={()=>{}} onDetails={()=>{}} onEdit={()=>{}}/>));
  assert.equal(document.querySelector('.formula-status-pill'),null);
  assert.equal(document.querySelector('.formula-overlay').textContent.includes('Нет формулы'),false);
@@ -79,6 +79,7 @@ module.exports=async()=>{
  picked='';
  await act(async()=>root.render(<Viewer caseId="case" document={report} highlights={[cell.reported_evidence]} activeEvidence={cell.reported_evidence} reportNodes={[cell,noFormula]} selectedIds={[]} onSelectReport={n=>picked=n.id}/>));
  assert.equal(document.querySelectorAll('.original-status-dot').length,1,'Only cells with a formula carry a verification status');
+ assert.ok(document.querySelector('.report-image-cell.mismatch .original-status-dot'));
  assert.equal(document.querySelector('table'),null);
  assert.ok(document.querySelector('.document-text-layer').textContent.includes('123,00'));
  const canvas=document.querySelector('.file-page-canvas');canvas.getBoundingClientRect=()=>({left:0,top:0,width:1000,height:1000});
@@ -201,6 +202,8 @@ module.exports=async()=>{
 
  await act(async()=>fileButtons()[0].click());
  assert.ok(document.querySelector('.formula-overlay').textContent.includes('Сейчас'));
+ assert.ok(document.querySelector('.formula-overlay.viewer-pill .formula-primary-row .formula-status-pill.mismatch'));
+ assert.ok(document.querySelector('.formula-overlay.viewer-pill > .formula-comparison-pill:not(.viewer-pill)'));
  await act(async()=>document.querySelector('[aria-label="Редактировать формулу"]').click());
  let formula=document.querySelector('[aria-label="Математическая формула"]');
  const expression='x1 + x2 + ';

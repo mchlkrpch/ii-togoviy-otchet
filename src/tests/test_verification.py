@@ -165,6 +165,34 @@ class VerificationTests(unittest.TestCase):
         self.assertIn("выше на 12,50", production["explanation"][0])
         self.assertFalse(next(document for document in result["documents"] if document["id"] == "june")["included"])
 
+    def test_report_period_filters_existing_projects_and_preserves_manual_rules(self):
+        case = example_case()
+        case["context"].update(start="", end="")
+        report = case["documents"][0]
+        report["blocks"] = [{"text": line} for line in (
+            "Договор от 05.01.2026",
+            "Начало 2-го этапа: 10 января 2026 г.",
+            "Окончание 2-го этапа: 27 февраля 2026 г.",
+        )]
+        case["documents"].extend([
+            source("last_day", "0900", "2.00", document_date="2026-02-27"),
+            source("next_day", "0900", "90.00", document_date="2026-02-28"),
+        ])
+        result = calculate(case)
+        self.assertEqual(result["context"]["end"], "2026-02-27")
+        self.assertEqual(result["nodes"]["r2026_c16"]["expected"], "32.00")
+        self.assertTrue(any(issue["type"] == "outside_period" and issue["document_id"] == "next_day"
+                            for issue in result["issues"]))
+        stale = {"expression": "x1 + x2", "inputs": [{"name": "x1", "ref": "admin:amount"},
+                                                    {"name": "x2", "ref": "next_day:amount"}]}
+        case["overrides"]["check:r2026_c16"] = {"rule": stale}
+        check = calculate(case)["nodes"]["r2026_c16"]
+        self.assertEqual(check["rule"], stale)
+        self.assertIsNone(check["delta"])
+        case["overrides"]["context:settings"] = {"end": "2026-02-28"}
+        self.assertEqual(calculate(case)["nodes"]["r2026_c16"]["expected"], "120.00")
+        self.assertEqual(case["context"]["end"], "")
+
     def test_editing_source_changes_formula_and_descendants(self):
         case = validate_change(example_case(), "fact", "production:amount", {"value": "22.00"})
         result = calculate(case)

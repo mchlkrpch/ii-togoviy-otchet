@@ -1,5 +1,7 @@
 import json
+import logging
 import os
+import shutil
 import sqlite3
 from datetime import datetime, timezone
 from uuid import uuid4
@@ -8,6 +10,7 @@ from pathlib import Path
 
 
 DATA_ROOT = Path(os.environ.get("AUDIT_DATA_DIR", Path(__file__).resolve().parents[1] / ".data")).resolve()
+logger = logging.getLogger(__name__)
 
 
 class RevisionConflict(ValueError):
@@ -90,6 +93,33 @@ class Store:
                               "before": previous, "after": name, "reason": "Переименование проекта", "revision": case["revision"]})
         self.save_case(case, expected_revision=expected_revision)
         return case
+
+    def delete_case(self, identifier, expected_revision):
+        directory = self.files_dir(identifier).parent
+        removed = self.root / f".deleted-{uuid4().hex}"
+        moved = False
+        try:
+            with self.connect() as connection:
+                connection.execute("BEGIN IMMEDIATE")
+                row = connection.execute("SELECT revision FROM cases WHERE id=?", (identifier,)).fetchone()
+                if row is None:
+                    raise KeyError("Проверка не найдена")
+                if expected_revision != row["revision"]:
+                    raise RevisionConflict("Проект уже изменился. Проверьте его перед удалением.")
+                if directory.exists():
+                    directory.rename(removed)
+                    moved = True
+                connection.execute("DELETE FROM document_structure WHERE case_id=?", (identifier,))
+                connection.execute("DELETE FROM cases WHERE id=?", (identifier,))
+        except BaseException:
+            if moved:
+                removed.rename(directory)
+            raise
+        if moved:
+            try:
+                shutil.rmtree(removed)
+            except OSError:
+                logger.exception("Could not clean up files of deleted project %s", identifier)
 
     def get_job(self, identifier):
         with self.connect() as connection:

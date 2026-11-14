@@ -8,6 +8,8 @@
   --mipt-muted: #526980;
   --mipt-orange: #985006;
   --mipt-light-orange: #fff2dc;
+  --mipt-red: #c62828;
+  --mipt-light-red: #ffebee;
 }
 .verification-layout {
   display: grid;
@@ -338,8 +340,8 @@
   background: #7acc9f1a;
 }
 .original-viewer .report-image-cell.mismatch {
-  border-color: #cb8f56;
-  background: #eecb8236;
+  border-color: var(--mipt-red);
+  background: #c628282b;
 }
 .original-viewer .report-image-cell.review {
   border-color: #c1a36e88;
@@ -349,6 +351,9 @@
   outline: 2px solid #228976;
   outline-offset: -2px;
   background: #7dc5a42b;
+}
+.original-viewer .report-image-cell.mismatch.selected {
+  background: #c6282840;
 }
 .original-status-dot {
   position: absolute;
@@ -367,6 +372,15 @@
 }
 .original-status-dot::after {
   content: "?";
+}
+.mismatch > .original-status-dot {
+  background: var(--mipt-light-red);
+  color: var(--mipt-red);
+  border-color: var(--mipt-red);
+}
+.mismatch > .original-status-dot::after {
+  content: "!";
+  font-weight: 700;
 }
 .verified > .original-status-dot {
   background: #effaf2;
@@ -461,7 +475,7 @@
   background-image: linear-gradient(#8acba333, #8acba333);
 }
 .original-spreadsheet td.original-report-cell.mismatch {
-  background-image: linear-gradient(#ebc57d44, #ebc57d44);
+  background-image: linear-gradient(#c628282b, #c628282b);
 }
 .word-original {
   width: max-content;

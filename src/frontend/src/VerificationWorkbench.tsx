@@ -4,6 +4,7 @@ import CalculationInspector from "./CalculationInspector";
 import DocumentViewer from "./DocumentViewer";
 import FormulaOverlay from "./FormulaOverlay";
 import FormulaEditor from "./FormulaEditor";
+import type { PredictionSession } from "./FormulaPrediction";
 
 import {
   buildReportGrid,
@@ -37,6 +38,8 @@ type Props = {
   selectedId: string;
   activeDocumentId: string;
   onActiveDocument: (id: string) => void;
+  structureOpen: boolean;
+  onStructureOpenChange: (open: boolean) => void;
   onSelect: (id: string) => void;
   onEdit: (edit: Edit) => void;
   onRule?: (node: Node) => void;
@@ -49,6 +52,8 @@ export default function VerificationWorkbench({
   selectedId,
   activeDocumentId: activeId,
   onActiveDocument: setActiveId,
+  structureOpen,
+  onStructureOpenChange,
   onSelect,
   onEdit,
   onChange,
@@ -62,6 +67,8 @@ export default function VerificationWorkbench({
   );
   const [focusedEvidence, setFocusedEvidence] = useState<Evidence>();
   const [draft, setDraft] = useState<FormulaDraft>();
+  const predictionSession = useRef<PredictionSession>({ key: "", selectedDocuments: [] });
+  const [predictOnOpen, setPredictOnOpen] = useState(false);
   const [focusVersion, setFocusVersion] = useState(0);
   const [message, setMessage] = useState("");
   const [calculationOpen, setCalculationOpen] = useState(false);
@@ -117,6 +124,10 @@ export default function VerificationWorkbench({
         .map((id) => result.nodes[id]?.reported_evidence)
         .filter((e): e is Evidence => !!e && e.document_id === current.id)
     : sourceHighlights;
+  if (focusedEvidence?.document_id === current.id &&
+      !highlights.some((item) => evidenceKey(item) === evidenceKey(focusedEvidence))) {
+    highlights.push(focusedEvidence);
+  }
   function chooseFile(id: string) {
     setActiveId(id);
     setMessage("");
@@ -166,7 +177,7 @@ export default function VerificationWorkbench({
   function variable(input: Input) {
     showVariable(input.ref, input.name);
   }
-  function startEditor(node: Node) {
+  function startEditor(node: Node, predict = false) {
     if (node.kind !== "check") return;
     const expression = node.rule?.expression || "";
     setDraft({
@@ -182,6 +193,7 @@ export default function VerificationWorkbench({
       cursorEnd: expression.length,
     });
     setCalculationOpen(false);
+    setPredictOnOpen(predict);
     setMessage("");
     setFocusVersion((version) => version + 1);
   }
@@ -234,16 +246,16 @@ export default function VerificationWorkbench({
     setFocusedEvidence(selection.evidence);
     setFocusVersion((version) => version + 1);
   }
-  async function save() {
-    if (!draft) return;
+  async function save(candidate = draft) {
+    if (!candidate) return;
     const saved = await onChange({
       kind: "check",
-      target: draft.target,
-      values: { rule: draftRule(draft), variables: usedNewVariables(draft) },
-      reason: draft.reason.trim(),
+      target: candidate.target,
+      values: { rule: draftRule(candidate), variables: usedNewVariables(candidate) },
+      reason: candidate.reason.trim(),
     });
     if (saved) {
-      onSelect(draft.target);
+      onSelect(candidate.target);
       setDraft(undefined);
       setMessage("");
     }
@@ -264,10 +276,13 @@ export default function VerificationWorkbench({
           key={current.id}
           caseId={result.id}
           revision={result.revision}
+          structureOpen={structureOpen}
+          onStructureOpenChange={onStructureOpenChange}
           onWorkbookChange={onChange}
           document={current}
           title={isReport ? "Итоговый отчет" : "Первичный документ"}
           highlights={highlights}
+          focusedEvidence={focusedEvidence?.document_id === current.id ? focusedEvidence : undefined}
           activeEvidence={
             focusedEvidence?.document_id === current.id
               ? focusedEvidence
@@ -298,7 +313,9 @@ export default function VerificationWorkbench({
                 draft={draft}
                 onDraft={setDraft}
                 onChooseFile={chooseFile}
-                onSave={() => void save()}
+                onSave={save}
+                predictOnOpen={predictOnOpen}
+                predictionSession={predictionSession}
                 onCancel={() => {
                   setDraft(undefined);
                   setMessage("");
@@ -334,6 +351,7 @@ export default function VerificationWorkbench({
                       ? () => startEditor(selected)
                       : undefined
                   }
+                  onPredict={selected.kind === "check" ? () => startEditor(selected, true) : undefined}
                   message={message}
                 />
               )

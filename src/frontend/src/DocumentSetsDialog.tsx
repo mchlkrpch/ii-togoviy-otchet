@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
 import { request } from "./api";
+import { Modal } from "./components";
 import type { Job } from "./types";
 
 export default function DocumentSetsDialog({ onClose, onImport }: {
@@ -23,9 +23,7 @@ export default function DocumentSetsDialog({ onClose, onImport }: {
       setBusy(false);
     }
   }
-  return <div className="modal-backdrop" onClick={onClose}>
-    <section className="modal" role="dialog" aria-modal="true" aria-label="Сторонние наборы документов" onClick={event => event.stopPropagation()}>
-      <header><h2>Наборы документов МФТИ</h2><button className="icon-button" aria-label="Закрыть наборы" onClick={onClose}><X size={18} /></button></header>
+  return <Modal title="Наборы документов МФТИ" onClose={onClose}>
       <p>Выберите проверку и откройте редактор формулы → «Предсказать ИИ». Файлы и целевой показатель выбраны из описания набора. Формула и исходные ячейки определяются по метаданным документов.</p>
       <p>Источники этих наборов — опубликованные детализирующие финансовые таблицы.</p>
       {error && <p role="alert">{error}</p>}
@@ -33,6 +31,5 @@ export default function DocumentSetsDialog({ onClose, onImport }: {
         {set.id} · {set.name}
       </button>)}</div>
       {!sets.length && !error && <p>Наборы загружаются. Для Docker подключите папку document_sets.</p>}
-    </section>
-  </div>;
+  </Modal>;
 }

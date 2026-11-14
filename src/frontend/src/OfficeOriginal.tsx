@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { request } from "./api";
+import { request, statusLabels } from "./api";
 import { canonicalNumber, numberSpans } from "./numericText";
-import { calculationExpression } from "./calculationDisplay";
+import { calculationExpression, calculationStatus } from "./calculationDisplay";
 import TableVariableLabel from "./TableVariableLabel";
 import type { CSSProperties } from "react";
 import type {
@@ -147,7 +147,8 @@ export function SpreadsheetOriginal({
               const labels = annotations.filter((item) =>
                 item.evidence.sheet === layout.sheet && item.evidence.cell === cell.address,
               );
-              const hasFormula = node && Boolean(calculationExpression(node));
+              const status = node && calculationStatus(node);
+              const showStatus = node && (status === "mismatch" || Boolean(calculationExpression(node))) && status;
               const labelCell =
                 document.role === "source" &&
                 !highlighted &&
@@ -180,7 +181,7 @@ export function SpreadsheetOriginal({
                   style={cell.style}
                   rowSpan={cell.rowSpan}
                   colSpan={cell.colSpan}
-                  className={`${labelCell ? "source-label-cell" : ""} ${highlighted ? "original-cell-highlight" : ""} ${active || selectedIds.includes(node?.id || "") ? "original-cell-active" : ""} ${hasFormula ? `original-report-cell ${node.status}` : ""}`}
+                  className={`${labelCell ? "source-label-cell" : ""} ${highlighted ? "original-cell-highlight" : ""} ${active || selectedIds.includes(node?.id || "") ? "original-cell-active" : ""} ${showStatus ? `original-report-cell ${showStatus}` : ""}`}
                   tabIndex={node ? 0 : undefined}
                   title={`${layout.sheet}!${cell.address}${cell.formula ? ` · ${cell.formula}` : ""}`}
                   onClick={select}
@@ -215,12 +216,10 @@ export function SpreadsheetOriginal({
                     cell.text,
                     document.role === "source" && (highlighted || active),
                   )}
-                  {hasFormula && (
+                  {showStatus && (
                     <span
                       className="original-status-dot"
-                      aria-label={
-                        node.status === "verified" ? "Подтверждено" : "Вопрос"
-                      }
+                      aria-label={statusLabels[showStatus]}
                     />
                   )}
                 </td>

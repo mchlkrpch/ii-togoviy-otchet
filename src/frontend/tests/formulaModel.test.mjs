@@ -6,8 +6,21 @@ import {
   fileBindings,
   insertVariable,
   nextVariableName,
+  removeFormulaVariable,
   usedNewVariables,
 } from "../src/formulaModel.ts";
+
+test("removing a variable preserves the sum wrapper and remaining source bindings", () => {
+  const inputs = ["x1", "x2", "x12"].map((name) => ({ name, ref: name }));
+  const draft = { expression: "ROUND(x1 + x2 + x12 + x2, 2)", inputs, variables: [] };
+  const edited = removeFormulaVariable(draft, "x2");
+  assert.equal(edited.expression, "ROUND(x1 + x12, 2)");
+  assert.deepEqual(draftRule(edited).inputs, [inputs[0], inputs[2]]);
+  assert.equal(removeFormulaVariable({ ...draft, expression: "SUM(x1, x2, x12)" }, "x1").expression, "SUM(x2, x12)");
+  const ratio = removeFormulaVariable({ ...draft, expression: "x1 / x2" }, "x2");
+  assert.equal(ratio.expression.slice(ratio.cursor, ratio.cursorEnd), "x2");
+  assert.deepEqual(ratio.inputs, inputs);
+});
 
 test("insertion uses the editor caret and saves only referenced bindings", () => {
   const draft = {

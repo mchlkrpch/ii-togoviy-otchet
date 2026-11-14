@@ -1,12 +1,15 @@
 import hashlib
 import json
+import logging
 import re
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
 
-from .extraction import SUPPORTED, docx_blocks, extract_document
+from .extraction import SUPPORTED, docx_blocks, extract_document, report_period
+
+logger = logging.getLogger(__name__)
 
 
 def now():
@@ -21,6 +24,8 @@ def default_context(documents, notes):
         context["start"], context["end"] = [datetime.strptime(value, "%d.%m.%Y").date().isoformat() for value in dates[:2]]
         context["target_year"] = context["end"][:4]
     report = next((document for document in documents if document["role"] == "report"), None)
+    if report and not context["start"] and not context["end"]:
+        context.update(report_period(report))
     if report and not context["contract"]:
         context["contract"] = report["facts"].get("contract", {}).get("value", "")
     if report and not context["target_year"]:
@@ -31,7 +36,8 @@ def default_context(documents, notes):
 
 
 def is_reference_name(name):
-    return name.startswith("!") or bool(re.search(r"правильн.*ответ|эталон|ground.?truth", name, re.I))
+    return (name.startswith("!") or name.casefold() == "описание_сверки.txt" or
+            bool(re.search(r"правильн.*ответ|эталон|ground.?truth", name, re.I)))
 
 
 def process_files(store, job_id, case_id, name, report_name, settings=None, additional_reports=None):
@@ -63,6 +69,25 @@ def process_files(store, job_id, case_id, name, report_name, settings=None, addi
             document = extract_document(path, role)
             if role == "report":
                 report_hash = digest
+                fields = document["report_fields"]
+                native_pdf = (document["format"] == "pdf" and not document.get("pdf_fields")
+                              and any(block["method"] == "pdf-text" for block in document["blocks"])
+                              and not any(field["evidence"]["method"] == "ocr-cell" for field in fields))
+                if not document["errors"] and (not fields or native_pdf):
+                    from .document_structure import SUPPORTED as STRUCTURED, baseline
+                    from .prediction_fields import structured_report_fields
+
+                    if path.suffix.lower() in STRUCTURED:
+                        try:
+                            parsed = structured_report_fields(document, baseline(store, document, path))
+                        except (OSError, RuntimeError, ValueError) as exc:
+                            logger.warning("Could not extract report structure for %s", path.name, exc_info=True)
+                            if not fields:
+                                document["errors"].append(str(exc))
+                            parsed = []
+                        if parsed:
+                            document["report_fields"] = parsed
+                            document["structured_report"] = True
             document["filename"] = path.name
             documents.append(document)
         reports = [document for document in documents if document["role"] == "report"]

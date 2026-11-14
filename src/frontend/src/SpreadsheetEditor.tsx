@@ -48,7 +48,7 @@ import "@univerjs/preset-sheets-table/lib/index.css";
 import "./spreadsheet.css";
 import { request } from "./api";
 import { canonicalNumber } from "./numericText";
-import { calculationExpression } from "./calculationDisplay";
+import { calculationExpression, calculationStatus } from "./calculationDisplay";
 import type { DocumentViewerProps } from "./DocumentViewer";
 
 type Runtime = ReturnType<typeof createUniver> & { book: FWorkbook };
@@ -566,7 +566,8 @@ export default function SpreadsheetEditor(props: DocumentViewerProps) {
     }
     for (const node of props.reportNodes || []) {
       const evidence = node.reported_evidence;
-      if (!evidence?.sheet || !evidence.cell || !calculationExpression(node))
+      const status = calculationStatus(node);
+      if (!evidence?.sheet || !evidence.cell || (status !== "mismatch" && !calculationExpression(node)))
         continue;
       const sheet = rt.book.getSheetByName(evidence.sheet);
       if (sheet)
@@ -576,7 +577,7 @@ export default function SpreadsheetEditor(props: DocumentViewerProps) {
             .highlight({
               strokeWidth: 0,
               stroke: "transparent",
-              fill: node.status === "verified" ? "#6fce8c44" : "#eac56b44",
+              fill: status === "mismatch" ? "#c628282b" : status === "verified" ? "#6fce8c44" : "#eac56b44",
             }),
         );
     }

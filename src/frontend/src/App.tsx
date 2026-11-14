@@ -9,9 +9,10 @@ import {
   Loader2,
   Pencil,
   Plus,
+  Trash2,
   X,
 } from "lucide-react";
-import { dateTime, request } from "./api";
+import { dateTime, request, RequestError } from "./api";
 import {
   DocumentDrawer,
   DocumentsView,
@@ -24,6 +25,7 @@ import {
 } from "./components";
 import VerificationWorkbench from "./VerificationWorkbench";
 import DocumentSetsDialog from "./DocumentSetsDialog";
+import ConclusionView from "./ConclusionView";
 import { ExplorerSash, ProjectHistory, WorkspaceActions, projectHref } from "./ProjectNavigation";
 import type {
   CaseResult,
@@ -35,7 +37,7 @@ import type {
   Node,
 } from "./types";
 
-type View = "checks" | "documents" | "graph" | "history" | "settings";
+type View = "checks" | "documents" | "graph" | "history" | "settings" | "summary";
 
 export default function App() {
   const [cases, setCases] = useState<CaseSummary[]>([]);
@@ -44,9 +46,15 @@ export default function App() {
   const caseRevisions = useRef(new Map<string, number>());
   const openRequest = useRef(0);
   const pendingChanges = useRef(0);
+  const deletedProjects = useRef(new Set<string>());
+  const deleteDialog = useRef<HTMLDialogElement>(null);
+  const [projectToDelete, setProjectToDelete] = useState<CaseSummary>();
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
   const [view, setView] = useState<View>("checks");
   const [selectedId, setSelectedId] = useState("");
   const [activeDocumentId, setActiveDocumentId] = useState("");
+  const [structureOpen, setStructureOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [job, setJob] = useState<Job | null>(null);
   const [error, setError] = useState("");
@@ -83,6 +91,9 @@ export default function App() {
     if (href !== location.pathname + location.search + location.hash)
       history.replaceState(history.state, "", href);
   }, [result?.id, activeDocumentId]);
+  useEffect(() => {
+    if (projectToDelete && !deleteDialog.current?.open) deleteDialog.current?.showModal();
+  }, [projectToDelete]);
   function resizeProjects(width: number) {
     if (width <= 48) {
       setProjectsHidden(true);
@@ -114,7 +125,75 @@ export default function App() {
     }
   }
 
+  function confirmProjectDeletion(project: CaseSummary) {
+    setDeleteError("");
+    setProjectToDelete({
+      ...project,
+      revision: Math.max(caseRevisions.current.get(project.id) ?? 0, project.revision),
+    });
+  }
+
+  function closeDeleteDialog() {
+    deleteDialog.current?.close();
+    setProjectToDelete(undefined);
+  }
+
+  async function deleteProject() {
+    if (!projectToDelete || deleting) return;
+    const { id, revision } = projectToDelete;
+    setDeleting(true);
+    setDeleteError("");
+    try {
+      try {
+        await request(`/api/cases/${id}?revision=${revision}`, { method: "DELETE" });
+      } catch (reason) {
+        if (!(reason instanceof RequestError && reason.status === 404)) throw reason;
+      }
+      deletedProjects.current.add(id);
+      caseRevisions.current.delete(id);
+      const remaining = cases.filter((project) => project.id !== id);
+      setCases((current) => current.filter((project) => project.id !== id));
+      closeDeleteDialog();
+
+      if (localStorage.getItem("verification-case") === id) localStorage.removeItem("verification-case");
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("project") === id) {
+        url.searchParams.delete("project");
+        url.searchParams.delete("document");
+        window.history.replaceState(window.history.state, "", url);
+      }
+      if (result?.id === id) {
+        setResult((current) => current?.id === id ? null : current);
+        setActiveDocumentId("");
+        setSelectedId("");
+        setEvidence(null);
+        setEdit(null);
+        setRuleEdit(null);
+      }
+      if (selectedCase.current === id) {
+        ++openRequest.current;
+        selectedCase.current = undefined;
+        if (remaining.length) await openCase(remaining[0].id);
+        else {
+          setView("checks");
+          setLoading(false);
+        }
+      }
+    } catch (reason) {
+      const message = reason instanceof Error ? reason.message : String(reason);
+      if (reason instanceof RequestError && reason.status === 409) {
+        closeDeleteDialog();
+        setError(message);
+        await refreshCases().catch(() => undefined);
+        if (selectedCase.current === id) await openCase(id);
+      } else setDeleteError(message);
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   async function openCase(id: string, documentId?: string) {
+    if (deletedProjects.current.has(id)) return;
     const requestId = ++openRequest.current;
     selectedCase.current = id;
     setLoading(true);
@@ -148,7 +227,8 @@ export default function App() {
   }
 
   async function refreshCases() {
-    const data = await request<CaseSummary[]>("/api/cases");
+    const data = (await request<CaseSummary[]>("/api/cases"))
+      .filter((project) => !deletedProjects.current.has(project.id));
     setCases(data);
     return data;
   }
@@ -174,8 +254,8 @@ export default function App() {
             else {
               localStorage.removeItem("verification-job");
               if (pending.status === "completed") {
-                await refreshCases();
-                await openCase(pending.case_id);
+                const projects = await refreshCases();
+                if (projects.some((project) => project.id === pending.case_id)) await openCase(pending.case_id);
               } else if (pending.error) setError(pending.error);
             }
           } catch {
@@ -206,8 +286,8 @@ export default function App() {
           setJob(data);
           if (data.status === "completed") {
             localStorage.removeItem("verification-job");
-            await refreshCases();
-            await openCase(data.case_id);
+            const projects = await refreshCases();
+            if (projects.some((project) => project.id === data.case_id)) await openCase(data.case_id);
             setJob(null);
           } else if (data.status === "failed") {
             localStorage.removeItem("verification-job");
@@ -339,6 +419,7 @@ export default function App() {
                 width={projectsWidth}
                 onWidth={resizeProjects}
                 onRename={renameProject}
+                onDelete={confirmProjectDeletion}
                 resizeHandle={false}
               />
             )}
@@ -403,6 +484,8 @@ export default function App() {
                   selectedId={selectedId}
                   activeDocumentId={activeDocumentId}
                   onActiveDocument={setActiveDocumentId}
+                  structureOpen={structureOpen}
+                  onStructureOpenChange={setStructureOpen}
                   onSelect={pickNode}
                   onEdit={setEdit}
                   onRule={setRuleEdit}
@@ -429,7 +512,7 @@ export default function App() {
                       <ArrowLeft size={15} />К отчету и источникам
                     </button>
                     <h1>
-                      {view === "documents"
+                      {view === "summary" ? "Заключение о проверке" : view === "documents"
                         ? "Реестр документов"
                         : view === "history"
                           ? "История изменений"
@@ -462,6 +545,7 @@ export default function App() {
                     />
                   )}
                   {view === "history" && <HistoryView result={result} />}
+                  {view === "summary" && <ConclusionView result={result} onSelect={node => { pickNode(node.id); setView("checks"); }} />}
                 </main>
               )}
             </div>
@@ -471,6 +555,26 @@ export default function App() {
         setShowSets(false);
         setJob(job);
       }} />}
+      {projectToDelete && (
+        <dialog ref={deleteDialog} className="modal project-delete-dialog" aria-labelledby="project-delete-title"
+          onCancel={(event) => {
+            event.preventDefault();
+            if (!deleting) closeDeleteDialog();
+          }}>
+          <header><h2 id="project-delete-title">Удалить проект?</h2></header>
+          <form onSubmit={(event) => { event.preventDefault(); void deleteProject(); }}>
+            <p>Проект <strong>«{projectToDelete.name}»</strong>, его загруженные копии документов и правки будут удалены.</p>
+            {deleteError && <p className="project-delete-error" role="alert">{deleteError}</p>}
+            <div className="modal-footer">
+              <button type="button" className="button secondary" autoFocus disabled={deleting} onClick={closeDeleteDialog}>Отмена</button>
+              <button type="submit" className="button project-delete-confirm" disabled={deleting}>
+                {deleting ? <Loader2 size={15} className="spin" /> : <Trash2 size={15} aria-hidden="true" />}
+                Удалить проект
+              </button>
+            </div>
+          </form>
+        </dialog>
+      )}
       {showUpload && (
         <UploadDialog
           busy={!!job}

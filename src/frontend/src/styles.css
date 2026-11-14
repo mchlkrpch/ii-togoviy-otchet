@@ -815,8 +815,8 @@ code {
   color: #3d8b6b;
 }
 .badge.mismatch {
-  background: #fbefec;
-  color: #b85d4e;
+  background: var(--mipt-light-red);
+  color: var(--mipt-red);
 }
 .badge.unverified {
   background: #f1f3f6;
@@ -1203,7 +1203,7 @@ code {
   border-left-color: #81b49c;
 }
 .node-button.mismatch {
-  border-left-color: #d58c7b;
+  border-left-color: var(--mipt-red);
 }
 .node-button.review {
   border-left-color: #d9b877;

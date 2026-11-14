@@ -83,6 +83,28 @@ export function insertVariable(
     cursorEnd: cursor,
   };
 }
+
+export function removeFormulaVariable(draft: FormulaDraft, name: string): FormulaDraft {
+  const expression = draft.expression;
+  const match = [...expression.matchAll(/\bx[1-9]\d*\b/g)].find((token) => token[0] === name);
+  const inputs = draft.inputs.filter((input) => input.name !== name);
+  if (!match) return { ...draft, inputs };
+  const trimmed = expression.trim();
+  const sum = /^x[1-9]\d*(?:\s*\+\s*x[1-9]\d*)*$/;
+  const rounded = trimmed.match(/^(ROUND\s*\(\s*)(x[1-9]\d*(?:\s*\+\s*x[1-9]\d*)*)(\s*,\s*[+-]?\d+\s*\))$/i);
+  const functionSum = trimmed.match(/^(SUM\s*\(\s*)(x[1-9]\d*(?:\s*,\s*x[1-9]\d*)*)(\s*\))$/i);
+  const wrapper = rounded ?? functionSum;
+  if (!wrapper && !sum.test(trimmed)) {
+    return { ...draft, cursor: match.index, cursorEnd: match.index + name.length };
+  }
+  const joined = (wrapper?.[2] ?? trimmed)
+    .split(functionSum ? /\s*,\s*/ : /\s*\+\s*/)
+    .filter((term) => term !== name)
+    .join(functionSum ? ", " : " + ");
+  const next = joined && wrapper ? wrapper[1] + joined + wrapper[3] : joined;
+  return { ...draft, expression: next, inputs,
+    cursor: next.length, cursorEnd: next.length };
+}
 export function fileBindings(
   result: CaseResult,
 ): Map<string, EvidenceAnnotation[]> {

@@ -293,7 +293,7 @@
   background: #6aa58a;
 }
 .tree-node-state.mismatch {
-  background: #cf8271;
+  background: var(--mipt-red);
 }
 .tree-node-state.review {
   background: #d1af6b;
@@ -509,8 +509,8 @@
   background: #f4faf6;
 }
 .report-value-cell.mismatch {
-  color: #b2604d;
-  background: #fff9f6;
+  color: var(--mipt-red);
+  background: var(--mipt-light-red);
 }
 .report-value-cell.selected {
   background: #eaf6ef;
@@ -521,6 +521,11 @@
   outline: 2px solid #218b75;
   outline-offset: -2px;
   background: #e0f2e9;
+}
+.report-value-cell.mismatch.selected,
+.report-value-cell.mismatch.active-cell {
+  outline-color: var(--mipt-red);
+  background: var(--mipt-light-red);
 }
 .report-value-cell:focus-visible {
   outline: 2px solid #218b75;
@@ -542,7 +547,7 @@
   background: #72a68e;
 }
 .report-value-cell.mismatch .cell-status-corner {
-  background: #cc8270;
+  background: var(--mipt-red);
 }
 .report-value-cell.review .cell-status-corner {
   background: #c7a45e;
@@ -578,7 +583,7 @@
   background: #72a68e;
 }
 .report-selection-footer i.mismatch {
-  background: #cc8270;
+  background: var(--mipt-red);
 }
 .report-selection-footer i.review {
   background: #c7a45e;
@@ -867,8 +872,8 @@
   border-color: #75af8f;
 }
 .report-image-cell.mismatch {
-  background: #f9d9c832;
-  border-color: #cd9a8277;
+  background: #c628282b;
+  border-color: var(--mipt-red);
 }
 .report-image-cell.selected {
   outline: 2px solid #2e9e70;
@@ -1280,6 +1285,10 @@
 .formula-prediction { border-top: 1px solid #c8d8e9; padding: 8px 12px; max-height: 42vh; overflow: auto; }
 .document-set-list { display: flex; flex-direction: column; gap: 6px; max-height: 60vh; overflow: auto; }
 .document-set-list button { text-align: left; justify-content: flex-start; }
+.conclusion-exports { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.conclusion-check { display: flex; align-items: flex-start; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 12px; border: 1px solid #c4d6eb; background: white; text-align: left; width: 100%; margin-bottom: 8px; }
+.conclusion-check > small, .conclusion-check > span:last-of-type { flex-basis: 100%; }
+.formula-predict-button { flex: 0 0 auto; white-space: nowrap; }
 .formula-prediction-actions { display: flex; align-items: flex-start; gap: 12px; }
 .formula-prediction details { min-width: 180px; max-width: 440px; }
 .formula-prediction summary { cursor: pointer; padding: 7px; }

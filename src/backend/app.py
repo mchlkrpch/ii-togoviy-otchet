@@ -124,6 +124,7 @@ def health():
         "ocr": bool(shutil.which("tesseract")),
         "demo_available": SOURCE_DIR.is_dir(),
         "formula_prediction": True,
+        "project_deletion": True,
     }
 
 
@@ -237,6 +238,21 @@ def rename_case(case_id: str, change: CaseName):
     except ValueError as exc:
         raise HTTPException(400, str(exc)) from exc
     return calculate(case)
+
+
+@app.delete("/api/cases/{case_id}")
+def delete_case(case_id: str, revision: int):
+    try:
+        store.delete_case(case_id, revision)
+    except KeyError as exc:
+        raise HTTPException(404, "Проверка не найдена") from exc
+    except RevisionConflict as exc:
+        raise HTTPException(409, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    except OSError as exc:
+        raise HTTPException(500, "Не удалось удалить файлы проекта. Повторите попытку.") from exc
+    return {"id": case_id}
 
 
 @app.post("/api/cases/{case_id}/changes")
@@ -493,29 +509,50 @@ def export_case(case_id: str, format: str):
 
 def render_conclusion(result):
     escape = lambda value: html.escape(str(value if value is not None else "—"))
-    rows = []
+    rows = {}
+    def proof_sources(check):
+        sources, visited = [], set()
+        def visit(identifier):
+            if identifier in visited:
+                return
+            visited.add(identifier)
+            node = result["nodes"][identifier]
+            if node["kind"] == "fact" and not node.get("dependencies"):
+                sources.append(node)
+            else:
+                for item in node.get("inputs", []):
+                    visit(item["ref"])
+        for item in check["inputs"]:
+            visit(item["ref"])
+        return sources
     for check in result["checks"]:
         evidence = []
-        for item in check["inputs"]:
-            source = result["nodes"][item["ref"]]
+        for source in proof_sources(check):
             location = source.get("evidence", source.get("reported_evidence", {}))
             document = next((document for document in result["documents"] if document["id"] == location.get("document_id")), None)
-            evidence.append(f"{item['name']} = {item['value']} · {document['name'] if document else source.get('title', '')} · {location.get('locator', '')}")
+            name = document['name'] if document else source.get('title', '')
+            label = f"{source['id']} = {source.get('expected')} · {name} · {location.get('locator', '')} · {location.get('text', '')}"
+            url = f"/api/cases/{result['id']}/documents/{document['id']}/file#page={location.get('page', 1)}" if document else ""
+            evidence.append(f"<a href='{escape(url)}'>{escape(label)}</a>" if url else escape(label))
         formula = check["rule"]["expression"] if check["rule"] else "Ожидаемое значение не установлено"
         substitution = check.get("substitution")
         proof = f"{substitution} = {check['expected']}" if substitution else ""
         explanation = "<br>".join(escape(message) for message in check.get("explanation", []))
-        rows.append(f"<tr><td>{escape(check['row_title'])}<br>{escape(check['code'])}</td><td>{escape(check['title'])}</td>"
+        rows.setdefault(check["status"], []).append(f"<tr><td>{escape(check['row_title'])}<br>{escape(check['code'])}</td><td>{escape(check['title'])}</td>"
                     f"<td>{escape(check['reported'])}</td><td>{escape(check['expected'])}</td><td>{escape(check['delta'])}</td>"
                     f"<td>{escape(STATUS_LABELS[check['status']])}</td></tr>"
-                    f"<tr><td colspan='6'><b>{escape(formula)}</b><br>{escape(proof)}<br>{explanation}<br>{'<br>'.join(escape(item) for item in evidence)}"
+                    f"<tr><td colspan='6'><b>{escape(formula)}</b><br>{escape(proof)}<br>{explanation}<br>{'<br>'.join(evidence)}"
                     f"<br>{escape(check['note'])}<br>Сомнения в зависимостях · {escape(', '.join(check['blocked_by']) or 'нет')}</td></tr>")
     audit = "".join(f"<li>{escape(item['at'])} · {escape(item['target'])} · {escape(item['reason'])} · {escape(json.dumps(item['after'], ensure_ascii=False))}</li>" for item in result["audit"])
+    grouped_rows = "".join(f"<tr><th colspan='6'>{escape(STATUS_LABELS[status])} · {len(rows[status])}</th></tr>{''.join(rows[status])}"
+                           for status in ("mismatch", "verified", "review", "unverified", "error") if status in rows)
+    issues = "".join(f"<li>{escape(issue['document_name'])} · {escape(issue['title'])}</li>" for issue in result["issues"])
     return f"""<!doctype html><html lang='ru'><meta charset='utf-8'><title>Заключение о проверке</title>
     <style>body{{font:14px system-ui;margin:40px;color:#202b3b}}h1{{font-size:26px}}table{{width:100%;border-collapse:collapse}}td,th{{padding:10px;text-align:left;border:1px solid #dbe0e7}}tr:nth-child(even){{background:#f5f7fa;font-size:12px}}@media print{{body{{margin:12px}}tr{{break-inside:avoid}}}}</style>
     <h1>Заключение о проверке отчетности</h1><p>{escape(result['name'])} · ревизия {result['revision']}</p>
     <p>Договор {escape(result['context']['contract'])} · период {escape(result['context']['start'])} — {escape(result['context']['end'])}</p>
-    <p>{escape(result['summary']['conclusion'])}</p><table><thead><tr><th>Строка</th><th>Показатель</th><th>Отчет</th><th>Источники</th><th>Разница</th><th>Статус</th></tr></thead><tbody>{''.join(rows)}</tbody></table>
+    <p>{escape(result['summary']['conclusion'])}</p><table><thead><tr><th>Строка</th><th>Показатель</th><th>Отчет</th><th>Источники</th><th>Разница</th><th>Статус</th></tr></thead><tbody>{grouped_rows}</tbody></table>
+    <h2>Проблемы документов</h2><ul>{issues or '<li>Проблем не обнаружено</li>'}</ul>
     <h2>Ручные изменения</h2><ul>{audit or '<li>Изменений нет</li>'}</ul></html>"""
 
 

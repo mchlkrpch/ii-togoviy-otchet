@@ -6,7 +6,6 @@ import json
 from pathlib import Path
 import re
 import shutil
-from uuid import uuid4
 
 from .extraction import extract_document
 from .formula_prediction import field_metadata, normalized, row_code
@@ -56,16 +55,18 @@ def locate_target(document, model, selection):
                    and (not scenario or field["scenario"] == scenario)]
     else:
         monetary = [field for field in fields if "млн" in normalized(field["label"]) and "≥" not in field["label"] and "<" not in field["label"]]
+        max_height = max((field["evidence"]["rect"][3] - field["evidence"]["rect"][1] for field in monetary), default=0)
+        monetary = [field for field in monetary if field["evidence"]["rect"][3] - field["evidence"]["rect"][1] >= max_height * .75]
         planned = "план" in normalized(spec["строка_или_показатель"])
         if planned:
             captions = [node for node in page["nodes"] if node["kind"] == "text" and "планы на" in normalized(node["label"])]
             if len(captions) != 1:
                 raise ValueError("Не удалось однозначно найти блок планового показателя")
             box = captions[0]["bbox"]
-            center = [(box[0] + box[2]) / 2 / page["size"][0], (box[1] + box[3]) / 2 / page["size"][1]]
+            center = [(box[0] + box[2]) / 2 / page["size"][0], box[1] / page["size"][1]]
             def distance(field):
                 rect = field["evidence"]["rect"]
-                return ((rect[0] + rect[2]) / 2 - center[0]) ** 2 + ((rect[1] + rect[3]) / 2 - center[1]) ** 2
+                return .1 * ((rect[0] + rect[2]) / 2 - center[0]) ** 2 + 8 * ((rect[1] + rect[3]) / 2 - center[1]) ** 2
             matches = sorted(monetary, key=distance)[:1]
         else:
             # A prominently printed monetary KPI precedes its explanatory caption.

@@ -8,10 +8,11 @@ from decimal import Decimal
 from openpyxl import Workbook
 
 from .excel import read_workbook
+from .extraction import report_period
 from .money import decimal_value, evaluate_formula, formula_references, money
 
 
-STATUS_LABELS = {"verified": "Подтверждено", "mismatch": "Вопрос", "unverified": "Недостаточно данных",
+STATUS_LABELS = {"verified": "Подтверждено", "mismatch": "Потенциальное расхождение", "unverified": "Недостаточно данных",
                  "review": "Требует проверки", "excluded": "Исключено", "error": "Ошибка обработки"}
 
 
@@ -200,8 +201,8 @@ def source_rules(documents, year=None):
     for document in documents:
         if not document["included"]:
             continue
-        document_date = fact_value(document, "date")
-        if year and document_date and not document_date.startswith(year):
+        document_period = fact_value(document, "period") or fact_value(document, "date")
+        if year and document_period and not document_period.startswith(year):
             continue
         category = document.get("category")
         if category and "amount" in document["facts"]:
@@ -257,6 +258,7 @@ def create_checks(report, documents, context, namespace=""):
             "rule": None, "structure": [], "structural_groups": [], "category": "missing_evidence",
             "note": "Для показателя не найдено отдельного подтверждения в первичных документах.",
             "manual": field.get("manual", False), "coverage_issues": [],
+            "source_ref": field.get("metadata", {}).get("source_ref"),
         }
         row_mapping = source_rules(documents, field["row"]) if re.fullmatch(r"20\d{2}", field["row"]) else {}
         if field["code"] in row_mapping:
@@ -347,12 +349,18 @@ def create_checks(report, documents, context, namespace=""):
 
 def calculate(case):
     context = dict(case["context"], **case.get("overrides", {}).get("context:settings", {}))
-    context_issues = scope_issues(context)
     documents = effective_documents(case)
-    issues = document_decisions(documents, context)
     report = next((document for document in documents if document["id"] == case["report_id"]), None)
     if report is None:
         raise ValueError("Итоговый отчет не найден")
+    if not context.get("start") or not context.get("end"):
+        inferred = report_period(report)
+        start = context.get("start") or inferred.get("start")
+        end = context.get("end") or inferred.get("end")
+        if start and end and start <= end:
+            context.update(start=start, end=end)
+    context_issues = scope_issues(context)
+    issues = document_decisions(documents, context)
     reports = [report] + [document for document in documents if document["role"] == "report" and document["id"] != report["id"]]
     checks = {}
     for item in reports:
@@ -363,6 +371,9 @@ def calculate(case):
         if change:
             check["rule"] = change["rule"]
             check["rule_manual"] = True
+            check["note"] = "Формула выбрана пользователем. Ссылки и арифметика проверены при сохранении."
+        if context.get("basis") == "published_financial_tables":
+            check["note"] += " Источники — опубликованные финансовые таблицы. Проверяется согласованность показателей."
     facts, document_map = {}, {document["id"]: document for document in documents}
     for document in documents:
         for fact in document["facts"].values():
@@ -404,7 +415,8 @@ def calculate(case):
                 for item in rule["inputs"]:
                     source = resolve(item["ref"])
                     input_nodes.append(source)
-                    inputs.append(dict(item, value=source.get("expected"), label=source.get("title", source.get("label", "")),
+                    inputs.append(dict(item, value=source.get("expected") if source["status"] != "excluded" else None,
+                                       label=source.get("title", source.get("label", "")),
                                        evidence=source.get("evidence", source.get("reported_evidence"))))
                 try:
                     value, references = evaluate_formula(rule["expression"], {item["name"]: item["value"] for item in inputs})
@@ -462,6 +474,8 @@ def calculate(case):
                 )
             else:
                 node["explanation"].append("Ожидаемое значение пока не установлено по первичным документам.")
+                if any(source["status"] == "excluded" for source in input_nodes):
+                    node["explanation"].append("Формула ссылается на исключённые документы. Проверьте источники формулы.")
             node["explanation"].extend(context_issues)
             node["explanation"].extend(node.get("coverage_issues", []))
             if blocked and not context_issues:
@@ -473,7 +487,7 @@ def calculate(case):
             if rule and all(item["value"] is not None for item in inputs):
                 values = {item["name"]: display_amount(item["value"]) for item in inputs}
                 node["substitution"] = re.sub(r"\bx[1-9]\d*\b", lambda match: values[match[0]], rule["expression"])
-            node["category"] = "amount_mismatch" if direct == "mismatch" else "arithmetic_mismatch" if arithmetic_mismatch else node["category"]
+            node["category"] = "amount_mismatch" if status == "mismatch" and direct == "mismatch" else "arithmetic_mismatch" if arithmetic_mismatch else "verified" if status == "verified" else "missing_evidence" if direct == "unverified" else "uncertain_link"
             dependencies = input_nodes + structure_nodes
         node["dependencies"] = list(dict.fromkeys(source["id"] for source in dependencies))
         visiting.remove(identifier)
@@ -504,7 +518,7 @@ def calculate(case):
     if context_issues:
         conclusion += " Проверка предварительная. " + ". ".join(context_issues) + "."
     if mismatch_count:
-        conclusion += f" В целевой строке вопросов: {mismatch_count}."
+        conclusion += f" Потенциальных расхождений в целевой строке: {mismatch_count}."
     if total and total["delta"] is not None:
         conclusion += f" Разница итога и суммы документов в расчете составляет {total['delta']} руб."
     if unknown_count:
@@ -545,7 +559,7 @@ def validate_change(case, kind, target, values):
             document = documents.get(variable["document_id"])
             if not isinstance(key, str) or not re.fullmatch(r"manual_[a-f0-9]{32}", key):
                 raise ValueError("Некорректный идентификатор переменной")
-            if not document or not (document["role"] == "source" and document["included"] or document["role"] == "report" and result["context"].get("basis") == "published_financial_tables"):
+            if not document or not (document["role"] == "source" and document["included"] or document["role"] == "report" and current["context"].get("basis") == "published_financial_tables"):
                 raise ValueError("Переменная должна ссылаться на включенный первичный документ")
             evidence = variable["evidence"]
             if not isinstance(evidence, dict) or evidence.get("document_id") != document["id"]:
@@ -658,9 +672,15 @@ def validate_change(case, kind, target, values):
             if set(item) != {"name", "ref"} or not re.fullmatch(r"x[1-9]\d*", item["name"]) or item["ref"] not in result["nodes"]:
                 raise ValueError("Проверьте имена x1, x2 и ссылки на источники")
             source = result["nodes"][item["ref"]]
+            if item["ref"] == result["nodes"][target].get("source_ref"):
+                raise ValueError("Показатель нельзя подтверждать его собственным значением")
             if source["kind"] == "fact":
                 document = next(document for document in result["documents"] if document["id"] == source["document_id"])
-                if not (document["role"] == "source" and document["included"] or document["role"] == "report" and result["context"].get("basis") == "published_financial_tables"):
+                report_evidence = result["nodes"][target]["reported_evidence"]
+                same_report = (document.get("structured_report") and document["id"] == report_evidence["document_id"]
+                               and source["evidence"].get("method") == "structured-field")
+                if not (document["role"] == "source" and document["included"] or document["role"] == "report" and
+                        (result["context"].get("basis") == "published_financial_tables" or same_report)):
                     raise ValueError("Для формулы выберите включенный первичный документ или проверяемый показатель")
             names.append(item["name"])
         if not names or len(names) != len(set(names)):

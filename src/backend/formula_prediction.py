@@ -4,8 +4,47 @@ from collections import defaultdict
 from decimal import Decimal
 import re
 
-from .money import decimal_value, evaluate_formula
 from .semantic_model import encoder
+
+
+EXPENSE_PROFILES = {
+    "0800": "Общепроизводственные расходы. Содержание техники и производственных помещений. "
+            "Метрологическая поверка и калибровка измерительных приборов. Ремонт станков, "
+            "эксплуатация лабораторий, диагностика испытательных установок. "
+            "Аренда измерительного оборудования. Вспомогательные работы производственного назначения.",
+    "0900": "Общехозяйственные расходы на обеспечение администрации и аппарата управления. "
+            "Документооборот, внутренние согласования, организационная и управленческая поддержка. "
+            "Услуги связи, ИТ-инфраструктура, лицензии и сервисы для сотрудников офиса.",
+    "0100": "Материальные затраты на закупку сырья, материалов и полуфабрикатов. "
+            "Поставка комплектующих и запасных частей для изготовления изделий.",
+    "other": "Аванс, проценты по кредиту, платеж банку. Заработная плата, отпускные и страховые взносы. "
+             "Транспортные услуги, перевозка, доставка и компенсация проезда.",
+}
+PRODUCTION_SERVICE = "Временное пользование специализированным измерительным оборудованием для выполнения работ."
+
+
+def operation_text(blocks):
+    parts = []
+    for block in blocks:
+        line = block["text"].strip()
+        if re.match(r"^(дата|договор|основание|исполнитель|заказчик|поставщик|получатель|"
+                    r"по договору|стоимость|сумма|итого|к оплате)\b", line, re.I):
+            continue
+        parts.append(" ".join(re.findall(r"[а-яa-z]+", normalized(line))))
+    return " ".join(parts)[:1800].strip()
+
+
+def matching_expenses(code, fields, semantic_encoder):
+    candidates = [field for field in fields if field.get("operation_text")]
+    if not candidates:
+        return []
+    texts = [field["operation_text"] for field in candidates]
+    scores = {key: semantic_encoder.similarities(profile, texts) for key, profile in EXPENSE_PROFILES.items()}
+    production_service = semantic_encoder.similarities(PRODUCTION_SERVICE, texts)
+    scores["0800"] = [max(category, specific) for category, specific in zip(scores["0800"], production_service)]
+    return [field for index, field in enumerate(candidates)
+            if scores[code][index] >= .61
+            and scores[code][index] - max(values[index] for key, values in scores.items() if key != code) >= .02]
 
 
 def normalized(text):
@@ -27,6 +66,9 @@ def metadata_text(field):
 
 
 def row_code(parts):
+    explicit = [part.strip().rstrip(".") for part in parts if re.fullmatch(r"\s*\d+(?:\.\d+)*\.?\s*", part)]
+    if explicit:
+        return explicit[-1]
     for part in parts:
         match = re.match(r"\s*(\d+(?:\.\d+)*)(?:\.|\s|$)", part)
         if match:
@@ -42,7 +84,10 @@ def field_metadata(identifier, label, row_path=(), column_path=(), unit="RUB", *
     years = re.findall(r"\b20\d{2}\b", column)
     if not years:
         years = re.findall(r"\b20\d{2}\b", extra.get("page_heading", ""))
-    scenario = "actual" if re.search(r"исполн|отч[её]т|фактич|направлено", column + " " + extra.get("page_heading", ""), re.I) else "plan" if re.search(r"план", column + " " + extra.get("page_heading", ""), re.I) else ""
+    scenario_text = column_path[-1] if column_path else ""
+    if not re.search(r"исполн|отч[её]т|фактич|план", scenario_text, re.I):
+        scenario_text = column + " " + extra.get("page_heading", "")
+    scenario = "actual" if re.search(r"исполн|отч[её]т|фактич|направлено", scenario_text, re.I) else "plan" if re.search(r"план", scenario_text, re.I) else ""
     result = {"id": identifier, "label": label, "section": section, "column": column,
               "code": row_code(row_path), "unit": unit, "period": years[-1] if years else "",
               "scenario": scenario, "scope": scope[1] if scope else ""}
@@ -118,6 +163,11 @@ def predict(target, fields, semantic_encoder=encoder):
     keys = {"0200.main": "main", "0200.extra": "additional_reserve"}
     source_key = keys.get(code, "amount")
     category_fields = [field for field in category_fields if field.get("fact_key") == source_key]
+    if code in EXPENSE_PROFILES and code != "other":
+        selected = matching_expenses(code, same_period, semantic_encoder)
+        add(selected, "sum", "Вид расходов определен по описаниям операций. Договор, период и дубли проверены.", .96)
+        # Preserve explicit coding on typed forms, and use the encoder for prose.
+        category_fields = [field for field in category_fields if not field.get("operation_text")]
     if category_fields and code in {"0100", "0200", "0300", "0800", "0900", *keys}:
         add(category_fields, "sum", "Содержание операций, статья, договор и период согласованы. Дубли исключены.", .95)
 
@@ -162,13 +212,16 @@ def predict(target, fields, semantic_encoder=encoder):
                 add(sources, "balance", "Баланс периода — начальный остаток, поступления и расходы. Учтены перенос года и бухгалтерские скобки.", .98, [1, 1, expense_sign])
 
     if unit_scale(target.get("unit", ""))[1] == "percent":
-        money_fields = [field for field in fields if unit_scale(field.get("unit", ""))[1] == "money"]
+        money_target = dict(target, unit="RUB", period="")
+        money_fields = [field for field in fields if unit_scale(field.get("unit", ""))[1] == "money"
+                        and compatible(money_target, field)]
         revenue = [field for field in money_fields if re.search(r"выручк|оборот", normalized(field["label"]))]
         current = [field for field in revenue if str(field.get("period", ""))[:4] == str(target.get("period", ""))[:4]]
         prior = [field for field in revenue if str(field.get("period", ""))[:4].isdigit() and str(target.get("period", ""))[:4].isdigit() and int(str(field["period"])[:4]) == int(str(target["period"])[:4]) - 1]
         if re.search(r"рост|прирост|изменени", label) and len(current) == len(prior) == 1:
             add([current[0], prior[0]], "growth", "Относительное изменение выручки между соседними периодами.", .95)
-        numerator = [field for field in money_fields if re.search(r"прибыл", normalized(field["label"]))]
+        numerator = [field for field in money_fields if re.search(r"прибыл", normalized(field["label"]))
+                     and str(field.get("period", ""))[:4] == str(target.get("period", ""))[:4]]
         if re.search(r"марж|рентабельност", label) and len(numerator) == len(current) == 1:
             add([numerator[0], current[0]], "ratio", "Прибыль / выручка с переводом в проценты.", .92)
 
@@ -183,8 +236,3 @@ def predict(target, fields, semantic_encoder=encoder):
     ambiguous = len(candidates) > 1 and abs(candidates[0]["score"] - candidates[1]["score"]) < .025
     return {"suggestions": candidates[:3], "model": "cointegrated/rubert-tiny2", "metadata_only": True,
             "ambiguous": ambiguous, "abstention": "Найдены равнозначные связи. Требуется выбор источников." if ambiguous else "Недостаточно метаданных для однозначной формулы" if not candidates else None}
-
-
-def evaluate_prediction(suggestion, values):
-    return format(evaluate_formula(suggestion["rule"]["expression"], {
-        item["name"]: values.get(item["ref"]) for item in suggestion["rule"]["inputs"]})[0], "f")
